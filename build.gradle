@@ -1,0 +1,29 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+group = 'com.artc' 
+version = '0.1-SNAPSHOT'
+
+task sourcesJar(type: Jar, dependsOn:classes) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+
+artifacts {
+	archives sourcesJar
+}
+
+repositories {
+	flatDir dirs: ['javafx-lib/jars']
+	mavenCentral()
+}
+
+dependencies {
+    compile	':jfxrt:',
+			':miglayout:4.0',
+			':MigLayoutFX2:1.0-SNAPSHOT'
+
+    testCompile 'junit:junit-dep:4.10',
+				'org.hamcrest:hamcrest-core:1.2.1',
+				'org.mockito:mockito-core:1.8.5'
+}
