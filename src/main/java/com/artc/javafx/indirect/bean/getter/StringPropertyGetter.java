@@ -27,22 +27,12 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artc.javafx;
+package com.artc.javafx.indirect.bean.getter;
 
-/**
- * Indicates this object is a proxy for an underlying object which can be changed.
- * 
- * Usually the indirect object will implement the same interface as the proxied object (ie an 
- * IndirectObject<List<E>> would implement List<E> and, in all likelihood, delegate most calls to an 
- * underlying list).
- * 
- * While this interface does not have any method to perform notification about changes it is 
- * assumed that if the proxied object has eventing/listeners the listeners will be added to the
- * underlying object. And if the underlying object was changed the listeners would be switched
- * to the new object (and an appropriate event would be fired indicating that change).
- */
-public interface IndirectObject<T> extends UncontrolledIndirectObject<T> {
+import javafx.beans.property.StringProperty;
+
+public interface StringPropertyGetter<B> extends PropertyGetter<StringProperty, String, B> {
 	
-	public void setUnderlyingObject(T underlyingObject);
+	public StringProperty get(B bean);
 	
 }

@@ -27,7 +27,7 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artc.javafx.bean.value;
+package com.artc.javafx.indirect.bean.value;
 
 import javafx.beans.value.ObservableValue;
 

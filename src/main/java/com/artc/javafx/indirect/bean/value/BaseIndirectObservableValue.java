@@ -27,7 +27,7 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artc.javafx.bean.value;
+package com.artc.javafx.indirect.bean.value;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,13 +38,21 @@ import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
-import com.artc.javafx.IndirectObject;
+import com.artc.javafx.indirect.IndirectObject;
 
 public class BaseIndirectObservableValue<V extends ObservableValue<T>, T> implements ObservableValue<T>, IndirectObject<V> {
 	protected V underlyingObject;
 	protected final T valueWhenUnderlyingObjectIsNull;
 	protected final IndirectInvalidationListener indirectInvalidationListener = new IndirectInvalidationListener();
 	protected final IndirectChangeListener indirectChangeListener = new IndirectChangeListener(); // LATER we always install a change listener even if we don't need one. This forces change events to fire even if they are not needed.
+	
+	public static <V extends ObservableValue<T>, T> BaseIndirectObservableValue<V, T> create(V underlyingObject){
+		return new BaseIndirectObservableValue<V, T>(underlyingObject);
+	}
+
+	public static <V extends ObservableValue<T>, T> BaseIndirectObservableValue<V, T> create(V underlyingObject, T valueWhenUnderlyingObjectIsNull){
+		return new BaseIndirectObservableValue<V, T>(underlyingObject, valueWhenUnderlyingObjectIsNull);
+	}
 	
 	public BaseIndirectObservableValue(V underlyingObject) {
 		this(underlyingObject, null);

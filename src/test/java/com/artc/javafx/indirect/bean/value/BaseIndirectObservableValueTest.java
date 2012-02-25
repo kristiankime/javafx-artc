@@ -27,7 +27,7 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artc.javafx.bean.value;
+package com.artc.javafx.indirect.bean.value;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
@@ -40,12 +40,14 @@ import javafx.beans.value.ChangeListener;
 
 import org.junit.Test;
 
+import com.artc.javafx.indirect.bean.value.BaseIndirectObservableValue;
+
 
 public class BaseIndirectObservableValueTest {
 	@Test
 	public void constructor_getUnderlyingObject_returns_the_object_it_was_constructed_with() {
 		SimpleObjectProperty<String> property = new SimpleObjectProperty<String>("a");
-		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = new BaseIndirectObservableValue<SimpleObjectProperty<String>, String>(property);
+		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = BaseIndirectObservableValue.create(property);
 	
 		assertEquals(property, indirectObservableValue.getUnderlyingObject());
 	}
@@ -53,21 +55,21 @@ public class BaseIndirectObservableValueTest {
 	@Test
 	public void getValue_returns_underlying_objects_get_value() {
 		SimpleObjectProperty<String> property = new SimpleObjectProperty<String>("a");
-		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = new BaseIndirectObservableValue<SimpleObjectProperty<String>, String>(property);
+		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = BaseIndirectObservableValue.create(property);
 	
 		assertEquals("a", indirectObservableValue.getValue());
 	}
 	
 	@Test
 	public void constructor_with_null_value_is_null() {
-		BaseIndirectObservableValue<SimpleObjectProperty<String>, String> indirectObservableValue = new BaseIndirectObservableValue<SimpleObjectProperty<String>, String>(null);
+		BaseIndirectObservableValue<SimpleObjectProperty<String>, String> indirectObservableValue = BaseIndirectObservableValue.create(null);
 
 		assertNull(indirectObservableValue.getValue());
 	}
 	
 	@Test
 	public void constructor_with_a_valueWhenUnderlyingObjectIsNull_returns_that_when_object_is_null() {
-		BaseIndirectObservableValue<SimpleObjectProperty<String>, String> indirectObservableValue = new BaseIndirectObservableValue<SimpleObjectProperty<String>, String>(null, "not null");
+		BaseIndirectObservableValue<SimpleObjectProperty<String>, String> indirectObservableValue = BaseIndirectObservableValue.create(null, "not null");
 
 		assertEquals("not null", indirectObservableValue.getValue());
 	}
@@ -75,7 +77,7 @@ public class BaseIndirectObservableValueTest {
 	@Test
 	public void setUnderlyingObject_with_null_value_is_null() {
 		SimpleObjectProperty<String> property = new SimpleObjectProperty<String>("a");
-		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = new BaseIndirectObservableValue<SimpleObjectProperty<String>, String>(property);
+		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = BaseIndirectObservableValue.create(property);
 	
 		indirectObservableValue.setUnderlyingObject(null);
 		
@@ -86,7 +88,7 @@ public class BaseIndirectObservableValueTest {
 	public void setUnderlyingObject_switches_underlying_object() {
 		SimpleObjectProperty<String> property = new SimpleObjectProperty<String>("a");
 		SimpleObjectProperty<String> property2 = new SimpleObjectProperty<String>("b");
-		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = new BaseIndirectObservableValue<SimpleObjectProperty<String>, String>(property);
+		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = BaseIndirectObservableValue.create(property);
 		
 		indirectObservableValue.setUnderlyingObject(property2);
 		
@@ -96,7 +98,7 @@ public class BaseIndirectObservableValueTest {
 	@Test
 	public void if_the_underlying_objects_value_is_changed_an_invalidation_event_is_fired() {
 		SimpleObjectProperty<String> property = new SimpleObjectProperty<String>("a");
-		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = new BaseIndirectObservableValue<SimpleObjectProperty<String>, String>(property);
+		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = BaseIndirectObservableValue.create(property);
 	
 		InvalidationListener listener = mock(InvalidationListener.class);
 		indirectObservableValue.addListener(listener);
@@ -110,7 +112,7 @@ public class BaseIndirectObservableValueTest {
 	public void setUnderlyingObject_fires_invalidation_events() {
 		SimpleObjectProperty<String> property = new SimpleObjectProperty<String>("a");
 		SimpleObjectProperty<String> property2 = new SimpleObjectProperty<String>("b");
-		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = new BaseIndirectObservableValue<SimpleObjectProperty<String>, String>(property);
+		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = BaseIndirectObservableValue.create(property);
 	
 		InvalidationListener listener = mock(InvalidationListener.class);
 		indirectObservableValue.addListener(listener);
@@ -123,7 +125,7 @@ public class BaseIndirectObservableValueTest {
 	public void setUnderlyingObject_switches_which_object_fires_invalidation_events() {
 		SimpleObjectProperty<String> property = new SimpleObjectProperty<String>("a");
 		SimpleObjectProperty<String> property2 = new SimpleObjectProperty<String>("b");
-		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = new BaseIndirectObservableValue<SimpleObjectProperty<String>, String>(property);
+		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = BaseIndirectObservableValue.create(property);
 		indirectObservableValue.setUnderlyingObject(property2);
 		InvalidationListener listener = mock(InvalidationListener.class);
 		indirectObservableValue.addListener(listener);
@@ -138,7 +140,7 @@ public class BaseIndirectObservableValueTest {
 	@Test
 	public void if_the_underlying_objects_value_is_changed_a_change_event_fires() {
 		SimpleObjectProperty<String> property = new SimpleObjectProperty<String>("a");
-		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = new BaseIndirectObservableValue<SimpleObjectProperty<String>, String>(property);
+		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = BaseIndirectObservableValue.create(property);
 		@SuppressWarnings("unchecked")
 		ChangeListener<String> listener = mock(ChangeListener.class);
 		indirectObservableValue.addListener(listener);
@@ -152,7 +154,7 @@ public class BaseIndirectObservableValueTest {
 	public void setUnderlyingObject_fires_change_events() {
 		SimpleObjectProperty<String> property = new SimpleObjectProperty<String>("a");
 		SimpleObjectProperty<String> property2 = new SimpleObjectProperty<String>("b");
-		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = new BaseIndirectObservableValue<SimpleObjectProperty<String>, String>(property);
+		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = BaseIndirectObservableValue.create(property);
 	
 		@SuppressWarnings("unchecked")
 		ChangeListener<String> listener = mock(ChangeListener.class);
@@ -165,7 +167,7 @@ public class BaseIndirectObservableValueTest {
 	@Test
 	public void setUnderlyingObject_with_null_fires_change_events() {
 		SimpleObjectProperty<String> property = new SimpleObjectProperty<String>("a");
-		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = new BaseIndirectObservableValue<SimpleObjectProperty<String>, String>(property);
+		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = BaseIndirectObservableValue.create(property);
 	
 		@SuppressWarnings("unchecked")
 		ChangeListener<String> listener = mock(ChangeListener.class);
@@ -178,7 +180,7 @@ public class BaseIndirectObservableValueTest {
 	@Test
 	public void setUnderlyingObject_with_null_fires_change_events_if_valueWhenUnderlyingObjectIsNull_is_set_its_value_is_used() {
 		SimpleObjectProperty<String> property = new SimpleObjectProperty<String>("a");
-		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = new BaseIndirectObservableValue<SimpleObjectProperty<String>, String>(property, "value when null");
+		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = BaseIndirectObservableValue.create(property, "value when null");
 	
 		@SuppressWarnings("unchecked")
 		ChangeListener<String> listener = mock(ChangeListener.class);
@@ -191,7 +193,7 @@ public class BaseIndirectObservableValueTest {
 	@Test
 	public void setUnderlyingObject_initiall_null_fires_change_events() {
 		SimpleObjectProperty<String> property2 = new SimpleObjectProperty<String>("b");
-		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = new BaseIndirectObservableValue<SimpleObjectProperty<String>, String>(null);
+		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = BaseIndirectObservableValue.create(null);
 	
 		@SuppressWarnings("unchecked")
 		ChangeListener<String> listener = mock(ChangeListener.class);
@@ -204,7 +206,7 @@ public class BaseIndirectObservableValueTest {
 	@Test
 	public void setUnderlyingObject_initiall_null_fires_change_events_if_valueWhenUnderlyingObjectIsNull_is_set_its_value_is_used() {
 		SimpleObjectProperty<String> property2 = new SimpleObjectProperty<String>("b");
-		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = new BaseIndirectObservableValue<SimpleObjectProperty<String>, String>(null, "value when null");
+		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = BaseIndirectObservableValue.create(null, "value when null");
 	
 		@SuppressWarnings("unchecked")
 		ChangeListener<String> listener = mock(ChangeListener.class);
@@ -218,7 +220,7 @@ public class BaseIndirectObservableValueTest {
 	public void setUnderlyingObject_switches_which_object_fires_change_events() {
 		SimpleObjectProperty<String> property = new SimpleObjectProperty<String>("a");
 		SimpleObjectProperty<String> property2 = new SimpleObjectProperty<String>("b");
-		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = new BaseIndirectObservableValue<SimpleObjectProperty<String>, String>(property);
+		BaseIndirectObservableValue<SimpleObjectProperty<String>,String> indirectObservableValue = BaseIndirectObservableValue.create(property);
 		indirectObservableValue.setUnderlyingObject(property2);
 		@SuppressWarnings("unchecked")
 		ChangeListener<String> listener = mock(ChangeListener.class);

@@ -27,7 +27,7 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artc.javafx;
+package com.artc.javafx.indirect;
 
 /**
  * Indicates this object is a proxy for an underlying object but the control for changing that 

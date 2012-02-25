@@ -27,7 +27,7 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artc.javafx.bean.property;
+package com.artc.javafx.indirect.bean.property;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -36,11 +36,19 @@ import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 
-import com.artc.javafx.bean.value.BaseIndirectObservableValue;
+import com.artc.javafx.indirect.bean.value.BaseIndirectObservableValue;
 
 public class IndirectProperty<T> extends BaseIndirectObservableValue<Property<T>, T> implements Property<T> {
 	private ObservableValue<? extends T> unidirectionBinding = null; // LATER since unbind removes any unibinding we can accidentally remove one placed on the underlying object
 	private final Set<Property<T>> bidirectionalBindings = new HashSet<Property<T>>();
+	
+	public static <T> IndirectProperty<T> create(){
+		return new IndirectProperty<T>();
+	}
+	
+	public static <T> IndirectProperty<T> create(Property<T> underlyingProperty){
+		return new IndirectProperty<T>(underlyingProperty);
+	}
 	
 	public IndirectProperty() {
 		super(new SimpleObjectProperty<T>());
