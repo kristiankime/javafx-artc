@@ -1,1 +1,3 @@
-This is a repo where I'll be adding code related to the post on my blog "Any Relation to Code Living or Dead" (http://kristiankime.blogspot.com/).
+This is a repo where I'll be adding code related to posts on my blog "Any Relation to Code Living or Dead" (http://kristiankime.blogspot.com/).
+
+The repo should be a working eclipse project as soon as the "gradle eclipse" command is run (assuming you have gradle configured).

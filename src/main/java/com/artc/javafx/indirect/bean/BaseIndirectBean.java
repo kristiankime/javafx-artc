@@ -38,6 +38,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
+import com.artc.javafx.indirect.IndirectObject;
 import com.artc.javafx.indirect.UncontrolledIndirectObject;
 import com.artc.javafx.indirect.bean.getter.Getter;
 import com.artc.javafx.indirect.bean.property.IndirectProperty;
@@ -66,6 +67,11 @@ public class BaseIndirectBean<BC extends ObservableValue<B>, B> implements Uncon
 				onBeanChange(newValue);
 			}
 		});
+	}
+	
+	public <I extends IndirectObject<T>, T> I getIndirect(I indirect, Getter<? extends T, B> getter){
+		addPropertySyncher(IndirectBeanPropertySyncer.create(indirect, getter));
+		return indirect;
 	}
 	
 	public void addPropertySyncher(IndirectBeanPropertySyncer<?, B> propertySyncer) {

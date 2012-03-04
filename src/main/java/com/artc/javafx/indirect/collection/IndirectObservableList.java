@@ -49,8 +49,16 @@ public class IndirectObservableList<T> implements ObservableList<T>, IndirectObj
 	private final Set<InvalidationListener> invalidationListeners = new HashSet<InvalidationListener>();
 	private final IterableChangeBuilder<T> iterableChangeBuilder = new IterableChangeBuilder<T>(this);
 	
+	public static <T> IndirectObservableList<T> create() {
+		return new IndirectObservableList<T>();
+	}
+	
 	public static <T> IndirectObservableList<T> create(ObservableList<T> underlyingList) {
 		return new IndirectObservableList<T>(underlyingList);
+	}
+	
+	public IndirectObservableList(){
+		this(null);
 	}
 	
 	public IndirectObservableList(ObservableList<T> underlyingList) {
