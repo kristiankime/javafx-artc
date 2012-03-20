@@ -142,7 +142,7 @@ public class BaseIndirectObservableValue<V extends ObservableValue<T>, T> implem
 	
 	protected class IndirectInvalidationListener implements InvalidationListener {
 		protected final Set<InvalidationListener> invalidationListeners = new HashSet<InvalidationListener>(); // LATER the API allows for duplicate listeners
-
+		
 		public void addListener(InvalidationListener listener) {
 			invalidationListeners.add(listener);
 		}
