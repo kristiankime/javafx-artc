@@ -1,29 +1,33 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 
-group = 'com.artc' 
+group = 'com.artc'
 version = '0.1-SNAPSHOT'
+sourceCompatibility = '1.7'
+
+sourceSets {
+	example {
+		java { srcDir 'example/java' }
+	}
+}
 
 task sourcesJar(type: Jar, dependsOn:classes) {
 	classifier = 'sources'
 	from sourceSets.main.allSource
 }
 
-artifacts {
-	archives sourcesJar
-}
+artifacts { archives sourcesJar }
 
 repositories {
-	flatDir dirs: ['javafx-lib/jars']
 	mavenCentral()
+	flatDir dirs: ['javafx-lib']
 }
 
 dependencies {
-    compile	':jfxrt:',
-			':miglayout:4.0',
-			':MigLayoutFX2:1.0-SNAPSHOT'
-
-    testCompile 'junit:junit-dep:4.10',
-				'org.hamcrest:hamcrest-core:1.2.1',
-				'org.mockito:mockito-core:1.8.5'
+	compile	group: '',              name : 'jfxrt',            version : ''
+	compile	group: 'com.miglayout', name : 'miglayout-javafx', version : '4.2'
+	
+	testCompile group: 'junit',        name : 'junit-dep',     version : '4.10'
+	testCompile group: 'org.hamcrest', name : 'hamcrest-core', version : '1.2.1'
+	testCompile group: 'org.mockito',  name : 'mockito-core',  version : '1.8.5'
 }

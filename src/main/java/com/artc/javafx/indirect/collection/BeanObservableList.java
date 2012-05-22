@@ -46,40 +46,16 @@ import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 
 import com.artc.javafx.indirect.bean.getter.Getter;
-import com.sun.javafx.collections.IterableChangeBuilder;
+import com.sun.javafx.collections.NonIterableChange.SimpleRemovedChange;
 
 public class BeanObservableList<B> implements ObservableList<B> {
 	private final ObservableList<B> underlyingList = FXCollections.observableArrayList();
 	private final Set<Getter<? extends Property<?>, B>> propertyGetters = new HashSet<Getter<? extends Property<?>, B>>();
 	private final Set<InvalidationListener> invalidationListeners = new HashSet<InvalidationListener>();
 	private final Set<ListChangeListener<? super B>> listChangeListeners = new HashSet<ListChangeListener<? super B>>();
-	private final IterableChangeBuilder<B> iterableChangeBuilder = new IterableChangeBuilder<B>(this);
 	private final Map<B, BeanWatcher> beanListeners = new HashMap<B, BeanWatcher>(); // LATER we currently only allow for one "equal" bean in this list
 	
-	public static <T> BeanObservableList<T> create(Getter<? extends Property<?>, T> propertyGetter1) {
-		ArrayList<Getter<? extends Property<?>, T>> items = new ArrayList<Getter<? extends Property<?>, T>>();
-		items.add(propertyGetter1);
-		return new BeanObservableList<T>(items);
-	}
-	
-	public static <T> BeanObservableList<T> create(Getter<? extends Property<?>, T> propertyGetter1, Getter<? extends Property<?>, T> propertyGetter2) {
-		ArrayList<Getter<? extends Property<?>, T>> items = new ArrayList<Getter<? extends Property<?>, T>>();
-		items.add(propertyGetter1);
-		items.add(propertyGetter2);
-		return new BeanObservableList<T>(items);
-	}
-	
-	public static <T> BeanObservableList<T> create(Getter<? extends Property<?>, T> propertyGetter1, Getter<? extends Property<?>, T> propertyGetter2, Getter<? extends Property<?>, T> propertyGetter3) {
-		ArrayList<Getter<? extends Property<?>, T>> items = new ArrayList<Getter<? extends Property<?>, T>>();
-		items.add(propertyGetter1);
-		items.add(propertyGetter2);
-		items.add(propertyGetter3);
-		return new BeanObservableList<T>(items);
-	}
-	
-	/**
-	 * This method creates a warning if you only have a few getters the other creates with no varargs will work without the warning.
-	 */
+	@SafeVarargs
 	public static <T> BeanObservableList<T> create(Getter<? extends Property<?>, T>... propertyGetters) {
 		return new BeanObservableList<T>(Arrays.asList(propertyGetters));
 	}
@@ -137,15 +113,8 @@ public class BeanObservableList<B> implements ObservableList<B> {
 			if (index < 0) {
 				throw new IllegalStateException("The bean [" + bean + "]  should have been in the list");
 			} else {
-				iterableChangeBuilder.nextReplace(index, index + 1, arrayListOf(bean));
-				fireBeanChangeEvent(iterableChangeBuilder.buildAndReset());
+				fireBeanChangeEvent(new SimpleRemovedChange<B>(index, index + 1, bean, underlyingList)); // LATER is this the right event to fire? ObservableLists seems to fire this  
 			}
-		}
-		
-		private ArrayList<B> arrayListOf(B b) {
-			ArrayList<B> arrayList = new ArrayList<B>();
-			arrayList.add(b);
-			return arrayList;
 		}
 	}
 	

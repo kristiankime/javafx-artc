@@ -34,12 +34,13 @@ package com.artc.javafx.indirect;
  * 
  * Usually the indirect object will implement the same interface as the proxied object (ie an 
  * IndirectObject<List<E>> would implement List<E> and, in all likelihood, delegate most calls to an 
- * underlying list).
+ * underlying list.
  * 
  * While this interface does not have any method to perform notification about changes it is 
- * assumed that if the proxied object has eventing/listeners the listeners will be added to the
- * underlying object. And if the underlying object was changed the listeners would be switched
- * to the new object (and an appropriate event would be fired indicating that change).
+ * assumed that if the proxied object has eventing/listeners events will "pass through" the
+ * indirect layer. That is if a listener is added to the indirect object and the underlying object
+ * fires an event the listener would receive an event. Additionally it is expected that if the 
+ * underlying object was changed the listeners would receive an appropriate event.
  */
 public interface IndirectObject<T> extends UncontrolledIndirectObject<T> {
 	
