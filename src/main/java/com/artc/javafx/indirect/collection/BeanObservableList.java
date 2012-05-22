@@ -113,7 +113,7 @@ public class BeanObservableList<B> implements ObservableList<B> {
 			if (index < 0) {
 				throw new IllegalStateException("The bean [" + bean + "]  should have been in the list");
 			} else {
-				fireBeanChangeEvent(new SimpleRemovedChange<B>(index, index + 1, bean, underlyingList)); // LATER is this the right event to fire? ObservableLists seems to fire this  
+				fireBeanChangeEvent(new SimpleRemovedChange<B>(index, index + 1, bean, underlyingList)); // LATER is this the right event to fire? ObservableLists seem to fire this  
 			}
 		}
 	}
@@ -128,7 +128,7 @@ public class BeanObservableList<B> implements ObservableList<B> {
 	}
 	
 	//===== add / remove helpers
-	protected void addBeanPropertiesListener(B... beans) {
+	protected void addBeanPropertiesListener(@SuppressWarnings("unchecked") B... beans) {
 		for (B bean : beans) {
 			addBeanPropertiesListener(bean);
 		}
@@ -147,7 +147,7 @@ public class BeanObservableList<B> implements ObservableList<B> {
 		beanListeners.put(bean, new BeanWatcher(bean));
 	}
 	
-	protected void removeBeanPropertiesListener(B... beans) {
+	protected void removeBeanPropertiesListener(@SuppressWarnings("unchecked") B... beans) {
 		for (B bean : beans) {
 			removeBeanPropertiesListener(bean);
 		}
@@ -186,7 +186,7 @@ public class BeanObservableList<B> implements ObservableList<B> {
 		underlyingList.add(index, element);
 	}
 	
-	public boolean addAll(B... arg0) {
+	public boolean addAll(@SuppressWarnings("unchecked") B... arg0) {
 		addBeanPropertiesListener(arg0);
 		return underlyingList.addAll(arg0);
 	}
@@ -217,7 +217,7 @@ public class BeanObservableList<B> implements ObservableList<B> {
 		return remove;
 	}
 	
-	public boolean removeAll(B... arg0) {
+	public boolean removeAll(@SuppressWarnings("unchecked") B... arg0) {
 		removeBeanPropertiesListener(arg0);
 		return underlyingList.removeAll(arg0);
 	}
@@ -226,7 +226,7 @@ public class BeanObservableList<B> implements ObservableList<B> {
 		throw new UnsupportedOperationException();
 	}
 	
-	public boolean retainAll(B... arg0) {
+	public boolean retainAll(@SuppressWarnings("unchecked") B... arg0) {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -240,7 +240,7 @@ public class BeanObservableList<B> implements ObservableList<B> {
 		return underlyingList.set(index, element);
 	}
 	
-	public boolean setAll(B... arg0) {
+	public boolean setAll(@SuppressWarnings("unchecked") B... arg0) {
 		removeBeanPropertiesListener(this);
 		addBeanPropertiesListener(arg0);
 		return underlyingList.setAll(arg0);

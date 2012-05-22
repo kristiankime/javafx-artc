@@ -57,7 +57,7 @@ public class IndirectObservableList<T> implements ObservableList<T>, IndirectObj
 		return new IndirectObservableList<T>(underlyingList);
 	}
 	
-	public IndirectObservableList(){
+	public IndirectObservableList() {
 		this(null);
 	}
 	
@@ -209,7 +209,7 @@ public class IndirectObservableList<T> implements ObservableList<T>, IndirectObj
 		underlyingList.add(index, element);
 	}
 	
-	public boolean addAll(T... elements) {
+	public boolean addAll(@SuppressWarnings("unchecked") T... elements) {
 		return underlyingList.addAll(elements);
 	}
 	
@@ -241,7 +241,7 @@ public class IndirectObservableList<T> implements ObservableList<T>, IndirectObj
 		return underlyingList.remove(index);
 	}
 	
-	public boolean removeAll(T... elements) {
+	public boolean removeAll(@SuppressWarnings("unchecked") T... elements) {
 		return underlyingList.removeAll(elements);
 	}
 	
@@ -249,7 +249,7 @@ public class IndirectObservableList<T> implements ObservableList<T>, IndirectObj
 		return underlyingList.retainAll(c);
 	}
 	
-	public boolean retainAll(T... elements) {
+	public boolean retainAll(@SuppressWarnings("unchecked") T... elements) {
 		return underlyingList.retainAll(elements);
 	}
 	
@@ -261,7 +261,7 @@ public class IndirectObservableList<T> implements ObservableList<T>, IndirectObj
 		return underlyingList.setAll(col);
 	}
 	
-	public boolean setAll(T... elements) {
+	public boolean setAll(@SuppressWarnings("unchecked") T... elements) {
 		return underlyingList.setAll(elements);
 	}
 	
