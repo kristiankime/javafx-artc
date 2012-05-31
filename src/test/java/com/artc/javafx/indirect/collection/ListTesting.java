@@ -57,10 +57,12 @@ public class ListTesting {
 		return argThat(matcher);
 	}
 	
+	@SafeVarargs
 	public static <T> List<T> removed(T... args) {
 		return Arrays.asList(args);
 	}
 	
+	@SafeVarargs
 	public static <T> List<T> added(T... args) {
 		return Arrays.asList(args);
 	}
@@ -84,10 +86,12 @@ public class ListTesting {
 		
 	}
 	
+	@SafeVarargs
 	public static <T> ListChangeMatcher<T> matchesTheseAdded(T... addedValues) {
 		return new ListChangeMatcher<T>(new ArrayList<T>(), Arrays.asList(addedValues));
 	}
 	
+	@SafeVarargs
 	public static <T> ListChangeMatcher<T> matchesTheseRemoved(T... removedValues) {
 		return new ListChangeMatcher<T>(Arrays.asList(removedValues), new ArrayList<T>());
 	}

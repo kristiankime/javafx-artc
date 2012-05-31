@@ -1,6 +1,5 @@
 package contactmanager.presentation;
 
-
 import javafx.beans.property.Property;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,7 +20,7 @@ public class ContactManagerPresentation {
 	private final IndirectObservableListWithMultipleSelectionModel<Contact> contactSelection;
 	private final UncontrolledIndirectBean<Contact> contact;
 	private final IndirectProperty<String> firstName;
-	private final IndirectProperty<String>  lastName;
+	private final IndirectProperty<String> lastName;
 	private final IndirectProperty<Boolean> fictional;
 	
 	private final EventHandler<ActionEvent> add;
@@ -34,18 +33,18 @@ public class ContactManagerPresentation {
 		this.contactSelection.getMultipleSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		this.contactSelection.getMultipleSelectionModel().select(0);
 		
-		this.contact = new UncontrolledIndirectBean<Contact>(contactSelection.getMultipleSelectionModel().selectedItemProperty());		
+		this.contact = new UncontrolledIndirectBean<Contact>(contactSelection.getMultipleSelectionModel().selectedItemProperty());
 		this.firstName = contact.getIndirectProperty(Contact.FIRST_NAME);
 		this.lastName = contact.getIndirectProperty(Contact.LAST_NAME);
 		this.fictional = contact.getIndirectProperty(Contact.FICTIONAL);
-					
+		
 		this.add = new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				add();
 			}
 		};
-
+		
 		this.remove = new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -56,7 +55,7 @@ public class ContactManagerPresentation {
 	
 	private void remove() {
 		Contact selectedItem = contactSelection.getMultipleSelectionModel().getSelectedItem();
-		if(selectedItem == null){
+		if (selectedItem == null) {
 			return;
 		}
 		contactManager.removeContact(selectedItem);
@@ -91,7 +90,7 @@ public class ContactManagerPresentation {
 		return contactSelection;
 	}
 	
-	public MultipleSelectionModel<Contact> getSelectedContact(){
+	public MultipleSelectionModel<Contact> getSelectedContact() {
 		return contactSelection.getMultipleSelectionModel();
 	}
 }
