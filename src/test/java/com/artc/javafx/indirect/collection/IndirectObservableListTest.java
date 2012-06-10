@@ -79,7 +79,7 @@ public class IndirectObservableListTest {
 	
 	@SuppressWarnings("unchecked")
 	@Test
-	public void changes_to_underlying_list_fire_events_from_th_indirect_list() {
+	public void changes_to_underlying_list_fire_events_from_the_indirect_list() {
 		ObservableList<String> underlyingList = FXCollections.observableArrayList("a", "b");
 		IndirectObservableList<String> indirectList = IndirectObservableList.create(underlyingList);
 		

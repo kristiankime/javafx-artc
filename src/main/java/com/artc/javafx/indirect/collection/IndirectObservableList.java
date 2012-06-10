@@ -62,7 +62,7 @@ public class IndirectObservableList<T> implements ObservableList<T>, IndirectObj
 	}
 	
 	public IndirectObservableList(ObservableList<T> underlyingList) {
-		this.underlyingList = underlyingList != null ? underlyingList : FXCollections.<T> emptyObservableList(); // LATER the empty list throws when changes are done to it so user must know when they've set the list to null. Is this reasonable?
+		this.underlyingList = useListOrCreateEmptyListIfNull(underlyingList);
 	}
 	
 	public void addListener(InvalidationListener listener) {
@@ -90,7 +90,7 @@ public class IndirectObservableList<T> implements ObservableList<T>, IndirectObj
 		removeListListeners(listChangeListeners, this.underlyingList);
 		
 		ObservableList<T> oldList = this.underlyingList;
-		this.underlyingList = newList != null ? newList : FXCollections.<T> emptyObservableList(); // ensure we have at least an empty list
+		this.underlyingList = useListOrCreateEmptyListIfNull(newList);
 		
 		addInvalidationListeners(invalidationListeners, this.underlyingList);
 		addListListeners(listChangeListeners, this.underlyingList);
@@ -111,6 +111,11 @@ public class IndirectObservableList<T> implements ObservableList<T>, IndirectObj
 		for (ListChangeListener<? super T> listChangeListener : new ArrayList<ListChangeListener<? super T>>(listChangeListeners)) {
 			listChangeListener.onChanged(change);
 		}
+	}
+	
+	// LATER the empty list throws when changes are done to it so user must know when they've set the list to null. Is this reasonable?
+	private static <T> ObservableList<T> useListOrCreateEmptyListIfNull(ObservableList<T> list) {
+		return list != null ? list : FXCollections.<T> emptyObservableList();
 	}
 	
 	// ========================================================
@@ -140,7 +145,7 @@ public class IndirectObservableList<T> implements ObservableList<T>, IndirectObj
 		}
 	}
 	
-	public static <T> void removeInvalidationListeners(Set<InvalidationListener> invalidationListeners, Observable observable) {
+	private static <T> void removeInvalidationListeners(Set<InvalidationListener> invalidationListeners, Observable observable) {
 		if (observable != null) {
 			for (InvalidationListener invalidationListener : invalidationListeners) {
 				observable.removeListener(invalidationListener);
@@ -148,7 +153,7 @@ public class IndirectObservableList<T> implements ObservableList<T>, IndirectObj
 		}
 	}
 	
-	public static void fireInvalidationChange(Set<InvalidationListener> invalidationListeners, Observable observable) {
+	private static void fireInvalidationChange(Set<InvalidationListener> invalidationListeners, Observable observable) {
 		for (InvalidationListener invalidationListener : invalidationListeners) {
 			invalidationListener.invalidated(observable);
 		}
