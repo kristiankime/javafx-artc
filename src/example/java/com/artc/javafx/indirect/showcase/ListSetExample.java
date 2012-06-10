@@ -1,7 +1,6 @@
 package com.artc.javafx.indirect.showcase;
 
 import javafx.application.Application;
-import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
@@ -78,13 +77,6 @@ public class ListSetExample extends Application {
 			@Override
 			public void handle(ActionEvent event) {
 				indirectList.set(1, "SET");
-			}
-		});
-
-		indirectList.addListener(new ListChangeListener<String>(){
-			@Override
-			public void onChanged(javafx.collections.ListChangeListener.Change<? extends String> arg0) {
-				System.out.println(arg0);
 			}
 		});
 		

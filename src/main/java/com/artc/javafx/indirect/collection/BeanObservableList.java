@@ -46,7 +46,6 @@ import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 
 import com.artc.javafx.indirect.bean.getter.Getter;
-import com.sun.javafx.collections.NonIterableChange.SimpleRemovedChange;
 
 public class BeanObservableList<B> implements ObservableList<B> {
 	private final ObservableList<B> underlyingList = FXCollections.observableArrayList();
@@ -113,11 +112,16 @@ public class BeanObservableList<B> implements ObservableList<B> {
 			if (index < 0) {
 				throw new IllegalStateException("The bean [" + bean + "]  should have been in the list");
 			} else {
-				fireBeanChangeEvent(new SimpleRemovedChange<B>(index, index + 1, bean, underlyingList)); // LATER is this the right event to fire? ObservableLists seem to fire this  
+				// LATER this is a hack to fire the right event
+				underlyingList.set(index, null);
+				underlyingList.set(index, bean);
+				// LATER why doesn't this call update ListViews that are based on it?
+				// fireBeanChangeEvent(new SimpleRemovedChange<B>(index, index + 1, bean, underlyingList)); 
 			}
 		}
 	}
 	
+	// LATER this call should be sufficient to indicate a change but it doesn't seem to work for ListViews
 	protected void fireBeanChangeEvent(Change<B> change) {
 		for (InvalidationListener invalidationListener : invalidationListeners) {
 			invalidationListener.invalidated(this);

@@ -1,6 +1,5 @@
 package contactmanager.view;
 
-import javafx.collections.ListChangeListener;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -38,13 +37,6 @@ public class ContactManagerView {
 		remove = new Button("remove");
 		remove.setOnAction(presenter.getRemove());
 		
-		contactList.getItems().addListener(new ListChangeListener<Contact>() {
-			@Override
-			public void onChanged(final javafx.collections.ListChangeListener.Change<? extends Contact> change) {
-				System.err.println("contact list " + change);
-			}
-		});
-		
 		this.surface = new MigPane("wrap 2");
 		buildSurface();
 	}
@@ -69,5 +61,4 @@ public class ContactManagerView {
 	public Node getNode() {
 		return surface;
 	}
-	
 }
