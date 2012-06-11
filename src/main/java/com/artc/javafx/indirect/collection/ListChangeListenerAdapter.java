@@ -10,11 +10,11 @@ public class ListChangeListenerAdapter<T> implements ListChangeListener<T> {
 			if (c.wasPermutated()) {
 				for (int oldIndex = c.getFrom(); oldIndex < c.getTo(); ++oldIndex) {
 					int newIndex = c.getPermutation(oldIndex);
-					permutedChange(oldIndex, newIndex);
+					permutedChange(oldIndex, newIndex, c.getList().get(newIndex));
 				}
 			} else if (c.wasUpdated()) {
 				for (int index = c.getFrom(); index < c.getTo(); ++index) {
-					updatedChange(index);
+					updatedChange(index, c.getList().get(index));
 				}
 			} else {
 				for (T removedElement : c.getRemoved()) {
@@ -28,11 +28,11 @@ public class ListChangeListenerAdapter<T> implements ListChangeListener<T> {
 		}
 	}
 	
-	public void permutedChange(int oldIndex, int newIndex){
+	public void permutedChange(int oldIndex, int newIndex, T element){
 		// NOOP
 	}
 
-	public void updatedChange(int index) {
+	public void updatedChange(int index, T element) {
 		// NOOP
 	}
 	

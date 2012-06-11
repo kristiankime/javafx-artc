@@ -195,12 +195,12 @@ public class ListChangeListenerAdapterTest {
 		}
 		
 		@Override
-		public void permutedChange(int oldIndex, int newIndex) {
-			changes.add(permutation(oldIndex, newIndex, observableList.get(newIndex)));
+		public void permutedChange(int oldIndex, int newIndex, T element) {
+			changes.add(permutation(oldIndex, newIndex, element));
 		}
 		
-		public void updatedChange(int index) {
-			// NOOP
+		public void updatedChange(int index, T element) {
+			throw new UnsupportedOperationException("Can't seem to find an observable list that fires this type of change...");
 		}
 		
 		@Override
@@ -233,7 +233,7 @@ public class ListChangeListenerAdapterTest {
 	}
 	
 	private static <V> AChange<V> added(int index, V value) {
-		return new AChange<V>(index, index, value);
+		return new AChange<V>(null, index, value);
 	}
 	
 	private static <V> AChange<V> update(int index, V value) {
