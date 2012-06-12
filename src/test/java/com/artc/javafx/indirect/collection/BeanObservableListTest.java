@@ -80,13 +80,13 @@ public class BeanObservableListTest {
 	}
 	
 	private static class TestBean {
-		public static final StringPropertyGetter<TestBean> FIRST = new StringPropertyGetter<BeanObservableListTest.TestBean>() {
+		public static final StringPropertyGetter<TestBean> FIRST = new StringPropertyGetter<TestBean>() {
 			@Override
 			public StringProperty get(TestBean bean) {
 				return bean.first;
 			}
 		};
-		public static final StringPropertyGetter<TestBean> SECOND = new StringPropertyGetter<BeanObservableListTest.TestBean>() {
+		public static final StringPropertyGetter<TestBean> SECOND = new StringPropertyGetter<TestBean>() {
 			@Override
 			public StringProperty get(TestBean bean) {
 				return bean.second;

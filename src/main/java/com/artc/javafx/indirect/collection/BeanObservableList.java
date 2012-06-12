@@ -25,7 +25,6 @@
 
 package com.artc.javafx.indirect.collection;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -42,31 +41,97 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 
 import com.artc.javafx.indirect.bean.getter.Getter;
 
 public class BeanObservableList<B> implements ObservableList<B> {
-	private final ObservableList<B> underlyingList = FXCollections.observableArrayList();
+	private final ObservableList<B> underlyingList;
 	private final Set<Getter<? extends Property<?>, B>> propertyGetters = new HashSet<Getter<? extends Property<?>, B>>();
 	private final Set<InvalidationListener> invalidationListeners = new HashSet<InvalidationListener>();
 	private final Set<ListChangeListener<? super B>> listChangeListeners = new HashSet<ListChangeListener<? super B>>();
-	private final Map<B, BeanWatcher> beanListeners = new HashMap<B, BeanWatcher>(); // LATER we currently only allow for one "equal" bean in this list
+	private final Map<B, BeanPropertyListener> beanListeners = new HashMap<B, BeanPropertyListener>();
 	
 	@SafeVarargs
-	public static <T> BeanObservableList<T> create(Getter<? extends Property<?>, T>... propertyGetters) {
-		return new BeanObservableList<T>(Arrays.asList(propertyGetters));
+	public static <B> BeanObservableList<B> create(Getter<? extends Property<?>, B>... getters) {
+		return new BeanObservableList<B>(FXCollections.<B> observableArrayList(), Arrays.asList(getters));
 	}
 	
-	public static <T> BeanObservableList<T> create(Collection<Getter<? extends Property<?>, T>> propertyGetters) {
-		return new BeanObservableList<T>(propertyGetters);
-	}
-	
-	public BeanObservableList(Collection<Getter<? extends Property<?>, B>> propertyGetters) {
+	public BeanObservableList(ObservableList<B> observableList, Collection<Getter<? extends Property<?>, B>> propertyGetters) {
+		this.underlyingList = observableList;
 		this.propertyGetters.addAll(propertyGetters);
+		this.underlyingList.addListener(new UnderlyingListSynchronizer());
+		for (B bean : underlyingList) {
+			addBeanPropertyListener(bean);
+		}
 	}
 	
+	
+	private void addBeanPropertyListener(B item) {
+		if (item == null) {
+			return;
+		}
+		if (beanListeners.containsKey(item)) {
+			throw new IllegalArgumentException("Attemping to add the bean [" + item + "] to the " + BeanObservableList.class.getSimpleName() + " but it was already there, currently only unique beans are supported");
+		}
+		beanListeners.put(item, new BeanPropertyListener(item));
+	};
+	
+	private class BeanPropertyListener implements ChangeListener<Object> {
+		private final B bean;
+		
+		public BeanPropertyListener(B bean) {
+			this.bean = bean;
+			for (Getter<? extends Property<?>, B> getter : propertyGetters) {
+				getter.get(bean).addListener(this);
+			}
+		}
+		
+		public void release() {
+			for (Getter<? extends Property<?>, B> getter : propertyGetters) {
+				getter.get(bean).removeListener(this);
+			}
+		}
+		
+		@Override
+		public void changed(ObservableValue<?> arg0, Object arg1, Object arg2) {
+			int index = underlyingList.indexOf(bean);			
+			// LATER this call should be sufficient to indicate a change but it doesn't seem to work for ListViews
+			//			fireBeanChangeEvent(new SimpleRemovedChange<B>(index, index + 1, bean, underlyingList));
+			// This is a hack to make ListViews update properly
+			underlyingList.set(index, null);
+			underlyingList.set(index, bean);
+		}
+	}
+	
+	// LATER this call should be sufficient to indicate a change but it doesn't seem to work for ListViews
+	//	private void fireBeanChangeEvent(Change<B> change) {
+	//		for (InvalidationListener invalidationListener : invalidationListeners) {
+	//			invalidationListener.invalidated(this);
+	//		}
+	//		for (ListChangeListener<? super B> listChangeListener : new ArrayList<ListChangeListener<? super B>>(listChangeListeners)) {
+	//			listChangeListener.onChanged(change);
+	//		}
+	//	}
+	
+	private class UnderlyingListSynchronizer extends ListChangeListenerAdapter<B> {
+		public void addedChange(B item, int index) {
+			addBeanPropertyListener(item);
+		}
+		
+		public void removedChange(B item) {
+			if (item == null) {
+				return;
+			}
+			beanListeners.remove(item).release();
+		};
+		
+		public void updatedChange(int index, B element) {
+			throw new UnsupportedOperationException("TODO unclear how to handle this case");
+		};
+	}
+	
+	// ============= Keep track of the listeners =============
 	public void addListener(InvalidationListener listener) {
 		underlyingList.addListener(listener);
 		invalidationListeners.add(listener);
@@ -87,200 +152,113 @@ public class BeanObservableList<B> implements ObservableList<B> {
 		listChangeListeners.remove(listener);
 	}
 	
-	private class BeanWatcher implements ChangeListener<Object> {
-		private final B bean;
-		
-		private BeanWatcher(B bean) {
-			this.bean = bean;
-			
-			for (Getter<? extends Property<?>, B> propertyGetter : propertyGetters) {
-				Property<?> property = propertyGetter.get(bean);
-				property.addListener(this);
-			}
-		}
-		
-		private void remove() {
-			for (Getter<? extends Property<?>, B> propertyGetter : propertyGetters) {
-				Property<?> property = propertyGetter.get(bean);
-				property.removeListener(this);
-			}
-		}
-		
-		@Override
-		public void changed(ObservableValue<? extends Object> observable, Object oldValue, Object newValue) {
-			int index = underlyingList.indexOf(bean); // LATER Here we're assuming the element is in the list at most one time				
-			if (index < 0) {
-				throw new IllegalStateException("The bean [" + bean + "]  should have been in the list");
-			} else {
-				// LATER this is a hack to fire the right event
-				underlyingList.set(index, null);
-				underlyingList.set(index, bean);
-				// LATER why doesn't this call update ListViews that are based on it?
-				// fireBeanChangeEvent(new SimpleRemovedChange<B>(index, index + 1, bean, underlyingList)); 
-			}
-		}
-	}
-	
-	// LATER this call should be sufficient to indicate a change but it doesn't seem to work for ListViews
-	protected void fireBeanChangeEvent(Change<B> change) {
-		for (InvalidationListener invalidationListener : invalidationListeners) {
-			invalidationListener.invalidated(this);
-		}
-		for (ListChangeListener<? super B> listChangeListener : new ArrayList<ListChangeListener<? super B>>(listChangeListeners)) {
-			listChangeListener.onChanged(change);
-		}
-	}
-	
-	//===== add / remove helpers
-	protected void addBeanPropertiesListener(@SuppressWarnings("unchecked") B... beans) {
-		for (B bean : beans) {
-			addBeanPropertiesListener(bean);
-		}
-	}
-	
-	protected void addBeanPropertiesListener(Collection<? extends B> beans) {
-		for (B bean : beans) {
-			addBeanPropertiesListener(bean);
-		}
-	}
-	
-	protected void addBeanPropertiesListener(B bean) {
-		if (beanListeners.containsKey(bean)) {
-			throw new IllegalArgumentException("This class cannot currently handle having two equal beans in it");
-		}
-		beanListeners.put(bean, new BeanWatcher(bean));
-	}
-	
-	protected void removeBeanPropertiesListener(@SuppressWarnings("unchecked") B... beans) {
-		for (B bean : beans) {
-			removeBeanPropertiesListener(bean);
-		}
-	}
-	
-	protected void removeBeanPropertiesListener(Collection<? extends B> beans) {
-		for (B bean : beans) {
-			removeBeanPropertiesListener(bean);
-		}
-	}
-	
-	protected void removeBeanPropertiesListener(B bean) {
-		if (beanListeners.containsKey(bean)) {
-			beanListeners.get(bean).remove();
-			beanListeners.remove(bean);
-		}
-	}
-	
-	// ============= Need to add listener on add and remove =============
-	public boolean add(B e) {
-		addBeanPropertiesListener(e);
-		return underlyingList.add(e);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public boolean remove(Object o) {
-		boolean remove = underlyingList.remove(o);
-		if (remove) {
-			removeBeanPropertiesListener((B) o);
-		}
-		return remove;
-	}
-	
-	public void add(int index, B element) {
-		addBeanPropertiesListener(element);
-		underlyingList.add(index, element);
-	}
-	
-	public boolean addAll(@SuppressWarnings("unchecked") B... arg0) {
-		addBeanPropertiesListener(arg0);
-		return underlyingList.addAll(arg0);
-	}
-	
-	public boolean addAll(Collection<? extends B> c) {
-		addBeanPropertiesListener(c);
-		return underlyingList.addAll(c);
-	}
-	
-	public boolean addAll(int index, Collection<? extends B> c) {
-		addBeanPropertiesListener(c);
-		return underlyingList.addAll(index, c);
-	}
-	
-	public void clear() {
-		removeBeanPropertiesListener(this);
-		underlyingList.clear();
-	}
-	
-	public void remove(int arg0, int arg1) {
-		removeBeanPropertiesListener(subList(arg0, arg1));
-		underlyingList.remove(arg0, arg1);
-	}
-	
-	public B remove(int index) {
-		B remove = underlyingList.remove(index);
-		removeBeanPropertiesListener(remove);
-		return remove;
-	}
-	
-	public boolean removeAll(@SuppressWarnings("unchecked") B... arg0) {
-		removeBeanPropertiesListener(arg0);
-		return underlyingList.removeAll(arg0);
-	}
-	
-	public boolean removeAll(Collection<?> c) {
-		throw new UnsupportedOperationException();
-	}
-	
-	public boolean retainAll(@SuppressWarnings("unchecked") B... arg0) {
-		throw new UnsupportedOperationException();
-	}
-	
-	public boolean retainAll(Collection<?> c) {
-		throw new UnsupportedOperationException();
-	}
-	
-	public B set(int index, B element) {
-		removeBeanPropertiesListener(get(index));
-		addBeanPropertiesListener(element);
-		return underlyingList.set(index, element);
-	}
-	
-	public boolean setAll(@SuppressWarnings("unchecked") B... arg0) {
-		removeBeanPropertiesListener(this);
-		addBeanPropertiesListener(arg0);
-		return underlyingList.setAll(arg0);
-	}
-	
-	public boolean setAll(Collection<? extends B> arg0) {
-		throw new UnsupportedOperationException();
-	}
-	
-	// ============= Methods below here just delegate =============
-	public boolean isEmpty() {
-		return underlyingList.isEmpty();
-	}
-	
+	// ============= Methods below here just delegate =============	
 	public boolean contains(Object o) {
 		return underlyingList.contains(o);
 	}
 	
-	public Iterator<B> iterator() {
-		return underlyingList.iterator();
+	public boolean add(B e) {
+		return underlyingList.add(e);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public boolean addAll(B... arg0) {
+		return underlyingList.addAll(arg0);
 	}
 	
 	public boolean containsAll(Collection<?> c) {
 		return underlyingList.containsAll(c);
 	}
 	
+	public boolean addAll(Collection<? extends B> c) {
+		return underlyingList.addAll(c);
+	}
+	
+	public boolean addAll(int index, Collection<? extends B> c) {
+		return underlyingList.addAll(index, c);
+	}
+	
+	public void clear() {
+		underlyingList.clear();
+	}
+	
 	public boolean equals(Object o) {
 		return underlyingList.equals(o);
+	}
+	
+	public B get(int index) {
+		return underlyingList.get(index);
+	}
+	
+	public void add(int index, B element) {
+		underlyingList.add(index, element);
+	}
+	
+	public void remove(int arg0, int arg1) {
+		underlyingList.remove(arg0, arg1);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public boolean removeAll(B... arg0) {
+		return underlyingList.removeAll(arg0);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public boolean retainAll(B... arg0) {
+		return underlyingList.retainAll(arg0);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public boolean setAll(B... arg0) {
+		return underlyingList.setAll(arg0);
+	}
+	
+	public boolean setAll(Collection<? extends B> arg0) {
+		return underlyingList.setAll(arg0);
+	}
+	
+	public int size() {
+		return underlyingList.size();
+	}
+	
+	public boolean isEmpty() {
+		return underlyingList.isEmpty();
+	}
+	
+	public Iterator<B> iterator() {
+		return underlyingList.iterator();
+	}
+	
+	public Object[] toArray() {
+		return underlyingList.toArray();
+	}
+	
+	public <T> T[] toArray(T[] a) {
+		return underlyingList.toArray(a);
+	}
+	
+	public boolean remove(Object o) {
+		return underlyingList.remove(o);
+	}
+	
+	public boolean removeAll(Collection<?> c) {
+		return underlyingList.removeAll(c);
+	}
+	
+	public boolean retainAll(Collection<?> c) {
+		return underlyingList.retainAll(c);
 	}
 	
 	public int hashCode() {
 		return underlyingList.hashCode();
 	}
 	
-	public B get(int index) {
-		return underlyingList.get(index);
+	public B set(int index, B element) {
+		return underlyingList.set(index, element);
+	}
+	
+	public B remove(int index) {
+		return underlyingList.remove(index);
 	}
 	
 	public int indexOf(Object o) {
@@ -299,20 +277,7 @@ public class BeanObservableList<B> implements ObservableList<B> {
 		return underlyingList.listIterator(index);
 	}
 	
-	public int size() {
-		return underlyingList.size();
-	}
-	
-	public Object[] toArray() {
-		return underlyingList.toArray();
-	}
-	
-	public <T> T[] toArray(T[] a) {
-		return underlyingList.toArray(a);
-	}
-	
 	public List<B> subList(int fromIndex, int toIndex) {
 		return underlyingList.subList(fromIndex, toIndex);
 	}
-	
 }
