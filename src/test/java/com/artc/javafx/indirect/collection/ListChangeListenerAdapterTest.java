@@ -43,7 +43,7 @@ public class ListChangeListenerAdapterTest {
 	public void permuted_change() {
 		ObservableList<String> observableList = observableList("b", "a");
 		List<AChange<String>> changes = changeList();
-		observableList.addListener(new ListenForAllChanges<String>(changes, observableList));
+		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
 		FXCollections.sort(observableList);
 		
@@ -54,7 +54,7 @@ public class ListChangeListenerAdapterTest {
 	public void set_by_index() {
 		ObservableList<String> observableList = observableList("a", "b");
 		List<AChange<String>> changes = changeList();
-		observableList.addListener(new ListenForAllChanges<String>(changes, observableList));
+		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
 		observableList.set(1, "c");
 		
@@ -65,7 +65,7 @@ public class ListChangeListenerAdapterTest {
 	public void setAll_collection() {
 		ObservableList<String> observableList = observableList("a", "b");
 		List<AChange<String>> changes = changeList();
-		observableList.addListener(new ListenForAllChanges<String>(changes, observableList));
+		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
 		observableList.setAll(asList("c", "d"));
 		
@@ -76,7 +76,7 @@ public class ListChangeListenerAdapterTest {
 	public void setAll_varargs() {
 		ObservableList<String> observableList = observableList("a", "b");
 		List<AChange<String>> changes = changeList();
-		observableList.addListener(new ListenForAllChanges<String>(changes, observableList));
+		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
 		observableList.setAll("c", "d");
 		
@@ -87,7 +87,7 @@ public class ListChangeListenerAdapterTest {
 	public void remove_by_index() {
 		ObservableList<String> observableList = observableList("a", "b", "c");
 		List<AChange<String>> changes = changeList();
-		observableList.addListener(new ListenForAllChanges<String>(changes, observableList));
+		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
 		observableList.remove(1);
 		
@@ -98,7 +98,7 @@ public class ListChangeListenerAdapterTest {
 	public void remove_by_element() {
 		ObservableList<String> observableList = observableList("a", "b", "c");
 		List<AChange<String>> changes = changeList();
-		observableList.addListener(new ListenForAllChanges<String>(changes, observableList));
+		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
 		observableList.remove("c");
 		
@@ -109,7 +109,7 @@ public class ListChangeListenerAdapterTest {
 	public void removeAll_collection() {
 		ObservableList<String> observableList = observableList("a", "b", "c", "d");
 		List<AChange<String>> changes = changeList();
-		observableList.addListener(new ListenForAllChanges<String>(changes, observableList));
+		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
 		observableList.removeAll(asList("b", "c"));
 		
@@ -120,7 +120,7 @@ public class ListChangeListenerAdapterTest {
 	public void removeAll_varargs() {
 		ObservableList<String> observableList = observableList("a", "b", "c", "d");
 		List<AChange<String>> changes = changeList();
-		observableList.addListener(new ListenForAllChanges<String>(changes, observableList));
+		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
 		observableList.removeAll("b", "c");
 		
@@ -131,7 +131,7 @@ public class ListChangeListenerAdapterTest {
 	public void add_element() {
 		ObservableList<String> observableList = observableList("a", "b");
 		List<AChange<String>> changes = changeList();
-		observableList.addListener(new ListenForAllChanges<String>(changes, observableList));
+		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
 		observableList.add("c");
 		
@@ -142,7 +142,7 @@ public class ListChangeListenerAdapterTest {
 	public void add_element_index() {
 		ObservableList<String> observableList = observableList("a", "b");
 		List<AChange<String>> changes = changeList();
-		observableList.addListener(new ListenForAllChanges<String>(changes, observableList));
+		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
 		observableList.add(1, "c");
 		
@@ -153,7 +153,7 @@ public class ListChangeListenerAdapterTest {
 	public void addAll_collection() {
 		ObservableList<String> observableList = observableList("a", "b");
 		List<AChange<String>> changes = changeList();
-		observableList.addListener(new ListenForAllChanges<String>(changes, observableList));
+		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
 		observableList.addAll(asList("c", "d"));
 		
@@ -164,7 +164,7 @@ public class ListChangeListenerAdapterTest {
 	public void addAll_varargs() {
 		ObservableList<String> observableList = observableList("a", "b");
 		List<AChange<String>> changes = changeList();
-		observableList.addListener(new ListenForAllChanges<String>(changes, observableList));
+		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
 		observableList.addAll("c", "d");
 		
@@ -175,7 +175,7 @@ public class ListChangeListenerAdapterTest {
 	public void addAll_collection_indexed() {
 		ObservableList<String> observableList = observableList("a", "b");
 		List<AChange<String>> changes = changeList();
-		observableList.addListener(new ListenForAllChanges<String>(changes, observableList));
+		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
 		observableList.addAll(1, asList("c", "d"));
 		
@@ -186,7 +186,7 @@ public class ListChangeListenerAdapterTest {
 	public void retainAll_collection() {
 		ObservableList<String> observableList = observableList("a", "b", "c");
 		List<AChange<String>> changes = changeList();
-		observableList.addListener(new ListenForAllChanges<String>(changes, observableList));
+		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
 		observableList.retainAll(asList("b", "c"));
 		
@@ -197,7 +197,7 @@ public class ListChangeListenerAdapterTest {
 	public void retainAll_varargs() {
 		ObservableList<String> observableList = observableList("a", "b", "c", "d");
 		List<AChange<String>> changes = changeList();
-		observableList.addListener(new ListenForAllChanges<String>(changes, observableList));
+		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
 		observableList.retainAll("b", "c");
 		
@@ -207,11 +207,9 @@ public class ListChangeListenerAdapterTest {
 	// ===========================
 	private static class ListenForAllChanges<T> extends ListChangeListenerAdapter<T> {
 		private final List<AChange<T>> changes;
-		private final ObservableList<T> observableList;
 		
-		private ListenForAllChanges(List<AChange<T>> changes, ObservableList<T> observableList) {
+		private ListenForAllChanges(List<AChange<T>> changes) {
 			this.changes = changes;
-			this.observableList = observableList;
 		}
 		
 		@Override
@@ -259,10 +257,6 @@ public class ListChangeListenerAdapterTest {
 	
 	private static <V> AChange<V> added(int index, V value) {
 		return new AChange<V>(null, index, value);
-	}
-	
-	private static <V> AChange<V> update(int index, V value) {
-		return new AChange<V>(index, index, value);
 	}
 	
 	private static <V> AChange<V> permutation(int oldIndex, int newIndex, V value) {
