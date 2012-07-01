@@ -23,7 +23,7 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artc.javafx.indirect.collection;
+package com.artc.javafx.collection;
 
 import java.util.Arrays;
 import java.util.Collection;

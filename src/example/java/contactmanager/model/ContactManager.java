@@ -2,7 +2,7 @@ package contactmanager.model;
 
 import javafx.collections.ObservableList;
 
-import com.artc.javafx.indirect.collection.BeanObservableList;
+import com.artc.javafx.collection.BeanObservableList;
 
 public class ContactManager {
 	private final ObservableList<Contact> contacts;

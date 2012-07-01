@@ -45,15 +45,6 @@ public class Contact {
 	public Contact() {
 	}
 	
-	public Contact(String firstName) {
-		this.firstName.set(firstName);
-	}
-	
-	public Contact(String firstName, String lastName) {
-		this.firstName.set(firstName);
-		this.lastName.set(lastName);
-	}
-	
 	public String getFirstName() {
 		return firstName.get();
 	}
@@ -90,7 +81,7 @@ public class Contact {
 	public String toString() {
 		return firstName.get() + " " + lastName.get();
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -99,7 +90,7 @@ public class Contact {
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		return result;
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

@@ -9,7 +9,7 @@ import javafx.scene.control.SelectionMode;
 
 import com.artc.javafx.indirect.bean.UncontrolledIndirectBean;
 import com.artc.javafx.indirect.bean.property.IndirectProperty;
-import com.artc.javafx.indirect.collection.IndirectObservableListWithMultipleSelectionModel;
+import com.artc.javafx.indirect.collection.IndirectObservableSelectionAndList;
 
 import contactmanager.model.Contact;
 import contactmanager.model.ContactManager;
@@ -17,7 +17,7 @@ import contactmanager.model.ContactManager;
 public class ContactManagerPresentation {
 	private final ContactManager contactManager;
 	
-	private final IndirectObservableListWithMultipleSelectionModel<Contact> contactSelection;
+	private final IndirectObservableSelectionAndList<Contact> contactSelection;
 	private final UncontrolledIndirectBean<Contact> contact;
 	private final IndirectProperty<String> firstName;
 	private final IndirectProperty<String> lastName;
@@ -29,7 +29,7 @@ public class ContactManagerPresentation {
 	public ContactManagerPresentation(ContactManager contactManager) {
 		this.contactManager = contactManager;
 		
-		this.contactSelection = new IndirectObservableListWithMultipleSelectionModel<Contact>(contactManager.getContacts());
+		this.contactSelection = new IndirectObservableSelectionAndList<Contact>(contactManager.getContacts());
 		this.contactSelection.getMultipleSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		this.contactSelection.getMultipleSelectionModel().select(0);
 		
