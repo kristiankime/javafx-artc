@@ -29,6 +29,7 @@ import static junit.framework.Assert.assertEquals;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 
 import org.junit.Test;
 
@@ -36,16 +37,15 @@ import com.artc.javafx.indirect.bean.getter.IntegerPropertyGetter;
 import com.artc.javafx.indirect.bean.property.IndirectProperty;
 
 public class BaseIndirectBeanTest {
-	
 	@Test(expected = IllegalArgumentException.class)
 	public void constructor_throws_if_bean_channel_is_null() {
-		BaseIndirectBean.create(null);
+		create(null);
 	}
 	
 	@Test
 	public void indirect_properties_start_with_underlying_properties_value() {
 		IntBean intBean = new IntBean(1);
-		BaseIndirectBean<SimpleObjectProperty<IntBean>, IntBean> indirectBean = BaseIndirectBean.create(new SimpleObjectProperty<IntBean>(intBean));
+		BaseIndirectBean<SimpleObjectProperty<IntBean>, IntBean> indirectBean = create(new SimpleObjectProperty<IntBean>(intBean));
 		IndirectProperty<Number> indirectOneProperty = indirectBean.getIndirectProperty(IntBean.GET_ONE_PROPERTY);
 		
 		assertEquals(1, indirectOneProperty.getValue());
@@ -53,14 +53,14 @@ public class BaseIndirectBeanTest {
 	
 	@Test
 	public void nonNullBean_true_if_bean_is_non_null() {
-		BaseIndirectBean<SimpleObjectProperty<IntBean>, IntBean> indirectBean = BaseIndirectBean.create(new SimpleObjectProperty<IntBean>(new IntBean(1)));
+		BaseIndirectBean<SimpleObjectProperty<IntBean>, IntBean> indirectBean = create(new SimpleObjectProperty<IntBean>(new IntBean(1)));
 		
 		assertEquals(true, indirectBean.nonNullBeanProperty().getValue().booleanValue());
 	}
 	
 	@Test
-	public void nonNullBean_fakse_if_bean_is_null() {
-		BaseIndirectBean<SimpleObjectProperty<IntBean>, IntBean> indirectBean = BaseIndirectBean.create(new SimpleObjectProperty<IntBean>((IntBean) null));
+	public void nonNullBean_false_if_bean_is_null() {
+		BaseIndirectBean<SimpleObjectProperty<IntBean>, IntBean> indirectBean = create(new SimpleObjectProperty<IntBean>((IntBean) null));
 		
 		assertEquals(false, indirectBean.nonNullBeanProperty().getValue().booleanValue());
 	}
@@ -68,7 +68,7 @@ public class BaseIndirectBeanTest {
 	@Test
 	public void indirect_properties_update_when_the_underlying_property_updates() {
 		IntBean intBean = new IntBean(1);
-		BaseIndirectBean<SimpleObjectProperty<IntBean>, IntBean> indirectBean = BaseIndirectBean.create(new SimpleObjectProperty<IntBean>(intBean));
+		BaseIndirectBean<SimpleObjectProperty<IntBean>, IntBean> indirectBean = create(new SimpleObjectProperty<IntBean>(intBean));
 		IndirectProperty<Number> indirectOneProperty = indirectBean.getIndirectProperty(IntBean.GET_ONE_PROPERTY);
 		
 		intBean.getOneProperty().setValue(5);
@@ -79,7 +79,7 @@ public class BaseIndirectBeanTest {
 	@Test
 	public void underlying_property_updates_when_indirect_properties_updates() {
 		IntBean intBean = new IntBean(1);
-		BaseIndirectBean<SimpleObjectProperty<IntBean>, IntBean> indirectBean = BaseIndirectBean.create(new SimpleObjectProperty<IntBean>(intBean));
+		BaseIndirectBean<SimpleObjectProperty<IntBean>, IntBean> indirectBean = create(new SimpleObjectProperty<IntBean>(intBean));
 		IndirectProperty<Number> indirectOneProperty = indirectBean.getIndirectProperty(IntBean.GET_ONE_PROPERTY);
 		
 		indirectOneProperty.setValue(7);
@@ -92,7 +92,7 @@ public class BaseIndirectBeanTest {
 		IntBean intBean1 = new IntBean(1);
 		IntBean intBean2 = new IntBean(2);
 		SimpleObjectProperty<IntBean> beanChannel = new SimpleObjectProperty<IntBean>(intBean1);
-		BaseIndirectBean<SimpleObjectProperty<IntBean>, IntBean> indirectBean = BaseIndirectBean.create(beanChannel);
+		BaseIndirectBean<SimpleObjectProperty<IntBean>, IntBean> indirectBean = create(beanChannel);
 		IndirectProperty<Number> indirectOneProperty = indirectBean.getIndirectProperty(IntBean.GET_ONE_PROPERTY);
 		
 		beanChannel.setValue(intBean2);
@@ -104,7 +104,7 @@ public class BaseIndirectBeanTest {
 		IntBean intBean1 = new IntBean(1);
 		IntBean intBean2 = new IntBean(2);
 		SimpleObjectProperty<IntBean> beanChannel = new SimpleObjectProperty<IntBean>(intBean1);
-		BaseIndirectBean<SimpleObjectProperty<IntBean>, IntBean> indirectBean = BaseIndirectBean.create(beanChannel);
+		BaseIndirectBean<SimpleObjectProperty<IntBean>, IntBean> indirectBean = create(beanChannel);
 		IndirectProperty<Number> indirectOneProperty = indirectBean.getIndirectProperty(IntBean.GET_ONE_PROPERTY);
 		
 		beanChannel.setValue(intBean2);
@@ -117,11 +117,15 @@ public class BaseIndirectBeanTest {
 	public void switching_the_underlying_bean_to_null_sets_everyting_to_null() {
 		IntBean intBean1 = new IntBean(1);
 		SimpleObjectProperty<IntBean> beanChannel = new SimpleObjectProperty<IntBean>(intBean1);
-		BaseIndirectBean<SimpleObjectProperty<IntBean>, IntBean> indirectBean = BaseIndirectBean.create(beanChannel);
+		BaseIndirectBean<SimpleObjectProperty<IntBean>, IntBean> indirectBean = create(beanChannel);
 		IndirectProperty<Number> indirectOneProperty = indirectBean.getIndirectProperty(IntBean.GET_ONE_PROPERTY);
 		
 		beanChannel.setValue(null);
 		assertEquals(null, indirectOneProperty.getValue());
+	}
+	
+	private static <BC extends ObservableValue<B>, B> BaseIndirectBean<BC, B> create(BC beanChannel) {
+		return new BaseIndirectBean<BC, B>(beanChannel);
 	}
 	
 	private static class IntBean {

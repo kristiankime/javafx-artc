@@ -42,16 +42,12 @@ import com.artc.javafx.indirect.IndirectObject;
 import com.artc.javafx.indirect.UncontrolledIndirectObject;
 import com.artc.javafx.indirect.bean.getter.Getter;
 import com.artc.javafx.indirect.bean.property.IndirectProperty;
-import com.artc.javafx.indirect.bean.property.IndirectPropertyManual;
+import com.artc.javafx.indirect.bean.property.IndirectyPropertyDelegate;
 
 public class BaseIndirectBean<BC extends ObservableValue<B>, B> implements UncontrolledIndirectObject<B> {
 	protected final BC beanChannel;
 	protected final BooleanProperty nonNullBean;
 	protected final Set<IndirectBeanPropertySyncer<?, B>> propertySyncers;
-	
-	public static <BC extends ObservableValue<B>, B> BaseIndirectBean<BC, B> create(BC beanChannel){
-		return new BaseIndirectBean<BC, B>(beanChannel);
-	}
 	
 	public BaseIndirectBean(BC beanChannel) {
 		if (beanChannel == null) {
@@ -105,9 +101,9 @@ public class BaseIndirectBean<BC extends ObservableValue<B>, B> implements Uncon
 	}
 	
 	public <T> IndirectProperty<T> getIndirectProperty(Getter<? extends Property<T>, B> getter) {
-		IndirectPropertyManual<T> indirectProperty = new IndirectPropertyManual<T>();
+		IndirectyPropertyDelegate<T> indirectProperty = IndirectyPropertyDelegate.create();
 		IndirectBeanPropertySyncer<Property<T>, B> syncer = IndirectBeanPropertySyncer.create(indirectProperty, getter);
-		this.addPropertySyncher(syncer);
+		addPropertySyncher(syncer);
 		return indirectProperty;
 	}
 

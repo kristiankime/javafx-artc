@@ -32,7 +32,7 @@ public class IndirectObservableListExample extends Application {
 	public Parent createApplication() {
 		final ObservableList<String> oneTwo = FXCollections.observableArrayList("one", "two");
 		final ObservableList<String> abc = FXCollections.observableArrayList("a", "b", "c");
-		final IndirectObservableList<String> indirectList = IndirectObservableList.create(oneTwo);
+		final IndirectObservableList<String> indirectList = IndirectObservableListDelegate.create(oneTwo);
 		
 		ListView<String> listView = new ListView<String>(indirectList);
 		

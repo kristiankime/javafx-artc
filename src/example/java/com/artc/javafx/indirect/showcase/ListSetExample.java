@@ -16,6 +16,7 @@ import org.tbee.javafx.scene.layout.MigPane;
 import com.artc.javafx.indirect.bean.IndirectBean;
 import com.artc.javafx.indirect.bean.property.IndirectProperty;
 import com.artc.javafx.indirect.collection.IndirectObservableList;
+import com.artc.javafx.indirect.collection.IndirectObservableListDelegate;
 
 public class ListSetExample extends Application {
 	public static void main(String[] args) {
@@ -38,7 +39,7 @@ public class ListSetExample extends Application {
 
 		// Indirects
 		final IndirectBean<ListBean> indirectBean = IndirectBean.create(one);
-		final IndirectObservableList<String> indirectList = indirectBean.getIndirect(new IndirectObservableList<String>(), ListBean.GET_LIST_PROPERTY);
+		final IndirectObservableList<String> indirectList = indirectBean.getIndirect(new IndirectObservableListDelegate<String>(), ListBean.GET_LIST_PROPERTY);
 		IndirectProperty<String> indirectPropertyA = indirectBean.getIndirectProperty(ListBean.GET_A_PROPERTY);
 		IndirectProperty<String> indirectPropertyB = indirectBean.getIndirectProperty(ListBean.GET_B_PROPERTY);
 		

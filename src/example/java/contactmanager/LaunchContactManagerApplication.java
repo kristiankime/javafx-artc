@@ -1,7 +1,6 @@
 package contactmanager;
 
 import javafx.application.Application;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -15,7 +14,6 @@ import contactmanager.view.ContactManagerView;
 
 public class LaunchContactManagerApplication extends Application {
 	public static void main(String[] args) {
-		System.out.println(System.getenv("JAVAFX_HOME"));
 		launch(args);
 	}
 	
@@ -29,9 +27,6 @@ public class LaunchContactManagerApplication extends Application {
 	}
 	
 	public Parent createApplication() {
-		SimpleStringProperty simpleStringProperty = new SimpleStringProperty();
-		simpleStringProperty.set(null);
-		
 		// Model
 		ContactManager contactManager = new ContactManager(new Contact());
 		

@@ -29,15 +29,19 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MultipleSelectionModel;
 
-public class IndirectObservableSelectionAndList<T> extends IndirectObservableList<T>{
-	private final MultipleSelectionModel<T> multipleSelectionModel;
+public class IndirectObservableListAndSelectionDelegate<E> extends IndirectObservableListDelegate<E> implements IndirectObservableListAndSelection<E> {
+	private final MultipleSelectionModel<E> multipleSelectionModel;
 	
-	public IndirectObservableSelectionAndList(ObservableList<T> underlyingList) {
-		super(underlyingList);
-		this.multipleSelectionModel = new ListView<T>(this).getSelectionModel();
+	public static <T> IndirectObservableListAndSelectionDelegate<T> create(ObservableList<T> underlyingList){
+		return new IndirectObservableListAndSelectionDelegate<>(underlyingList);
+	}
+	
+	public IndirectObservableListAndSelectionDelegate(ObservableList<E> underlyingList) {
+		setUnderlyingObject(underlyingList);
+		this.multipleSelectionModel = new ListView<E>(this).getSelectionModel();
 	}
 
-	public MultipleSelectionModel<T> getMultipleSelectionModel() {
+	public MultipleSelectionModel<E> getMultipleSelectionModel() {
 		return multipleSelectionModel;
 	}
 }
