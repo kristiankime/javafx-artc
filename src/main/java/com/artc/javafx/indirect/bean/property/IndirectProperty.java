@@ -128,7 +128,8 @@ public class IndirectProperty<T> extends BaseIndirectObservableValue<Property<T>
 	
 	@Override
 	public boolean isBound() {
-		return underlyingObject != null ? underlyingObject.isBound() : unidirectionBinding != null; // LATER Since there can only be on binding we currently indicate if the underlying object has been bound. Does this make sense?
+		// LATER We indicated that this object is bound if there is an unidirectionBinding even if they underlyingObject is null. Does this make sense?
+		return underlyingObject != null ? underlyingObject.isBound() : unidirectionBinding != null; 
 	}
 	
 	@Override
