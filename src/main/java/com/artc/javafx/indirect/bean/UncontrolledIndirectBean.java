@@ -28,7 +28,6 @@ package com.artc.javafx.indirect.bean;
 import javafx.beans.value.ObservableValue;
 
 public class UncontrolledIndirectBean<B> extends BaseIndirectBean<ObservableValue<B>, B> {
-	
 	public static <B> UncontrolledIndirectBean<B> create(ObservableValue<B> beanChannel) {
 		return new UncontrolledIndirectBean<B>(beanChannel);
 	}

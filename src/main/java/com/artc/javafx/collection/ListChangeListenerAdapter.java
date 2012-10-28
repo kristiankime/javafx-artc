@@ -28,7 +28,6 @@ package com.artc.javafx.collection;
 import javafx.collections.ListChangeListener;
 
 public class ListChangeListenerAdapter<T> implements ListChangeListener<T> {
-
 	@Override
 	public void onChanged(Change<? extends T> c) {
 		while (c.next()) {

@@ -31,5 +31,7 @@ import javafx.scene.control.MultipleSelectionModel;
 import com.artc.javafx.indirect.IndirectObject;
 
 public interface IndirectObservableListAndSelection<T> extends ObservableList<T>, IndirectObject<ObservableList<T>> {
+	
 	public MultipleSelectionModel<T> getMultipleSelectionModel();
+
 }

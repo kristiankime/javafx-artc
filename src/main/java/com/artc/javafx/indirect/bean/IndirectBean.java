@@ -31,7 +31,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import com.artc.javafx.indirect.IndirectObject;
 
 public class IndirectBean<B> extends BaseIndirectBean<Property<B>, B> implements IndirectObject<B> {
-	
 	public static <B> IndirectBean<B> create(B bean) {
 		return new IndirectBean<B>(bean);
 	}
