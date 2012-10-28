@@ -124,7 +124,7 @@ public class BeanObservableList<B> implements ObservableList<B> {
 	//	}
 	
 	private class UnderlyingListSynchronizer extends ListChangeListenerAdapter<B> {
-		public void addedChange(B item, int index) {
+		public void addedChange(int index, B item) {
 			addBeanPropertyListener(item);
 		}
 		

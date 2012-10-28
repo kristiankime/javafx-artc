@@ -26,6 +26,7 @@
 package com.artc.javafx.collections;
 
 import static java.util.Arrays.asList;
+import static javafx.collections.FXCollections.observableArrayList;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
@@ -43,7 +44,7 @@ public class ListChangeListenerAdapterTest {
 	
 	@Test
 	public void permuted_change() {
-		ObservableList<String> observableList = observableList("b", "a");
+		ObservableList<String> observableList = observableArrayList("b", "a");
 		List<AChange<String>> changes = changeList();
 		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
@@ -54,7 +55,7 @@ public class ListChangeListenerAdapterTest {
 	
 	@Test
 	public void set_by_index() {
-		ObservableList<String> observableList = observableList("a", "b");
+		ObservableList<String> observableList = observableArrayList("a", "b");
 		List<AChange<String>> changes = changeList();
 		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
@@ -65,7 +66,7 @@ public class ListChangeListenerAdapterTest {
 	
 	@Test
 	public void setAll_collection() {
-		ObservableList<String> observableList = observableList("a", "b");
+		ObservableList<String> observableList = observableArrayList("a", "b");
 		List<AChange<String>> changes = changeList();
 		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
@@ -76,7 +77,7 @@ public class ListChangeListenerAdapterTest {
 	
 	@Test
 	public void setAll_varargs() {
-		ObservableList<String> observableList = observableList("a", "b");
+		ObservableList<String> observableList = observableArrayList("a", "b");
 		List<AChange<String>> changes = changeList();
 		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
@@ -87,7 +88,7 @@ public class ListChangeListenerAdapterTest {
 	
 	@Test
 	public void remove_by_index() {
-		ObservableList<String> observableList = observableList("a", "b", "c");
+		ObservableList<String> observableList = observableArrayList("a", "b", "c");
 		List<AChange<String>> changes = changeList();
 		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
@@ -98,7 +99,7 @@ public class ListChangeListenerAdapterTest {
 	
 	@Test
 	public void remove_by_element() {
-		ObservableList<String> observableList = observableList("a", "b", "c");
+		ObservableList<String> observableList = observableArrayList("a", "b", "c");
 		List<AChange<String>> changes = changeList();
 		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
@@ -109,7 +110,7 @@ public class ListChangeListenerAdapterTest {
 	
 	@Test
 	public void removeAll_collection() {
-		ObservableList<String> observableList = observableList("a", "b", "c", "d");
+		ObservableList<String> observableList = observableArrayList("a", "b", "c", "d");
 		List<AChange<String>> changes = changeList();
 		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
@@ -120,7 +121,7 @@ public class ListChangeListenerAdapterTest {
 	
 	@Test
 	public void removeAll_varargs() {
-		ObservableList<String> observableList = observableList("a", "b", "c", "d");
+		ObservableList<String> observableList = observableArrayList("a", "b", "c", "d");
 		List<AChange<String>> changes = changeList();
 		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
@@ -131,7 +132,7 @@ public class ListChangeListenerAdapterTest {
 	
 	@Test
 	public void add_element() {
-		ObservableList<String> observableList = observableList("a", "b");
+		ObservableList<String> observableList = observableArrayList("a", "b");
 		List<AChange<String>> changes = changeList();
 		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
@@ -142,7 +143,7 @@ public class ListChangeListenerAdapterTest {
 	
 	@Test
 	public void add_element_index() {
-		ObservableList<String> observableList = observableList("a", "b");
+		ObservableList<String> observableList = observableArrayList("a", "b");
 		List<AChange<String>> changes = changeList();
 		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
@@ -153,7 +154,7 @@ public class ListChangeListenerAdapterTest {
 	
 	@Test
 	public void addAll_collection() {
-		ObservableList<String> observableList = observableList("a", "b");
+		ObservableList<String> observableList = observableArrayList("a", "b");
 		List<AChange<String>> changes = changeList();
 		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
@@ -164,7 +165,7 @@ public class ListChangeListenerAdapterTest {
 	
 	@Test
 	public void addAll_varargs() {
-		ObservableList<String> observableList = observableList("a", "b");
+		ObservableList<String> observableList = observableArrayList("a", "b");
 		List<AChange<String>> changes = changeList();
 		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
@@ -175,7 +176,7 @@ public class ListChangeListenerAdapterTest {
 	
 	@Test
 	public void addAll_collection_indexed() {
-		ObservableList<String> observableList = observableList("a", "b");
+		ObservableList<String> observableList = observableArrayList("a", "b");
 		List<AChange<String>> changes = changeList();
 		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
@@ -186,7 +187,7 @@ public class ListChangeListenerAdapterTest {
 	
 	@Test
 	public void retainAll_collection() {
-		ObservableList<String> observableList = observableList("a", "b", "c");
+		ObservableList<String> observableList = observableArrayList("a", "b", "c");
 		List<AChange<String>> changes = changeList();
 		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
@@ -197,7 +198,7 @@ public class ListChangeListenerAdapterTest {
 	
 	@Test
 	public void retainAll_varargs() {
-		ObservableList<String> observableList = observableList("a", "b", "c", "d");
+		ObservableList<String> observableList = observableArrayList("a", "b", "c", "d");
 		List<AChange<String>> changes = changeList();
 		observableList.addListener(new ListenForAllChanges<String>(changes));
 		
@@ -215,7 +216,7 @@ public class ListChangeListenerAdapterTest {
 		}
 		
 		@Override
-		public void addedChange(T item, int index) {
+		public void addedChange(int index, T item) {
 			changes.add(added(index, item));
 		}
 		
@@ -235,11 +236,6 @@ public class ListChangeListenerAdapterTest {
 	}
 	
 	// ==============  Utility Methods =============
-	@SafeVarargs
-	private static <T> ObservableList<T> observableList(T... elements) {
-		return FXCollections.observableArrayList(elements);
-	}
-	
 	private static <T> void assertListsEqual(List<T> one, List<T> two) {
 		assertNotNull("List one should not be null", one);
 		assertNotNull("List two should not be null", two);

@@ -46,7 +46,7 @@ public class ListChangeListenerAdapter<T> implements ListChangeListener<T> {
 				}
 				for (int index = c.getFrom(); index < c.getTo(); ++index) {
 					T addedElement = c.getList().get(index);
-					addedChange(addedElement, index);
+					addedChange(index, addedElement);
 				}
 			}
 		}
@@ -64,7 +64,7 @@ public class ListChangeListenerAdapter<T> implements ListChangeListener<T> {
 		// NOOP
 	}
 	
-	public void addedChange(T item, int index){
+	public void addedChange(int index, T item){
 		// NOOP
 	}
 }
