@@ -9,8 +9,8 @@ import javafx.scene.control.SelectionMode;
 
 import com.artc.javafx.indirect.bean.UncontrolledIndirectBean;
 import com.artc.javafx.indirect.bean.property.IndirectProperty;
-import com.artc.javafx.indirect.collection.IndirectObservableListAndSelection;
-import com.artc.javafx.indirect.collection.IndirectObservableListAndSelectionDelegate;
+import com.artc.javafx.indirect.collections.IndirectObservableListAndSelection;
+import com.artc.javafx.indirect.collections.IndirectObservableListAndSelectionDelegate;
 
 import contactmanager.model.Contact;
 import contactmanager.model.ContactManager;

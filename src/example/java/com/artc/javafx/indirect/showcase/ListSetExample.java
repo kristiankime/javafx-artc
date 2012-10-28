@@ -15,8 +15,8 @@ import org.tbee.javafx.scene.layout.MigPane;
 
 import com.artc.javafx.indirect.bean.IndirectBean;
 import com.artc.javafx.indirect.bean.property.IndirectProperty;
-import com.artc.javafx.indirect.collection.IndirectObservableList;
-import com.artc.javafx.indirect.collection.IndirectObservableListDelegate;
+import com.artc.javafx.indirect.collections.IndirectObservableList;
+import com.artc.javafx.indirect.collections.IndirectObservableListDelegate;
 
 public class ListSetExample extends Application {
 	public static void main(String[] args) {

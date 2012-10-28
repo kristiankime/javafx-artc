@@ -15,6 +15,9 @@ import javafx.stage.Stage;
 
 import org.tbee.javafx.scene.layout.MigPane;
 
+import com.artc.javafx.indirect.collections.IndirectObservableList;
+import com.artc.javafx.indirect.collections.IndirectObservableListDelegate;
+
 public class IndirectObservableListExample extends Application {
 	public static void main(String[] args) {
 		launch(args);

@@ -27,7 +27,7 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artc.javafx.indirect.collection;
+package com.artc.javafx.indirect.collections;
 
 import java.util.Collection;
 import java.util.Iterator;

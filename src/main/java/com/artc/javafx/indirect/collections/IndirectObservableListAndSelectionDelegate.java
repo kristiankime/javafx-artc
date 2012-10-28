@@ -23,15 +23,25 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artc.javafx.indirect.collection;
+package com.artc.javafx.indirect.collections;
 
 import javafx.collections.ObservableList;
+import javafx.scene.control.ListView;
 import javafx.scene.control.MultipleSelectionModel;
 
-import com.artc.javafx.indirect.IndirectObject;
-
-public interface IndirectObservableListAndSelection<T> extends ObservableList<T>, IndirectObject<ObservableList<T>> {
+public class IndirectObservableListAndSelectionDelegate<E> extends IndirectObservableListDelegate<E> implements IndirectObservableListAndSelection<E> {
+	private final MultipleSelectionModel<E> multipleSelectionModel;
 	
-	public MultipleSelectionModel<T> getMultipleSelectionModel();
+	public static <T> IndirectObservableListAndSelectionDelegate<T> create(ObservableList<T> underlyingList){
+		return new IndirectObservableListAndSelectionDelegate<>(underlyingList);
+	}
+	
+	public IndirectObservableListAndSelectionDelegate(ObservableList<E> underlyingList) {
+		setUnderlyingObject(underlyingList);
+		this.multipleSelectionModel = new ListView<E>(this).getSelectionModel();
+	}
 
+	public MultipleSelectionModel<E> getMultipleSelectionModel() {
+		return multipleSelectionModel;
+	}
 }

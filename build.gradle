@@ -24,10 +24,10 @@ repositories {
 }
 
 dependencies {
-	compile	group: '',              name : 'jfxrt',            version : ''
-	compile	group: 'com.miglayout', name : 'miglayout-javafx', version : '4.2'
+	compile	group: '',              name: 'jfxrt',            version: ''
+	compile	group: 'com.miglayout', name: 'miglayout-javafx', version: '4.2'
 	
-	testCompile group: 'junit',        name : 'junit-dep',     version : '4.10'
-	testCompile group: 'org.hamcrest', name : 'hamcrest-core', version : '1.2.1'
-	testCompile group: 'org.mockito',  name : 'mockito-core',  version : '1.8.5'
+	testCompile group: 'junit',        name: 'junit-dep',     version: '4.10'
+	testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '1.2.1'
+	testCompile group: 'org.mockito',  name: 'mockito-core',  version: '1.8.5'
 }

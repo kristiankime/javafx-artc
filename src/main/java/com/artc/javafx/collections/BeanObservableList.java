@@ -23,7 +23,7 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artc.javafx.collection;
+package com.artc.javafx.collections;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -57,6 +57,16 @@ public class BeanObservableList<B> implements ObservableList<B> {
 		return new BeanObservableList<B>(FXCollections.<B> observableArrayList(), Arrays.asList(getters));
 	}
 	
+	@SafeVarargs
+	public static <B> BeanObservableList<B> create(B[] beans, Getter<? extends Property<?>, B>... getters) {
+		return new BeanObservableList<B>(FXCollections.<B> observableArrayList(beans), Arrays.asList(getters));
+	}
+	
+	@SafeVarargs
+	public static <B> BeanObservableList<B> create(List<B> beans, Getter<? extends Property<?>, B>... getters) {
+		return new BeanObservableList<B>(FXCollections.<B> observableArrayList(beans), Arrays.asList(getters));
+	}
+	
 	public BeanObservableList(ObservableList<B> observableList, Collection<Getter<? extends Property<?>, B>> propertyGetters) {
 		this.underlyingList = observableList;
 		this.propertyGetters.addAll(propertyGetters);
@@ -65,7 +75,6 @@ public class BeanObservableList<B> implements ObservableList<B> {
 			addBeanPropertyListener(bean);
 		}
 	}
-	
 	
 	private void addBeanPropertyListener(B item) {
 		if (item == null) {
@@ -95,7 +104,7 @@ public class BeanObservableList<B> implements ObservableList<B> {
 		
 		@Override
 		public void changed(ObservableValue<?> arg0, Object arg1, Object arg2) {
-			int index = underlyingList.indexOf(bean);			
+			int index = underlyingList.indexOf(bean);
 			// LATER this call should be sufficient to indicate a change but it doesn't seem to work for ListViews
 			//			fireBeanChangeEvent(new SimpleRemovedChange<B>(index, index + 1, bean, underlyingList));
 			// This is a hack to make ListViews update properly

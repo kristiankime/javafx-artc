@@ -23,7 +23,7 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artc.javafx.collection;
+package com.artc.javafx.collections;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.atLeastOnce;
@@ -37,6 +37,7 @@ import javafx.collections.ListChangeListener.Change;
 
 import org.junit.Test;
 
+import com.artc.javafx.collections.BeanObservableList;
 import com.artc.javafx.indirect.bean.getter.StringPropertyGetter;
 
 public class BeanObservableListTest {

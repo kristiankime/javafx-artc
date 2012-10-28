@@ -23,7 +23,7 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artc.javafx.collection;
+package com.artc.javafx.collections;
 
 import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
@@ -37,7 +37,7 @@ import javafx.collections.ObservableList;
 
 import org.junit.Test;
 
-import com.artc.javafx.collection.ListChangeListenerAdapter;
+import com.artc.javafx.collections.ListChangeListenerAdapter;
 
 public class ListChangeListenerAdapterTest {
 	
