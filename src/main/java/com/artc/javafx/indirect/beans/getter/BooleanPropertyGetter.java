@@ -27,12 +27,12 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artc.javafx.indirect.bean.getter;
+package com.artc.javafx.indirect.beans.getter;
 
-import javafx.beans.property.Property;
+import javafx.beans.property.BooleanProperty;
 
-public interface PropertyGetter<P extends Property<T>, T, B> extends Getter<P, B> {
+public interface BooleanPropertyGetter<B> extends PropertyGetter<BooleanProperty, Boolean, B> {
 	
-	public P get(B bean);
+	public BooleanProperty get(B bean);
 	
 }

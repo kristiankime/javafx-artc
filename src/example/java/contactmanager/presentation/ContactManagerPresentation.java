@@ -7,8 +7,8 @@ import javafx.event.EventHandler;
 import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.SelectionMode;
 
-import com.artc.javafx.indirect.bean.UncontrolledIndirectBean;
-import com.artc.javafx.indirect.bean.property.IndirectProperty;
+import com.artc.javafx.indirect.beans.UncontrolledIndirectBean;
+import com.artc.javafx.indirect.beans.property.IndirectProperty;
 import com.artc.javafx.indirect.collections.IndirectObservableListAndSelection;
 import com.artc.javafx.indirect.collections.IndirectObservableListAndSelectionDelegate;
 

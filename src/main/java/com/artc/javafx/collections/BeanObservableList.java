@@ -43,7 +43,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
-import com.artc.javafx.indirect.bean.getter.Getter;
+import com.artc.javafx.indirect.beans.getter.Getter;
 
 public class BeanObservableList<B> implements ObservableList<B> {
 	private final ObservableList<B> underlyingList;

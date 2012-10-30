@@ -27,12 +27,15 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artc.javafx.indirect.bean.getter;
-
-import javafx.beans.property.ObjectProperty;
-
-public interface ObjectPropertyGetter<T, B> extends Getter<ObjectProperty<T>, B> {
+package com.artc.javafx.indirect.beans.getter;
+/**
+ * Given a Bean get a value from it.
+ * 
+ * @param <T> The value's type
+ * @param <B> The bean type
+ */
+public interface Getter<T, B> {
 	
-	public ObjectProperty<T> get(B bean);
+	public T get(B bean);
 	
 }

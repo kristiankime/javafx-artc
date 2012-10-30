@@ -1,4 +1,4 @@
-package com.artc.javafx.indirect.bean;
+package com.artc.javafx.indirect.beans;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -11,6 +11,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import org.tbee.javafx.scene.layout.MigPane;
+
+import com.artc.javafx.indirect.beans.IndirectBean;
 
 public class IndirectBeanExample extends Application {
 	public static void main(String[] args) {

@@ -13,8 +13,8 @@ import javafx.stage.Stage;
 
 import org.tbee.javafx.scene.layout.MigPane;
 
-import com.artc.javafx.indirect.bean.IndirectBean;
-import com.artc.javafx.indirect.bean.property.IndirectProperty;
+import com.artc.javafx.indirect.beans.IndirectBean;
+import com.artc.javafx.indirect.beans.property.IndirectProperty;
 import com.artc.javafx.indirect.collections.IndirectObservableList;
 import com.artc.javafx.indirect.collections.IndirectObservableListDelegate;
 

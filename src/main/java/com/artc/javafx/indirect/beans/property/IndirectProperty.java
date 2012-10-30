@@ -23,7 +23,7 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artc.javafx.indirect.bean.property;
+package com.artc.javafx.indirect.beans.property;
 
 import javafx.beans.property.Property;
 

@@ -38,7 +38,7 @@ import javafx.collections.ListChangeListener.Change;
 import org.junit.Test;
 
 import com.artc.javafx.collections.BeanObservableList;
-import com.artc.javafx.indirect.bean.getter.StringPropertyGetter;
+import com.artc.javafx.indirect.beans.getter.StringPropertyGetter;
 
 public class BeanObservableListTest {
 	

@@ -27,12 +27,12 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artc.javafx.indirect.bean.getter;
+package com.artc.javafx.indirect.beans.getter;
 
-import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
 
-public interface DoublePropertyGetter<B> extends PropertyGetter<DoubleProperty, Number, B> {
+public interface ObjectPropertyGetter<T, B> extends Getter<ObjectProperty<T>, B> {
 	
-	public DoubleProperty get(B bean);
+	public ObjectProperty<T> get(B bean);
 	
 }

@@ -1,4 +1,4 @@
-package com.artc.javafx.indirect.bean.property;
+package com.artc.javafx.indirect.beans.property;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
@@ -7,6 +7,9 @@ import static junit.framework.Assert.assertTrue;
 import javafx.beans.property.SimpleObjectProperty;
 
 import org.junit.Test;
+
+import com.artc.javafx.indirect.beans.property.IndirectProperty;
+import com.artc.javafx.indirect.beans.property.IndirectyPropertyDelegate;
 
 public class IndirectyPropertyDelegateTest {
 	@Test

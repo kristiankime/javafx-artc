@@ -1,9 +1,9 @@
-package com.artc.javafx.indirect.bean;
+package com.artc.javafx.indirect.beans;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-import com.artc.javafx.indirect.bean.getter.StringPropertyGetter;
+import com.artc.javafx.indirect.beans.getter.StringPropertyGetter;
 
 public class StringBean {
 	public static final StringPropertyGetter<StringBean> GET_A_PROPERTY = new StringPropertyGetter<StringBean>() {

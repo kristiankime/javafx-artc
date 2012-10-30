@@ -1,4 +1,4 @@
-package com.artc.javafx.indirect.collection;
+package com.artc.javafx.indirect.collections;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;

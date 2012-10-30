@@ -23,7 +23,7 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artc.javafx.indirect.bean;
+package com.artc.javafx.indirect.beans;
 
 import static junit.framework.Assert.assertEquals;
 import javafx.beans.property.IntegerProperty;
@@ -33,8 +33,9 @@ import javafx.beans.value.ObservableValue;
 
 import org.junit.Test;
 
-import com.artc.javafx.indirect.bean.getter.IntegerPropertyGetter;
-import com.artc.javafx.indirect.bean.property.IndirectProperty;
+import com.artc.javafx.indirect.beans.BaseIndirectBean;
+import com.artc.javafx.indirect.beans.getter.IntegerPropertyGetter;
+import com.artc.javafx.indirect.beans.property.IndirectProperty;
 
 public class BaseIndirectBeanTest {
 	@Test(expected = IllegalArgumentException.class)

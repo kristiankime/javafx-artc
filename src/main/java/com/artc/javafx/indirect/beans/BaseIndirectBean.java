@@ -27,7 +27,7 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artc.javafx.indirect.bean;
+package com.artc.javafx.indirect.beans;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -40,9 +40,9 @@ import javafx.beans.value.ObservableValue;
 
 import com.artc.javafx.indirect.IndirectObject;
 import com.artc.javafx.indirect.UncontrolledIndirectObject;
-import com.artc.javafx.indirect.bean.getter.Getter;
-import com.artc.javafx.indirect.bean.property.IndirectProperty;
-import com.artc.javafx.indirect.bean.property.IndirectyPropertyDelegate;
+import com.artc.javafx.indirect.beans.getter.Getter;
+import com.artc.javafx.indirect.beans.property.IndirectProperty;
+import com.artc.javafx.indirect.beans.property.IndirectyPropertyDelegate;
 
 public class BaseIndirectBean<BC extends ObservableValue<B>, B> implements UncontrolledIndirectObject<B> {
 	protected final BC beanChannel;
