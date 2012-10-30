@@ -21,11 +21,11 @@ public class ListBean {
 			return bean.bProperty;
 		}
 	};
-	public static final Getter<ObservableList<String>, ListBean> GET_LIST_PROPERTY = new Getter<ObservableList<String> ,ListBean>() {
+	public static final Getter<ObservableList<String>, ListBean> GET_LIST_PROPERTY = new Getter<ObservableList<String>, ListBean>() {
 		@Override
 		public ObservableList<String> get(ListBean bean) {
 			return bean.listProperty;
-		}		
+		}
 	};
 	
 	private final SimpleStringProperty aProperty;
@@ -45,7 +45,7 @@ public class ListBean {
 	public SimpleStringProperty getBProperty() {
 		return bProperty;
 	}
-
+	
 	public ObservableList<String> getListProperty() {
 		return listProperty;
 	}
