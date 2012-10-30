@@ -1,5 +1,6 @@
 package contactmanager.model;
 
+import static java.util.Arrays.asList;
 import javafx.collections.ObservableList;
 
 import com.artc.javafx.collections.BeanObservableList;
@@ -8,7 +9,7 @@ public class ContactManager {
 	private final ObservableList<Contact> contacts;
 
 	public ContactManager(Contact... contacts) {
-		this.contacts = BeanObservableList.create(contacts, Contact.FIRST_NAME, Contact.LAST_NAME);
+		this.contacts = BeanObservableList.create(asList(contacts), Contact.FIRST_NAME, Contact.LAST_NAME);
 	}
 
 	public Contact createNewContact() {

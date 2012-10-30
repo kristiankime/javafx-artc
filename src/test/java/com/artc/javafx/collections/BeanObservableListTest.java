@@ -41,6 +41,14 @@ import com.artc.javafx.collections.BeanObservableList;
 import com.artc.javafx.indirect.beans.getter.StringPropertyGetter;
 
 public class BeanObservableListTest {
+
+	@Test(expected=IllegalArgumentException.class)
+	public void add_throws_if_the_same_bean_is_added_twice() {
+		TestBean testBean1 = new TestBean("1", "1");
+		BeanObservableList<TestBean> list = BeanObservableList.create(TestBean.FIRST, TestBean.SECOND);
+		list.add(testBean1);
+		list.add(testBean1);
+	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test

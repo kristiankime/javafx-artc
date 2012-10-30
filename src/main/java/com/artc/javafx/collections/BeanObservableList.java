@@ -48,27 +48,20 @@ import com.artc.javafx.indirect.beans.getter.Getter;
 public class BeanObservableList<B> implements ObservableList<B> {
 	private final ObservableList<B> underlyingList;
 	private final Set<Getter<? extends Property<?>, B>> propertyGetters = new HashSet<Getter<? extends Property<?>, B>>();
-	private final Set<InvalidationListener> invalidationListeners = new HashSet<InvalidationListener>();
-	private final Set<ListChangeListener<? super B>> listChangeListeners = new HashSet<ListChangeListener<? super B>>();
 	private final Map<B, BeanPropertyListener> beanListeners = new HashMap<B, BeanPropertyListener>();
 	
 	@SafeVarargs
 	public static <B> BeanObservableList<B> create(Getter<? extends Property<?>, B>... getters) {
 		return new BeanObservableList<B>(FXCollections.<B> observableArrayList(), Arrays.asList(getters));
 	}
-	
+		
 	@SafeVarargs
-	public static <B> BeanObservableList<B> create(B[] beans, Getter<? extends Property<?>, B>... getters) {
-		return new BeanObservableList<B>(FXCollections.<B> observableArrayList(beans), Arrays.asList(getters));
+	public static <B> BeanObservableList<B> create(Collection<B> beans, Getter<? extends Property<?>, B>... getters) {
+		return new BeanObservableList<B>(beans, Arrays.asList(getters));
 	}
 	
-	@SafeVarargs
-	public static <B> BeanObservableList<B> create(List<B> beans, Getter<? extends Property<?>, B>... getters) {
-		return new BeanObservableList<B>(FXCollections.<B> observableArrayList(beans), Arrays.asList(getters));
-	}
-	
-	public BeanObservableList(ObservableList<B> observableList, Collection<Getter<? extends Property<?>, B>> propertyGetters) {
-		this.underlyingList = observableList;
+	public BeanObservableList(Collection<B> beans, Collection<Getter<? extends Property<?>, B>> propertyGetters) {
+		this.underlyingList = FXCollections.<B> observableArrayList(beans);
 		this.propertyGetters.addAll(propertyGetters);
 		this.underlyingList.addListener(new UnderlyingListSynchronizer());
 		for (B bean : underlyingList) {
@@ -90,6 +83,9 @@ public class BeanObservableList<B> implements ObservableList<B> {
 		private final B bean;
 		
 		public BeanPropertyListener(B bean) {
+			if(bean == null)
+				throw new NullPointerException("Listener should not be attached to null bean");
+				
 			this.bean = bean;
 			for (Getter<? extends Property<?>, B> getter : propertyGetters) {
 				getter.get(bean).addListener(this);
@@ -105,23 +101,10 @@ public class BeanObservableList<B> implements ObservableList<B> {
 		@Override
 		public void changed(ObservableValue<?> arg0, Object arg1, Object arg2) {
 			int index = underlyingList.indexOf(bean);
-			// LATER this call should be sufficient to indicate a change but it doesn't seem to work for ListViews
-			//			fireBeanChangeEvent(new SimpleRemovedChange<B>(index, index + 1, bean, underlyingList));
-			// This is a hack to make ListViews update properly
-			underlyingList.set(index, null);
+			underlyingList.set(index, null); // LATER this is a hack to fire the proper event, should figure out a better way to make it happen later
 			underlyingList.set(index, bean);
 		}
 	}
-	
-	// LATER this call should be sufficient to indicate a change but it doesn't seem to work for ListViews
-	//	private void fireBeanChangeEvent(Change<B> change) {
-	//		for (InvalidationListener invalidationListener : invalidationListeners) {
-	//			invalidationListener.invalidated(this);
-	//		}
-	//		for (ListChangeListener<? super B> listChangeListener : new ArrayList<ListChangeListener<? super B>>(listChangeListeners)) {
-	//			listChangeListener.onChanged(change);
-	//		}
-	//	}
 	
 	private class UnderlyingListSynchronizer extends ListChangeListenerAdapter<B> {
 		public void addedChange(int index, B item) {
@@ -139,29 +122,24 @@ public class BeanObservableList<B> implements ObservableList<B> {
 			throw new UnsupportedOperationException("TODO unclear how to handle this case");
 		};
 	}
-	
-	// ============= Keep track of the listeners =============
+
+	// ============= Methods below here just delegate =============	
 	public void addListener(InvalidationListener listener) {
 		underlyingList.addListener(listener);
-		invalidationListeners.add(listener);
 	}
 	
 	public void addListener(ListChangeListener<? super B> listener) {
 		underlyingList.addListener(listener);
-		listChangeListeners.add(listener);
 	}
 	
 	public void removeListener(InvalidationListener listener) {
 		underlyingList.removeListener(listener);
-		invalidationListeners.remove(listener);
 	}
 	
 	public void removeListener(ListChangeListener<? super B> listener) {
 		underlyingList.removeListener(listener);
-		listChangeListeners.remove(listener);
 	}
 	
-	// ============= Methods below here just delegate =============	
 	public boolean contains(Object o) {
 		return underlyingList.contains(o);
 	}
