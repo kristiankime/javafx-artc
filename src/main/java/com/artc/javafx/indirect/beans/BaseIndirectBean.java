@@ -50,9 +50,8 @@ public class BaseIndirectBean<BC extends ObservableValue<B>, B> implements Uncon
 	protected final Set<IndirectBeanPropertySyncer<?, B>> propertySyncers;
 	
 	public BaseIndirectBean(BC beanChannel) {
-		if (beanChannel == null) {
-			throw new IllegalArgumentException("bean channel cannot be null");
-		}
+		if (beanChannel == null)
+			throw new NullPointerException("bean channel cannot be null");
 		
 		this.beanChannel = beanChannel;
 		this.nonNullBean = new SimpleBooleanProperty(beanChannel.getValue() != null);

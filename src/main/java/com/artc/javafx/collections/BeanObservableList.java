@@ -100,9 +100,17 @@ public class BeanObservableList<B> implements ObservableList<B> {
 		
 		@Override
 		public void changed(ObservableValue<?> arg0, Object arg1, Object arg2) {
-			int index = underlyingList.indexOf(bean);
-			underlyingList.set(index, null); // LATER this is a hack to fire the proper event, should figure out a better way to make it happen later
-			underlyingList.set(index, bean);
+			// LATER ideally we'd have something like this here:
+			//
+			// int index = underlyingList.indexOf(bean);
+			// underlyingList.set(index, bean);
+			//
+			// but this interacts badly with SelectionModel(s) who believe that 
+			// the items has been dropped and deselect it which is not the desired behavior.
+			// This is a hack which, while inefficient, retains all the items so
+			// SelectionModel(s) work and forces and update on the desired item
+			underlyingList.add(0, null);
+			underlyingList.remove(0);
 		}
 	}
 	

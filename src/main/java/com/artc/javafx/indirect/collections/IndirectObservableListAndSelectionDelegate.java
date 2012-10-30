@@ -33,7 +33,7 @@ public class IndirectObservableListAndSelectionDelegate<E> extends IndirectObser
 	private final MultipleSelectionModel<E> multipleSelectionModel;
 	
 	public static <T> IndirectObservableListAndSelectionDelegate<T> create(ObservableList<T> underlyingList){
-		return new IndirectObservableListAndSelectionDelegate<>(underlyingList);
+		return new IndirectObservableListAndSelectionDelegate<T>(underlyingList);
 	}
 	
 	public IndirectObservableListAndSelectionDelegate(ObservableList<E> underlyingList) {
