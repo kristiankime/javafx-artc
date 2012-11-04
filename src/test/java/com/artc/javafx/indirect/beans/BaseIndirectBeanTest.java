@@ -38,7 +38,7 @@ import com.artc.javafx.indirect.beans.getter.IntegerPropertyGetter;
 import com.artc.javafx.indirect.beans.property.IndirectProperty;
 
 public class BaseIndirectBeanTest {
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = NullPointerException.class)
 	public void constructor_throws_if_bean_channel_is_null() {
 		create(null);
 	}
