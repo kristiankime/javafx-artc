@@ -108,7 +108,7 @@ public class BeanObservableList<B> implements ObservableList<B> {
 			// but this interacts badly with SelectionModel(s) who believe that 
 			// the items has been dropped and deselect it which is not the desired behavior.
 			// This is a hack which, while inefficient, retains all the items so
-			// SelectionModel(s) work and forces and update on the desired item
+			// SelectionModel(s) work and forces an update on the desired item (plus all the others for that matter)
 			underlyingList.add(0, null);
 			underlyingList.remove(0);
 		}
