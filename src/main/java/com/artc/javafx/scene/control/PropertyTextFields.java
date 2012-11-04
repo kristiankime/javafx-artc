@@ -28,19 +28,51 @@
  */
 package com.artc.javafx.scene.control;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.FloatProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.Property;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.util.StringConverter;
+import javafx.util.converter.BigDecimalStringConverter;
+import javafx.util.converter.BigIntegerStringConverter;
+import javafx.util.converter.BooleanStringConverter;
+import javafx.util.converter.DoubleStringConverter;
+import javafx.util.converter.FloatStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.LongStringConverter;
 
 import com.artc.javafx.scene.control.PropertyTextField.ValueConverter;
 
-public class PropertyTextFields {
+public class PropertyTextFields {	
+
+	public static class BigIntegerField extends PropertyTextField<BigInteger, Property<BigInteger>> {
+		public BigIntegerField() {
+			super(new SimpleObjectProperty<BigInteger>(), new BigIntegerStringConverter());
+		}
+	}
+	
+	public static class BigDecimalField extends PropertyTextField<BigDecimal, Property<BigDecimal>> {
+		public BigDecimalField() {
+			super(new SimpleObjectProperty<BigDecimal>(), new BigDecimalStringConverter());
+		}
+	}
+	
+	public static class BooleanPropertyField extends PropertyTextField<Boolean, BooleanProperty> {
+		public BooleanPropertyField() {
+			super(new SimpleBooleanProperty(), new BooleanStringConverter());
+		}
+	}
 	
 	public static class IntegerField extends PropertyTextField<Integer, Property<Integer>> {
 		public IntegerField() {
@@ -48,8 +80,8 @@ public class PropertyTextFields {
 		}
 	}
 
-	public static class NumericIntegerField extends PropertyTextField<Number, IntegerProperty> {
-		public NumericIntegerField() {
+	public static class IntegerPropertyField extends PropertyTextField<Number, IntegerProperty> {
+		public IntegerPropertyField() {
 			super(new SimpleIntegerProperty(), new NumberConverter<Integer>(new IntegerStringConverter()){
 				@Override 
 				protected Integer fromNumber(Number type) {
@@ -65,8 +97,8 @@ public class PropertyTextFields {
 		}
 	}
 	
-	public static class NumericLongField extends PropertyTextField<Number, LongProperty> {
-		public NumericLongField() {
+	public static class LongPropertyField extends PropertyTextField<Number, LongProperty> {
+		public LongPropertyField() {
 			super(new SimpleLongProperty(), new NumberConverter<Long>(new LongStringConverter()){
 				@Override 
 				protected Long fromNumber(Number type) {
@@ -76,8 +108,42 @@ public class PropertyTextFields {
 		}
 	}
 	
+	public static class FloatField extends PropertyTextField<Float, Property<Float>> {
+		public FloatField() {
+			super(new SimpleObjectProperty<Float>(), new FloatStringConverter());
+		}
+	}
+	
+	public static class FloatPropertyField extends PropertyTextField<Number, FloatProperty> {
+		public FloatPropertyField() {
+			super(new SimpleFloatProperty(), new NumberConverter<Float>(new FloatStringConverter()){
+				@Override 
+				protected Float fromNumber(Number type) {
+					return type.floatValue();
+				}
+			});
+		}
+	}
+	
+	public static class DoubleField extends PropertyTextField<Double, Property<Double>> {
+		public DoubleField() {
+			super(new SimpleObjectProperty<Double>(), new DoubleStringConverter());
+		}
+	}
+	
+	public static class DoublePropertyField extends PropertyTextField<Number, DoubleProperty> {
+		public DoublePropertyField() {
+			super(new SimpleDoubleProperty(), new NumberConverter<Double>(new DoubleStringConverter()){
+				@Override 
+				protected Double fromNumber(Number type) {
+					return type.doubleValue();
+				}
+			});
+		}
+	}
+	
 	// ============== Adapter for special numeric properties =============
-	protected abstract static class NumberConverter<T extends Number> implements ValueConverter<Number> {
+	private abstract static class NumberConverter<T extends Number> implements ValueConverter<Number> {
 		private final StringConverter<T> stringConverter;
 		
 		public NumberConverter(StringConverter<T> stringConverter) {
