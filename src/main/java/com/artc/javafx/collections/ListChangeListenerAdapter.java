@@ -25,6 +25,9 @@
 
 package com.artc.javafx.collections;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.collections.ListChangeListener;
 
 public class ListChangeListenerAdapter<T> implements ListChangeListener<T> {
@@ -32,17 +35,20 @@ public class ListChangeListenerAdapter<T> implements ListChangeListener<T> {
 	public void onChanged(Change<? extends T> c) {
 		while (c.next()) {
 			if (c.wasPermutated()) {
+				List<Permuation> permuations = new ArrayList<>();
 				for (int oldIndex = c.getFrom(); oldIndex < c.getTo(); ++oldIndex) {
 					int newIndex = c.getPermutation(oldIndex);
-					permutedChange(oldIndex, newIndex, c.getList().get(newIndex));
+					T element = c.getList().get(newIndex);
+					permuations.add(new Permuation(oldIndex, newIndex, element));
 				}
+				permutedChange(permuations);
 			} else if (c.wasUpdated()) {
 				for (int index = c.getFrom(); index < c.getTo(); ++index) {
 					updatedChange(index, c.getList().get(index));
 				}
 			} else {
 				for (T removedElement : c.getRemoved()) {
-					removedChange(removedElement);
+					removedChange(c.getFrom(), removedElement);
 				}
 				for (int index = c.getFrom(); index < c.getTo(); ++index) {
 					T addedElement = c.getList().get(index);
@@ -51,20 +57,32 @@ public class ListChangeListenerAdapter<T> implements ListChangeListener<T> {
 			}
 		}
 	}
-	
-	public void permutedChange(int oldIndex, int newIndex, T element){
+
+	public void permutedChange(List<Permuation> permuations){
 		// NOOP
 	}
-
+	
 	public void updatedChange(int index, T element) {
 		// NOOP
 	}
 	
-	public void removedChange(T item){
+	public void removedChange(int index, T element){
 		// NOOP
 	}
 	
-	public void addedChange(int index, T item){
+	public void addedChange(int index, T element){
 		// NOOP
+	}
+	
+	public class Permuation {
+		public final int oldIndex;
+		public final int newIndex;
+		public final T element;
+		
+		public Permuation(int oldIndex, int newIndex, T element) {
+			this.oldIndex = oldIndex;
+			this.newIndex = newIndex;
+			this.element = element;
+		}
 	}
 }

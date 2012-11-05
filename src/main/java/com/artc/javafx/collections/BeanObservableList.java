@@ -25,14 +25,13 @@
 
 package com.artc.javafx.collections;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
 import java.util.Set;
 
 import javafx.beans.InvalidationListener;
@@ -43,12 +42,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
+import com.artc.javafx.Releaseable;
 import com.artc.javafx.indirect.beans.getter.Getter;
 
 public class BeanObservableList<B> implements ObservableList<B> {
 	private final ObservableList<B> underlyingList;
 	private final Set<Getter<? extends Property<?>, B>> propertyGetters = new HashSet<Getter<? extends Property<?>, B>>();
-	private final Map<B, BeanPropertyListener> beanListeners = new HashMap<B, BeanPropertyListener>();
+	private final List<BeanPropertyListener> beanListeners = new ArrayList<BeanPropertyListener>();
 	
 	@SafeVarargs
 	public static <B> BeanObservableList<B> create(Getter<? extends Property<?>, B>... getters) {
@@ -61,25 +61,13 @@ public class BeanObservableList<B> implements ObservableList<B> {
 	}
 	
 	public BeanObservableList(Collection<B> beans, Collection<Getter<? extends Property<?>, B>> propertyGetters) {
-		this.underlyingList = FXCollections.<B> observableArrayList(beans);
+		this.underlyingList = FXCollections.<B> observableArrayList();
 		this.propertyGetters.addAll(propertyGetters);
 		this.underlyingList.addListener(new UnderlyingListSynchronizer());
-		for (B bean : underlyingList) {
-			addBeanPropertyListener(bean);
-		}
+		this.underlyingList.addAll(beans);
 	}
 	
-	private void addBeanPropertyListener(B item) {
-		if (item == null) {
-			return;
-		}
-		if (beanListeners.containsKey(item)) {
-			throw new IllegalArgumentException("Attemping to add the bean [" + item + "] to the " + BeanObservableList.class.getSimpleName() + " but it was already there, currently only unique beans are supported");
-		}
-		beanListeners.put(item, new BeanPropertyListener(item));
-	};
-	
-	private class BeanPropertyListener implements ChangeListener<Object> {
+	private class BeanPropertyListener implements ChangeListener<Object>, Releaseable {
 		private final B bean;
 		
 		public BeanPropertyListener(B bean) {
@@ -102,13 +90,13 @@ public class BeanObservableList<B> implements ObservableList<B> {
 		public void changed(ObservableValue<?> arg0, Object arg1, Object arg2) {
 			// LATER ideally we'd have something like this here:
 			//
-			// int index = underlyingList.indexOf(bean);
+			// int index = beanListeners.indexOf(this);
 			// underlyingList.set(index, bean);
 			//
 			// but this interacts badly with SelectionModel(s) who believe that 
 			// the items has been dropped and deselect it which is not the desired behavior.
 			// This is a hack which, while inefficient, retains all the items so
-			// SelectionModel(s) work and forces an update on the desired item (plus all the others for that matter)
+			// SelectionModel(s) work and forces an update on the desired item (plus all the others for that matter).
 			underlyingList.add(0, null);
 			underlyingList.remove(0);
 		}
@@ -116,14 +104,17 @@ public class BeanObservableList<B> implements ObservableList<B> {
 	
 	private class UnderlyingListSynchronizer extends ListChangeListenerAdapter<B> {
 		public void addedChange(int index, B item) {
-			addBeanPropertyListener(item);
-		}
-		
-		public void removedChange(B item) {
 			if (item == null) {
 				return;
 			}
-			beanListeners.remove(item).release();
+			beanListeners.add(index, new BeanPropertyListener(item));
+		}
+		
+		public void removedChange(int index, B item) {
+			if (item == null) {
+				return;
+			}
+			beanListeners.remove(index).release();
 		};
 		
 		public void updatedChange(int index, B element) {

@@ -109,5 +109,5 @@ public class BaseIndirectBean<BC extends ObservableValue<B>, B> implements Uncon
 	@Override
 	public B getUnderlyingObject() {
 		return beanChannel.getValue();
-	}
+	}	
 }

@@ -61,7 +61,7 @@ public class ListChangeListenerAdapterTest {
 		
 		observableList.set(1, "c");
 		
-		assertListsEqual(changes, asList(removed("b"), added(1, "c")));
+		assertListsEqual(changes, asList(removed(1, "b"), added(1, "c")));
 	}
 	
 	@Test
@@ -72,7 +72,7 @@ public class ListChangeListenerAdapterTest {
 		
 		observableList.setAll(asList("c", "d"));
 		
-		assertListsEqual(changes, asList(removed("a"), removed("b"), added(0, "c"), added(1, "d")));
+		assertListsEqual(changes, asList(removed(0, "a"), removed(0, "b"), added(0, "c"), added(1, "d")));
 	}
 	
 	@Test
@@ -83,7 +83,7 @@ public class ListChangeListenerAdapterTest {
 		
 		observableList.setAll("c", "d");
 		
-		assertListsEqual(changes, asList(removed("a"), removed("b"), added(0, "c"), added(1, "d")));
+		assertListsEqual(changes, asList(removed(0, "a"), removed(0, "b"), added(0, "c"), added(1, "d")));
 	}
 	
 	@Test
@@ -94,7 +94,7 @@ public class ListChangeListenerAdapterTest {
 		
 		observableList.remove(1);
 		
-		assertListsEqual(changes, asList(removed("b")));
+		assertListsEqual(changes, asList(removed(1, "b")));
 	}
 	
 	@Test
@@ -105,7 +105,7 @@ public class ListChangeListenerAdapterTest {
 		
 		observableList.remove("c");
 		
-		assertListsEqual(changes, asList(removed("c")));
+		assertListsEqual(changes, asList(removed(2, "c")));
 	}
 	
 	@Test
@@ -116,7 +116,7 @@ public class ListChangeListenerAdapterTest {
 		
 		observableList.removeAll(asList("b", "c"));
 		
-		assertListsEqual(changes, asList(removed("b"), removed("c")));
+		assertListsEqual(changes, asList(removed(1, "b"), removed(1, "c")));
 	}
 	
 	@Test
@@ -127,7 +127,7 @@ public class ListChangeListenerAdapterTest {
 		
 		observableList.removeAll("b", "c");
 		
-		assertListsEqual(changes, asList(removed("b"), removed("c")));
+		assertListsEqual(changes, asList(removed(1, "b"), removed(1, "c")));
 	}
 	
 	@Test
@@ -193,7 +193,7 @@ public class ListChangeListenerAdapterTest {
 		
 		observableList.retainAll(asList("b", "c"));
 		
-		assertListsEqual(changes, asList(removed("a")));
+		assertListsEqual(changes, asList(removed(0, "a")));
 	}
 	
 	@Test
@@ -204,7 +204,7 @@ public class ListChangeListenerAdapterTest {
 		
 		observableList.retainAll("b", "c");
 		
-		assertListsEqual(changes, asList(removed("a"), removed("d")));
+		assertListsEqual(changes, asList(removed(0, "a"), removed(2, "d")));
 	}
 	
 	// ===========================
@@ -221,8 +221,10 @@ public class ListChangeListenerAdapterTest {
 		}
 		
 		@Override
-		public void permutedChange(int oldIndex, int newIndex, T element) {
-			changes.add(permutation(oldIndex, newIndex, element));
+		public void permutedChange(List<Permuation> permuations) {
+			for(Permuation permuation : permuations){
+				changes.add(permutation(permuation.oldIndex, permuation.newIndex, permuation.element));
+			}
 		}
 		
 		public void updatedChange(int index, T element) {
@@ -230,8 +232,8 @@ public class ListChangeListenerAdapterTest {
 		}
 		
 		@Override
-		public void removedChange(T item) {
-			changes.add(removed(item));
+		public void removedChange(int index, T item) {
+			changes.add(removed(index, item));
 		}
 	}
 	
@@ -249,8 +251,8 @@ public class ListChangeListenerAdapterTest {
 		return new ArrayList<AChange<V>>();
 	}
 	
-	private static <V> AChange<V> removed(V value) {
-		return new AChange<V>(null, null, value);
+	private static <V> AChange<V> removed(int index, V value) {
+		return new AChange<V>(index, null, value);
 	}
 	
 	private static <V> AChange<V> added(int index, V value) {
@@ -309,5 +311,12 @@ public class ListChangeListenerAdapterTest {
 				return false;
 			return true;
 		}
+
+		@Override
+		public String toString() {
+			return "AChange [oldIndex=" + oldIndex + ", newIndex=" + newIndex+ ", value=" + value + "]";
+		}
+		
+		
 	}
 }

@@ -23,43 +23,16 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artc.javafx.indirect.beans;
+package com.artc.javafx;
 
-import javafx.beans.property.Property;
-import javafx.beans.property.SimpleObjectProperty;
+/**
+ * 
+ * This method should release any listeners this object has added that refer to it.
+ * i.e. there should be no "hidden" references to this object that prevent garbage collection.
+ * 
+ */
+public interface Releaseable {
 
-import com.artc.javafx.Releaseable;
-import com.artc.javafx.indirect.IndirectObject;
-
-public class IndirectBean<B> extends BaseIndirectBean<Property<B>, B> implements IndirectObject<B>, Releaseable {
-	public static <B> IndirectBean<B> create(B bean) {
-		return new IndirectBean<B>(bean);
-	}
+	public void release();
 	
-	public static <B> IndirectBean<B> create(Property<B> beanChannel) {
-		return new IndirectBean<B>(beanChannel);
-	}
-	
-	public IndirectBean(B bean) {
-		this(new SimpleObjectProperty<B>(bean));
-	}
-	
-	public IndirectBean(Property<B> beanChannel) {
-		super(beanChannel);
-	}
-	
-	public void setBean(B bean) {
-		setUnderlyingObject(bean);
-	}
-	
-	@Override
-	public void setUnderlyingObject(B underlyingObject) {
-		beanChannel.setValue(underlyingObject);
-	}
-	
-	@Override
-	public void release() {
-		beanChannel.setValue(null);
-	}
-
 }
