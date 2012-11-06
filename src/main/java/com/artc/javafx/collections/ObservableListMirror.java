@@ -59,11 +59,11 @@ public class ObservableListMirror<M, O> implements ObservableList<M> {
 		}
 		
 		public void updatedChange(int index, O element) {
-			throw new UnsupportedOperationException("Coding error, list doesn't seem to use this");
+			throw new UnsupportedOperationException("Coding error, observable array list doesn't seem to use this");
 		}
 		
 		public void removedChange(int index, O item){
-			mirrorList.remove(index);
+			mirrorFactory.finished(mirrorList.remove(index));
 		}
 		
 		public void addedChange(int index, O element){
@@ -71,8 +71,12 @@ public class ObservableListMirror<M, O> implements ObservableList<M> {
 		}
 	}
 	
+	// ====== Require Factory ======
 	public static interface MirrorFactory<M, O> {
+
 		public M create(O original);
+	
+		public void finished(M mirror);
 	}
 
 	// ====== Methods below here delegate or throw unsupported exceptions ======

@@ -88,9 +88,9 @@ public class BeanObservableList<B> implements ObservableList<B> {
 		
 		@Override
 		public void changed(ObservableValue<?> arg0, Object arg1, Object arg2) {
-			// LATER ideally we'd have something like this here:
+			// LATER ideally we'd add an index to the bean listeners keep it up
+			// date and then do something like:
 			//
-			// int index = beanListeners.indexOf(this);
 			// underlyingList.set(index, bean);
 			//
 			// but this interacts badly with SelectionModel(s) who believe that 
@@ -117,8 +117,20 @@ public class BeanObservableList<B> implements ObservableList<B> {
 			beanListeners.remove(index).release();
 		};
 		
+		@Override
+		public void permutedChange(List<Permuation> permuations) {
+			List<BeanPropertyListener> toMove = new ArrayList<>();
+			for(Permuation permuation : permuations){
+				toMove.add(beanListeners.get(permuation.oldIndex));
+			}
+			for(int i = 0; i < toMove.size(); i++){
+				beanListeners.set(permuations.get(i).newIndex, toMove.get(i));
+			}
+		}
+		
 		public void updatedChange(int index, B element) {
-			throw new UnsupportedOperationException("TODO unclear how to handle this case");
+			beanListeners.get(index).release();
+			beanListeners.set(index, new BeanPropertyListener(element));
 		};
 	}
 
