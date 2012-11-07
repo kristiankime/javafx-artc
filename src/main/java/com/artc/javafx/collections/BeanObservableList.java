@@ -129,8 +129,7 @@ public class BeanObservableList<B> implements ObservableList<B> {
 		}
 		
 		public void updatedChange(int index, B element) {
-			beanListeners.get(index).release();
-			beanListeners.set(index, new BeanPropertyListener(element));
+			throw new UnsupportedOperationException("Observable Array List doesn't fire these events");
 		};
 	}
 

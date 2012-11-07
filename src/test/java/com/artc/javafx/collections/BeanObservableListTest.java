@@ -27,22 +27,40 @@ package com.artc.javafx.collections;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ListChangeListener.Change;
 
 import org.junit.Test;
 
-import com.artc.javafx.collections.BeanObservableList;
 import com.artc.javafx.indirect.beans.getter.StringPropertyGetter;
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class BeanObservableListTest {
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+
+	@Test
+	public void adding_a_bean_adds_listeners_to_the_specified_properties() {
+		TestBean testBean = mock(TestBean.class);
+		StringProperty first = mock(StringProperty.class);
+		StringProperty second = mock(StringProperty.class);
+		when(testBean.getFirst()).thenReturn(first);
+		when(testBean.getSecond()).thenReturn(second);
+		
+		BeanObservableList<TestBean> list = BeanObservableList.create(TestBean.FIRST);
+		list.add(testBean);
+		
+		verify(first).addListener(any(ChangeListener.class));
+		verifyZeroInteractions(second);
+	}
+
 	@Test
 	public void list_fires_event_if_bean_updates() {
 		TestBean testBean1 = new TestBean("1", "1");
@@ -50,17 +68,34 @@ public class BeanObservableListTest {
 		BeanObservableList<TestBean> list = BeanObservableList.create(TestBean.FIRST, TestBean.SECOND);
 		list.add(testBean1);
 		list.add(testBean2);
-		
+
 		ListChangeListener mock = mock(ListChangeListener.class);
 		list.addListener(mock);
-		
-		TestBean.FIRST.get(testBean1).set("c");
-		
-		// LATER this test can be made more specific when the BeanObservableList fires the right events
+
+		testBean1.getFirst().set("c");
+
+		// LATER this test can be made more specific when the BeanObservableList
+		// fires the right events
 		verify(mock, atLeastOnce()).onChanged(any(Change.class));
 	}
+
+	@Test
+	public void removing_a_bean_removes_listeners_to_the_specified_properties() {
+		TestBean testBean = mock(TestBean.class);
+		StringProperty first = mock(StringProperty.class);
+		StringProperty second = mock(StringProperty.class);
+		when(testBean.getFirst()).thenReturn(first);
+		when(testBean.getSecond()).thenReturn(second);
+		
+		BeanObservableList<TestBean> list = BeanObservableList.create(TestBean.FIRST);
+		list.add(testBean);
+		list.remove(testBean);
+		
+		verify(first).addListener(any(ChangeListener.class));
+		verify(first).removeListener(any(ChangeListener.class));
+		verifyZeroInteractions(second);
+	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void list_does_not_fires_event_if_bean_is_removed_then_updated() {
 		TestBean testBean1 = new TestBean("1", "1");
@@ -68,37 +103,90 @@ public class BeanObservableListTest {
 		BeanObservableList<TestBean> list = BeanObservableList.create(TestBean.FIRST, TestBean.SECOND);
 		list.add(testBean1);
 		list.add(testBean2);
-		
+
 		list.remove(testBean1);
-		
+
 		ListChangeListener mock = mock(ListChangeListener.class);
 		list.addListener(mock);
-		
-		TestBean.FIRST.get(testBean1).set("c");
-		
+
+		testBean1.getFirst().set("c");
+
 		verifyZeroInteractions(mock);
 	}
 	
-	private static class TestBean {
+	
+	@Test
+	public void even_after_list_is_permuted_proper_events_are_fired() {
+		TestBean testBean2 = new TestBean("2", "2");
+		TestBean testBean1 = new TestBean("1", "1");
+		BeanObservableList<TestBean> list = BeanObservableList.create(TestBean.FIRST, TestBean.SECOND);
+		list.add(testBean2);
+		list.add(testBean1);
+		ListChangeListener mock = mock(ListChangeListener.class);
+		FXCollections.sort(list);
+		list.remove(testBean2);
+		
+		list.addListener(mock);
+		testBean1.getFirst().set("c");
+		
+		// LATER this test can be made more specific when the BeanObservableList
+		// fires the right events
+		verify(mock, atLeastOnce()).onChanged(any(Change.class));
+	}
+ 
+	@Test
+	public void even_after_list_is_permuted_improper_events_are_not_fired() {
+		TestBean testBean2 = new TestBean("2", "2");
+		TestBean testBean1 = new TestBean("1", "1");
+		BeanObservableList<TestBean> list = BeanObservableList.create(TestBean.FIRST, TestBean.SECOND);
+		list.add(testBean2);
+		list.add(testBean1);
+		ListChangeListener mock = mock(ListChangeListener.class);
+		FXCollections.sort(list);
+		list.remove(testBean1);
+
+		list.addListener(mock);
+		testBean1.getFirst().set("c");
+		
+		// LATER this test can be made more specific when the BeanObservableList
+		// fires the right events
+		verify(mock, atMost(0)).onChanged(any(Change.class));
+	}
+	
+	// ===  Support ===
+	private static class TestBean implements Comparable<TestBean> {
 		public static final StringPropertyGetter<TestBean> FIRST = new StringPropertyGetter<TestBean>() {
 			@Override
 			public StringProperty get(TestBean bean) {
-				return bean.first;
+				return bean.getFirst();
 			}
 		};
 		public static final StringPropertyGetter<TestBean> SECOND = new StringPropertyGetter<TestBean>() {
 			@Override
 			public StringProperty get(TestBean bean) {
-				return bean.second;
+				return bean.getSecond();
 			}
 		};
-		
+
 		private final StringProperty first;
 		private final StringProperty second;
-		
+
 		private TestBean(String first, String second) {
 			this.first = new SimpleStringProperty(first);
 			this.second = new SimpleStringProperty(second);
+		}
+
+		public StringProperty getFirst() {
+			return first;
+		}
+
+		public StringProperty getSecond() {
+			return second;
+		}
+
+		@Override
+		public int compareTo(TestBean o) {
+			return first.getValue().compareTo(o.first.getValue());
 		}
 	}
 }
