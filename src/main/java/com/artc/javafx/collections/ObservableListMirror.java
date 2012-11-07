@@ -39,11 +39,15 @@ import javafx.collections.ObservableList;
 public class ObservableListMirror<M, O> implements ObservableList<M> {
 	private final ObservableList<M> mirrorList;
 	private final MirrorFactory<M, O> mirrorFactory;
-
+	
 	public ObservableListMirror(MirrorFactory<M, O> mirrorFactory, ObservableList<O> originalList) {
 		this.mirrorFactory = mirrorFactory;
 		this.mirrorList = FXCollections.observableArrayList();
 		originalList.addListener(new Listener());
+		
+		for(O original : originalList){
+			mirrorList.add(mirrorFactory.create(original));
+		}
 	}
 	
 	private class Listener extends ListChangeListenerAdapter<O> {
@@ -67,7 +71,7 @@ public class ObservableListMirror<M, O> implements ObservableList<M> {
 		}
 		
 		public void addedChange(int index, O element){
-			mirrorList.set(index, mirrorFactory.create(element));
+			mirrorList.add(index, mirrorFactory.create(element));
 		}
 	}
 	
