@@ -2,7 +2,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 
 group = 'com.artc'
-version = '0.1-SNAPSHOT'
+version = '0.1.0-SNAPSHOT'
 sourceCompatibility = JavaVersion.VERSION_1_7
 
 sourceSets {
