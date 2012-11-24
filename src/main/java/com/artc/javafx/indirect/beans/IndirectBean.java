@@ -28,10 +28,10 @@ package com.artc.javafx.indirect.beans;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 
-import com.artc.javafx.Releaseable;
+import com.artc.javafx.Releasable;
 import com.artc.javafx.indirect.IndirectObject;
 
-public class IndirectBean<B> extends BaseIndirectBean<Property<B>, B> implements IndirectObject<B>, Releaseable {
+public class IndirectBean<B> extends BaseIndirectBean<Property<B>, B> implements IndirectObject<B>, Releasable {
 	
 	public static <B> IndirectBean<B> create() {
 		return new IndirectBean<B>();

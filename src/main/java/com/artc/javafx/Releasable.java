@@ -31,7 +31,7 @@ package com.artc.javafx;
  * i.e. there should be no "hidden" references to this object that prevent garbage collection.
  * 
  */
-public interface Releaseable {
+public interface Releasable {
 
 	public void release();
 	

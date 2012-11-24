@@ -42,7 +42,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
-import com.artc.javafx.Releaseable;
+import com.artc.javafx.Releasable;
 import com.artc.javafx.indirect.beans.getter.Getter;
 
 public class BeanObservableList<B> implements ObservableList<B> {
@@ -67,7 +67,7 @@ public class BeanObservableList<B> implements ObservableList<B> {
 		this.underlyingList.addAll(beans);
 	}
 	
-	private class BeanPropertyListener implements ChangeListener<Object>, Releaseable {
+	private class BeanPropertyListener implements ChangeListener<Object>, Releasable {
 		private final B bean;
 		
 		public BeanPropertyListener(B bean) {
