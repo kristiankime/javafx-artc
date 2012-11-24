@@ -32,12 +32,21 @@ import com.artc.javafx.Releaseable;
 import com.artc.javafx.indirect.IndirectObject;
 
 public class IndirectBean<B> extends BaseIndirectBean<Property<B>, B> implements IndirectObject<B>, Releaseable {
+	
+	public static <B> IndirectBean<B> create() {
+		return new IndirectBean<B>();
+	}
+	
 	public static <B> IndirectBean<B> create(B bean) {
 		return new IndirectBean<B>(bean);
 	}
 	
 	public static <B> IndirectBean<B> create(Property<B> beanChannel) {
 		return new IndirectBean<B>(beanChannel);
+	}
+	
+	public IndirectBean() {
+		this(new SimpleObjectProperty<B>(null));
 	}
 	
 	public IndirectBean(B bean) {

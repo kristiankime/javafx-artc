@@ -45,7 +45,7 @@ import javafx.util.StringConverter;
  * is set with the parsed version of the current text otherwise the text is
  * reset back to the last valid value.
  * 
- * Not this class registers a listener for onKeyReleased to check to see if
+ * Note: this class registers a listener for onKeyReleased to check to see if
  * the ENTER key is pressed. If you override this listener the ENTER key
  * functionality will no longer work.
  * 

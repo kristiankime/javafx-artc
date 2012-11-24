@@ -37,12 +37,15 @@ import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 
 import com.artc.javafx.indirect.IndirectObject;
 import com.artc.javafx.indirect.UncontrolledIndirectObject;
 import com.artc.javafx.indirect.beans.getter.Getter;
 import com.artc.javafx.indirect.beans.property.IndirectProperty;
 import com.artc.javafx.indirect.beans.property.IndirectyPropertyDelegate;
+import com.artc.javafx.indirect.collections.IndirectObservableList;
+import com.artc.javafx.indirect.collections.IndirectObservableListDelegate;
 
 public class BaseIndirectBean<BC extends ObservableValue<B>, B> implements UncontrolledIndirectObject<B> {
 	protected final BC beanChannel;
@@ -65,9 +68,21 @@ public class BaseIndirectBean<BC extends ObservableValue<B>, B> implements Uncon
 		});
 	}
 	
-	public <I extends IndirectObject<T>, T> I getIndirect(I indirect, Getter<? extends T, B> getter){
+	public <I extends IndirectObject<T>, T> I getIndirect(I indirect, Getter<T, B> getter){
 		addPropertySyncher(IndirectBeanPropertySyncer.create(indirect, getter));
 		return indirect;
+	}
+
+	public <T> IndirectProperty<T> getIndirectProperty(Getter<? extends Property<T>, B> getter) {
+		return getIndirect(new IndirectyPropertyDelegate<T>(), getter);
+	}
+	
+	public <T> IndirectBean<T> getIndirectBean(Getter<T, B> getter) {
+		return getIndirect(new IndirectBean<T>(), getter);
+	}
+	
+	public <T> IndirectObservableList<T> getIndirectList(Getter<? extends ObservableList<T>, B> getter) {
+		return getIndirect(new IndirectObservableListDelegate<T>(), getter);
 	}
 	
 	public void addPropertySyncher(IndirectBeanPropertySyncer<?, B> propertySyncer) {
@@ -99,13 +114,6 @@ public class BaseIndirectBean<BC extends ObservableValue<B>, B> implements Uncon
 		return getUnderlyingObject();
 	}
 	
-	public <T> IndirectProperty<T> getIndirectProperty(Getter<? extends Property<T>, B> getter) {
-		IndirectyPropertyDelegate<T> indirectProperty = IndirectyPropertyDelegate.create();
-		IndirectBeanPropertySyncer<Property<T>, B> syncer = IndirectBeanPropertySyncer.create(indirectProperty, getter);
-		addPropertySyncher(syncer);
-		return indirectProperty;
-	}
-
 	@Override
 	public B getUnderlyingObject() {
 		return beanChannel.getValue();

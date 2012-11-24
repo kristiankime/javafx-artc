@@ -133,7 +133,7 @@ public class BaseIndirectBeanTest {
 		public static final IntegerPropertyGetter<IntBean> GET_ONE_PROPERTY = new IntegerPropertyGetter<IntBean>() {
 			@Override
 			public IntegerProperty get(IntBean bean) {
-				return bean.oneProperty;
+				return bean.getOneProperty();
 			}
 		};
 		
