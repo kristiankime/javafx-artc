@@ -28,6 +28,7 @@ package com.artc.javafx.collections;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -58,6 +59,11 @@ public class BeanObservableList<B> implements ObservableList<B> {
 	@SafeVarargs
 	public static <B> BeanObservableList<B> create(Collection<B> beans, Getter<? extends Property<?>, B>... getters) {
 		return new BeanObservableList<B>(beans, Arrays.asList(getters));
+	}
+
+	@SafeVarargs
+	public BeanObservableList(Getter<? extends Property<?>, B>... getters) {
+		this(Collections.<B> emptySet(), Arrays.asList(getters));
 	}
 	
 	public BeanObservableList(Collection<B> beans, Collection<Getter<? extends Property<?>, B>> propertyGetters) {
