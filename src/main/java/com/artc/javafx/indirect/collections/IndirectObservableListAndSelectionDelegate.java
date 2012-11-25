@@ -28,6 +28,7 @@ package com.artc.javafx.indirect.collections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MultipleSelectionModel;
+import javafx.scene.control.SelectionMode;
 
 public class IndirectObservableListAndSelectionDelegate<E> extends IndirectObservableListDelegate<E> implements IndirectObservableListAndSelection<E> {
 	private final MultipleSelectionModel<E> multipleSelectionModel;
@@ -36,9 +37,14 @@ public class IndirectObservableListAndSelectionDelegate<E> extends IndirectObser
 		return new IndirectObservableListAndSelectionDelegate<T>(underlyingList);
 	}
 	
-	public IndirectObservableListAndSelectionDelegate(ObservableList<E> underlyingList) {
+	public IndirectObservableListAndSelectionDelegate(ObservableList<E> underlyingList){
+		this(underlyingList, SelectionMode.SINGLE);
+	}
+	
+	public IndirectObservableListAndSelectionDelegate(ObservableList<E> underlyingList, SelectionMode selectionMode) {
 		setUnderlyingObject(underlyingList);
 		this.multipleSelectionModel = new ListView<E>(this).getSelectionModel();
+		this.multipleSelectionModel.setSelectionMode(selectionMode);
 	}
 
 	public MultipleSelectionModel<E> getMultipleSelectionModel() {

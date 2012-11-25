@@ -5,7 +5,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.MultipleSelectionModel;
-import javafx.scene.control.SelectionMode;
 
 import com.artc.javafx.indirect.beans.UncontrolledIndirectBean;
 import com.artc.javafx.indirect.beans.property.IndirectProperty;
@@ -31,7 +30,6 @@ public class ContactManagerPresentation {
 		this.contactManager = contactManager;
 		
 		this.contactSelection = IndirectObservableListAndSelectionDelegate.<Contact> create(contactManager.getContacts());
-		this.contactSelection.getMultipleSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		this.contactSelection.getMultipleSelectionModel().select(0);
 		
 		this.contact = new UncontrolledIndirectBean<Contact>(contactSelection.getMultipleSelectionModel().selectedItemProperty());
