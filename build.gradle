@@ -1,13 +1,33 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        ivy { 
+            url = 'http://repository-javafx-gradle-plugin.forge.cloudbees.com/release'
+        }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.bitbucket.shemnon.javafxplugin:plugin:0.0.0'
+    }
+}
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'javafx'
 
 group = 'com.artc'
-version = '0.1.0-SNAPSHOT'
+version = '0.0.0'
 sourceCompatibility = JavaVersion.VERSION_1_7
+
+javafx {
+    mainClass = 'Main'
+}
 
 sourceSets {
 	example {
-		java { srcDir 'example/java' }
+		java { 
+			srcDir 'example/java' 
+		}
 	}
 }
 
@@ -20,11 +40,9 @@ artifacts { archives sourcesJar }
 
 repositories {
 	mavenCentral()
-	flatDir dirs: ['javafx-lib']
 }
 
 dependencies {
-	compile	group: '',              name: 'jfxrt',            version: ''
 	compile	group: 'com.miglayout', name: 'miglayout-javafx', version: '4.2'
 	
 	testCompile group: 'junit',        name: 'junit-dep',     version: '4.10'

@@ -74,15 +74,21 @@ public class BaseIndirectBean<BC extends ObservableValue<B>, B> implements Uncon
 	}
 
 	public <T> IndirectProperty<T> getIndirectProperty(Getter<? extends Property<T>, B> getter) {
-		return getIndirect(new IndirectyPropertyDelegate<T>(), getter);
+		IndirectyPropertyDelegate<T> indirectyProperty = new IndirectyPropertyDelegate<T>();
+		addPropertySyncher(IndirectBeanPropertySyncer.create(indirectyProperty, getter));
+		return indirectyProperty;
 	}
 	
 	public <T> IndirectBean<T> getIndirectBean(Getter<T, B> getter) {
-		return getIndirect(new IndirectBean<T>(), getter);
+		IndirectBean<T> indirectBean = new IndirectBean<T>();
+		addPropertySyncher(IndirectBeanPropertySyncer.create(indirectBean, getter));
+		return indirectBean;
 	}
-	
+
 	public <T> IndirectObservableList<T> getIndirectList(Getter<? extends ObservableList<T>, B> getter) {
-		return getIndirect(new IndirectObservableListDelegate<T>(), getter);
+		IndirectObservableListDelegate<T> indirectObservableList = new IndirectObservableListDelegate<T>();
+		addPropertySyncher(IndirectBeanPropertySyncer.create(indirectObservableList, getter));
+		return indirectObservableList;
 	}
 	
 	public void addPropertySyncher(IndirectBeanPropertySyncer<?, B> propertySyncer) {
