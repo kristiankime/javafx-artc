@@ -1,5 +1,6 @@
 This is a repo where I'll be adding code related to posts on my blog "Any Relation to Code Living or Dead" (http://kristiankime.blogspot.com/).
 
-The repo should be a working eclipse project as soon as the "gradle eclipse" command is run (assuming you have gradle configured) though, as a heads up, the project requires java 7.
+The repo should be an (almost) working eclipse project as soon as the "gradle eclipse" command is run. Currently you will need to manually remove "src/main" from the build paths for the project to work.
 
-As of 2012-May-22 This code is still a work in progress and should not taken as anything other then an illustration of how one might implement an indirect presentation model support library. 
+2012-12-05 General updates and switch to gradle plugin for javafx handling (http://speling.shemnon.com/blog/2012/11/07/javafx-gradle-plugin-0.0.0-released/)
+2012-05-22 This code is still a work in progress and should not taken as anything other then an illustration of how one might implement an indirect presentation model support library. 
