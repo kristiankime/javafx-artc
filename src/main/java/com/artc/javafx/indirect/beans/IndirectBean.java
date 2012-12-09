@@ -45,6 +45,10 @@ public class IndirectBean<B> extends BaseIndirectBean<Property<B>, B> implements
 		return new IndirectBean<B>(beanChannel);
 	}
 	
+	public static <B> IndirectBean<B> fromProperty(Property<B> beanChannel) {
+		return new IndirectBean<B>(beanChannel);
+	}
+	
 	public IndirectBean() {
 		this(new SimpleObjectProperty<B>(null));
 	}

@@ -84,6 +84,11 @@ public class BaseIndirectBean<BC extends ObservableValue<B>, B> implements Uncon
 		addPropertySyncher(IndirectBeanPropertySyncer.create(indirectBean, getter));
 		return indirectBean;
 	}
+	
+	public <T> IndirectBean<T> getIndirectPropertyBean(Getter<? extends Property<T>, B> getter) {
+		IndirectProperty<T> beanChannel = getIndirectProperty(getter);
+		return new IndirectBean<T>(beanChannel);
+	}
 
 	public <T> IndirectObservableList<T> getIndirectList(Getter<? extends ObservableList<T>, B> getter) {
 		IndirectObservableListDelegate<T> indirectObservableList = new IndirectObservableListDelegate<T>();
