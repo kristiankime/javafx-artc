@@ -79,7 +79,7 @@ public class BaseIndirectBean<BC extends ObservableValue<B>, B> implements Uncon
 		return indirectyProperty;
 	}
 	
-	public <T> IndirectBean<T> getIndirectBean(Getter<T, B> getter) {
+	public <T> IndirectBean<T> getIndirectFixedBean(Getter<T, B> getter) {
 		IndirectBean<T> indirectBean = new IndirectBean<T>();
 		addPropertySyncher(IndirectBeanPropertySyncer.create(indirectBean, getter));
 		return indirectBean;
