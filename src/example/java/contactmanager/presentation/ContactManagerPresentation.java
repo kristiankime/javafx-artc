@@ -30,9 +30,9 @@ public class ContactManagerPresentation {
 		this.contactManager = contactManager;
 		
 		this.contactSelection = IndirectObservableListAndSelectionDelegate.<Contact> create(contactManager.getContacts());
-		this.contactSelection.getMultipleSelectionModel().select(0);
+		this.contactSelection.selectionModel().select(0);
 		
-		this.contact = new UncontrolledIndirectBean<Contact>(contactSelection.getMultipleSelectionModel().selectedItemProperty());
+		this.contact = new UncontrolledIndirectBean<Contact>(contactSelection.selectionModel().selectedItemProperty());
 		this.firstName = contact.getIndirectProperty(Contact.FIRST_NAME);
 		this.lastName = contact.getIndirectProperty(Contact.LAST_NAME);
 		this.fictional = contact.getIndirectProperty(Contact.FICTIONAL);
@@ -53,7 +53,7 @@ public class ContactManagerPresentation {
 	}
 	
 	private void remove() {
-		Contact selectedItem = contactSelection.getMultipleSelectionModel().getSelectedItem();
+		Contact selectedItem = contactSelection.selectionModel().getSelectedItem();
 		if (selectedItem == null) {
 			return;
 		}
@@ -62,7 +62,7 @@ public class ContactManagerPresentation {
 	
 	private void add() {
 		Contact newContact = contactManager.createNewContact();
-		contactSelection.getMultipleSelectionModel().select(newContact);
+		contactSelection.selectionModel().select(newContact);
 	}
 	
 	public EventHandler<ActionEvent> getAdd() {
@@ -90,6 +90,6 @@ public class ContactManagerPresentation {
 	}
 	
 	public MultipleSelectionModel<Contact> getSelectedContact() {
-		return contactSelection.getMultipleSelectionModel();
+		return contactSelection.selectionModel();
 	}
 }

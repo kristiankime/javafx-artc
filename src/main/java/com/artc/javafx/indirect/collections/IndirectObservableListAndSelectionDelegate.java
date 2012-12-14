@@ -47,7 +47,7 @@ public class IndirectObservableListAndSelectionDelegate<E> extends IndirectObser
 		this.multipleSelectionModel.setSelectionMode(selectionMode);
 	}
 
-	public MultipleSelectionModel<E> getMultipleSelectionModel() {
+	public MultipleSelectionModel<E> selectionModel() {
 		return multipleSelectionModel;
 	}
 }
