@@ -6,10 +6,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.MultipleSelectionModel;
 
-import com.artc.javafx.indirect.beans.UncontrolledIndirectBean;
-import com.artc.javafx.indirect.beans.property.IndirectProperty;
-import com.artc.javafx.indirect.collections.IndirectObservableListAndSelection;
-import com.artc.javafx.indirect.collections.IndirectObservableListAndSelectionDelegate;
+import com.artclod.javafx.indirect.beans.UncontrolledIndirectBean;
+import com.artclod.javafx.indirect.beans.property.IndirectProperty;
+import com.artclod.javafx.indirect.collections.IndirectObservableListAndSelection;
+import com.artclod.javafx.indirect.collections.IndirectObservableListAndSelectionDelegate;
 
 import contactmanager.model.Contact;
 import contactmanager.model.ContactManager;

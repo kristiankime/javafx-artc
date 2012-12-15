@@ -3,7 +3,7 @@ package contactmanager.model;
 import static java.util.Arrays.asList;
 import javafx.collections.ObservableList;
 
-import com.artc.javafx.collections.BeanObservableList;
+import com.artclod.javafx.collections.BeanObservableList;
 
 public class ContactManager {
 	private final ObservableList<Contact> contacts;
