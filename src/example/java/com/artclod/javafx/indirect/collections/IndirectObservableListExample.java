@@ -15,8 +15,8 @@ import javafx.stage.Stage;
 
 import org.tbee.javafx.scene.layout.MigPane;
 
-import com.artclod.javafx.indirect.collections.IndirectObservableList;
-import com.artclod.javafx.indirect.collections.IndirectObservableListDelegate;
+import com.artclod.javafx.swap.collections.ArrayObservableListSwap;
+import com.artclod.javafx.swap.collections.ObservableListSwap;
 
 public class IndirectObservableListExample extends Application {
 	public static void main(String[] args) {
@@ -35,7 +35,7 @@ public class IndirectObservableListExample extends Application {
 	public Parent createApplication() {
 		final ObservableList<String> oneTwo = FXCollections.observableArrayList("one", "two");
 		final ObservableList<String> abc = FXCollections.observableArrayList("a", "b", "c");
-		final IndirectObservableList<String> indirectList = IndirectObservableListDelegate.create(oneTwo);
+		final ObservableListSwap<String> indirectList = ArrayObservableListSwap.create(oneTwo);
 		
 		ListView<String> listView = new ListView<String>(indirectList);
 		
@@ -43,7 +43,7 @@ public class IndirectObservableListExample extends Application {
 		useListOne.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				indirectList.setUnderlyingObject(oneTwo);
+				indirectList.swap(oneTwo);
 			}
 		});
 		
@@ -51,7 +51,7 @@ public class IndirectObservableListExample extends Application {
 		useListTwo.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				indirectList.setUnderlyingObject(abc);
+				indirectList.swap(abc);
 			}
 		});
 		

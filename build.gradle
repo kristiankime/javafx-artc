@@ -16,7 +16,7 @@ apply plugin: 'eclipse'
 apply plugin: 'javafx'
 
 group = 'com.artclod'
-version = '0.0.0'
+version = '0.0.1'
 sourceCompatibility = JavaVersion.VERSION_1_7
 
 sourceSets {

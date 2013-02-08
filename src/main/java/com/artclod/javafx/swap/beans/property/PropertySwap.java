@@ -23,15 +23,12 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artclod.javafx;
+package com.artclod.javafx.swap.beans.property;
 
-/**
- * This method should release any listeners this object has added that refer back to it.
- * i.e. there should be no "hidden" references to this object that it set up that prevent 
- * garbage collection after calling release.
- */
-public interface Releasable {
+import javafx.beans.property.Property;
 
-	public void release();
+import com.artclod.javafx.swap.Swap;
+
+public interface PropertySwap<T> extends Property<T>, Swap<Property<T>> {
 	
 }

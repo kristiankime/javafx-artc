@@ -23,15 +23,16 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artclod.javafx;
+package com.artclod.javafx.swap.beans;
 
-/**
- * This method should release any listeners this object has added that refer back to it.
- * i.e. there should be no "hidden" references to this object that it set up that prevent 
- * garbage collection after calling release.
- */
-public interface Releasable {
+import javafx.beans.value.ObservableValue;
 
-	public void release();
+public class BeanCanSwap<B> extends BaseBeanSwap<ObservableValue<B>, B> {
+	public static <B> BeanCanSwap<B> create(ObservableValue<B> beanChannel) {
+		return new BeanCanSwap<B>(beanChannel);
+	}
 	
+	public BeanCanSwap(ObservableValue<B> beanChannel) {
+		super(beanChannel);
+	}
 }

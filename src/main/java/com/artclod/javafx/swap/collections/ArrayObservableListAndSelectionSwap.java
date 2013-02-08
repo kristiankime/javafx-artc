@@ -23,15 +23,31 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artclod.javafx;
+package com.artclod.javafx.swap.collections;
 
-/**
- * This method should release any listeners this object has added that refer back to it.
- * i.e. there should be no "hidden" references to this object that it set up that prevent 
- * garbage collection after calling release.
- */
-public interface Releasable {
+import javafx.collections.ObservableList;
+import javafx.scene.control.ListView;
+import javafx.scene.control.MultipleSelectionModel;
+import javafx.scene.control.SelectionMode;
 
-	public void release();
+public class ArrayObservableListAndSelectionSwap<E> extends ArrayObservableListSwap<E> implements ObservableListAndSelectionSwap<E> {
+	private final MultipleSelectionModel<E> multipleSelectionModel;
 	
+	public static <T> ArrayObservableListAndSelectionSwap<T> create(ObservableList<T> underlyingList){
+		return new ArrayObservableListAndSelectionSwap<T>(underlyingList);
+	}
+	
+	public ArrayObservableListAndSelectionSwap(ObservableList<E> underlyingList){
+		this(underlyingList, SelectionMode.SINGLE);
+	}
+	
+	public ArrayObservableListAndSelectionSwap(ObservableList<E> underlyingList, SelectionMode selectionMode) {
+		swap(underlyingList);
+		this.multipleSelectionModel = new ListView<E>(this).getSelectionModel();
+		this.multipleSelectionModel.setSelectionMode(selectionMode);
+	}
+
+	public MultipleSelectionModel<E> selectionModel() {
+		return multipleSelectionModel;
+	}
 }

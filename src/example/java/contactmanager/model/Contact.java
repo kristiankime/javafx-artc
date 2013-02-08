@@ -7,9 +7,9 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-import com.artclod.javafx.indirect.beans.getter.BooleanPropertyGetter;
-import com.artclod.javafx.indirect.beans.getter.IntegerPropertyGetter;
-import com.artclod.javafx.indirect.beans.getter.StringPropertyGetter;
+import com.artclod.javafx.swap.beans.getter.BooleanPropertyGetter;
+import com.artclod.javafx.swap.beans.getter.IntegerPropertyGetter;
+import com.artclod.javafx.swap.beans.getter.StringPropertyGetter;
 
 public class Contact {
 	public static StringPropertyGetter<Contact> FIRST_NAME = new StringPropertyGetter<Contact>() {

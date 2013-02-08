@@ -6,10 +6,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.MultipleSelectionModel;
 
-import com.artclod.javafx.indirect.beans.UncontrolledIndirectBean;
-import com.artclod.javafx.indirect.beans.property.IndirectProperty;
-import com.artclod.javafx.indirect.collections.IndirectObservableListAndSelection;
-import com.artclod.javafx.indirect.collections.IndirectObservableListAndSelectionDelegate;
+import com.artclod.javafx.swap.beans.BeanCanSwap;
+import com.artclod.javafx.swap.beans.property.PropertySwap;
+import com.artclod.javafx.swap.collections.ArrayObservableListAndSelectionSwap;
+import com.artclod.javafx.swap.collections.ObservableListAndSelectionSwap;
 
 import contactmanager.model.Contact;
 import contactmanager.model.ContactManager;
@@ -17,11 +17,11 @@ import contactmanager.model.ContactManager;
 public class ContactManagerPresentation {
 	private final ContactManager contactManager;
 	
-	private final IndirectObservableListAndSelection<Contact> contactSelection;
-	private final UncontrolledIndirectBean<Contact> contact;
-	private final IndirectProperty<String> firstName;
-	private final IndirectProperty<String> lastName;
-	private final IndirectProperty<Boolean> fictional;
+	private final ObservableListAndSelectionSwap<Contact> contactSelection;
+	private final BeanCanSwap<Contact> contact;
+	private final PropertySwap<String> firstName;
+	private final PropertySwap<String> lastName;
+	private final PropertySwap<Boolean> fictional;
 	
 	private final EventHandler<ActionEvent> add;
 	private final EventHandler<ActionEvent> remove;
@@ -29,13 +29,13 @@ public class ContactManagerPresentation {
 	public ContactManagerPresentation(ContactManager contactManager) {
 		this.contactManager = contactManager;
 		
-		this.contactSelection = IndirectObservableListAndSelectionDelegate.<Contact> create(contactManager.getContacts());
+		this.contactSelection = ArrayObservableListAndSelectionSwap.<Contact> create(contactManager.getContacts());
 		this.contactSelection.selectionModel().select(0);
 		
-		this.contact = new UncontrolledIndirectBean<Contact>(contactSelection.selectionModel().selectedItemProperty());
-		this.firstName = contact.getIndirectProperty(Contact.FIRST_NAME);
-		this.lastName = contact.getIndirectProperty(Contact.LAST_NAME);
-		this.fictional = contact.getIndirectProperty(Contact.FICTIONAL);
+		this.contact = new BeanCanSwap<Contact>(contactSelection.selectionModel().selectedItemProperty());
+		this.firstName = contact.getProperty(Contact.FIRST_NAME);
+		this.lastName = contact.getProperty(Contact.LAST_NAME);
+		this.fictional = contact.getProperty(Contact.FICTIONAL);
 		
 		this.add = new EventHandler<ActionEvent>() {
 			@Override

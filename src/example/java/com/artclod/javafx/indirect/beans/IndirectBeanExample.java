@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 import org.tbee.javafx.scene.layout.MigPane;
 
-import com.artclod.javafx.indirect.beans.IndirectBean;
+import com.artclod.javafx.swap.beans.BeanSwap;
 
 public class IndirectBeanExample extends Application {
 	public static void main(String[] args) {
@@ -31,12 +31,12 @@ public class IndirectBeanExample extends Application {
 	public Parent createApplication() {
 		final StringBean one = new StringBean("one a", "one b");
 		final StringBean two = new StringBean("two a", "two b");
-		final IndirectBean<StringBean> indirectBean = new IndirectBean<StringBean>(one);
+		final BeanSwap<StringBean> indirectBean = new BeanSwap<StringBean>(one);
 		
 		TextField aField = new TextField();
-		aField.textProperty().bindBidirectional(indirectBean.getIndirectProperty(StringBean.GET_A_PROPERTY));
+		aField.textProperty().bindBidirectional(indirectBean.getProperty(StringBean.GET_A_PROPERTY));
 		TextField bField = new TextField();
-		bField.textProperty().bindBidirectional(indirectBean.getIndirectProperty(StringBean.GET_B_PROPERTY));
+		bField.textProperty().bindBidirectional(indirectBean.getProperty(StringBean.GET_B_PROPERTY));
 		
 		Button useBeanOne = new Button("use one");
 		useBeanOne.setOnAction(new EventHandler<ActionEvent>() {

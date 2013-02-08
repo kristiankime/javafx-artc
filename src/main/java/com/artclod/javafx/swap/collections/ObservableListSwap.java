@@ -23,15 +23,12 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artclod.javafx;
+package com.artclod.javafx.swap.collections;
 
-/**
- * This method should release any listeners this object has added that refer back to it.
- * i.e. there should be no "hidden" references to this object that it set up that prevent 
- * garbage collection after calling release.
- */
-public interface Releasable {
+import javafx.collections.ObservableList;
 
-	public void release();
-	
+import com.artclod.javafx.swap.Swap;
+
+public interface ObservableListSwap<T> extends ObservableList<T>, Swap<ObservableList<T>> {
+
 }

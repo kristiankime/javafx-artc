@@ -23,15 +23,29 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artclod.javafx;
+package com.artclod.javafx.swap.beans;
 
-/**
- * This method should release any listeners this object has added that refer back to it.
- * i.e. there should be no "hidden" references to this object that it set up that prevent 
- * garbage collection after calling release.
- */
-public interface Releasable {
+import com.artclod.javafx.swap.Swap;
+import com.artclod.javafx.swap.beans.getter.Getter;
 
-	public void release();
+public class BeanSwapPropertySyncer<T, B> {
+	private final Swap<T> indirectObject;
+	private final Getter<? extends T, B> getter;
 	
+	public static <T, B> BeanSwapPropertySyncer<T, B> create(Swap<T> indirect, Getter<? extends T, B> getter) {
+		return new BeanSwapPropertySyncer<T, B>(indirect, getter);
+	}
+	
+	public BeanSwapPropertySyncer(Swap<T> indirect, Getter<? extends T, B> getter) {
+		this.indirectObject = indirect;
+		this.getter = getter;
+	}
+	
+	public void sync(B value) {
+		if (value == null) {
+			indirectObject.swap(null);
+		} else {
+			indirectObject.swap(getter.get(value));
+		}
+	}
 }

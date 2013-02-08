@@ -42,7 +42,7 @@ import javafx.collections.ListChangeListener.Change;
 import org.junit.Test;
 
 import com.artclod.javafx.collections.BeanObservableList;
-import com.artclod.javafx.indirect.beans.getter.StringPropertyGetter;
+import com.artclod.javafx.swap.beans.getter.StringPropertyGetter;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class BeanObservableListTest {

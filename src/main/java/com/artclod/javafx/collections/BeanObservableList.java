@@ -44,7 +44,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
 import com.artclod.javafx.Releasable;
-import com.artclod.javafx.indirect.beans.getter.Getter;
+import com.artclod.javafx.swap.beans.getter.Getter;
 
 public class BeanObservableList<B> implements ObservableList<B> {
 	private final ObservableList<B> underlyingList;
@@ -100,7 +100,8 @@ public class BeanObservableList<B> implements ObservableList<B> {
 			// underlyingList.set(index, bean);
 			//
 			// but this interacts badly with SelectionModel(s) who believe that 
-			// the items has been dropped and deselect it which is not the desired behavior.
+			// the item has been dropped and deselect it, which is not the desired behavior.
+			// 
 			// This is a hack which, while inefficient, retains all the items so
 			// SelectionModel(s) work and forces an update on the desired item (plus all the others for that matter).
 			underlyingList.add(0, null);

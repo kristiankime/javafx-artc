@@ -3,7 +3,7 @@ package com.artclod.javafx.indirect.beans;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-import com.artclod.javafx.indirect.beans.getter.StringPropertyGetter;
+import com.artclod.javafx.swap.beans.getter.StringPropertyGetter;
 
 public class StringBean {
 	public static final StringPropertyGetter<StringBean> GET_A_PROPERTY = new StringPropertyGetter<StringBean>() {

@@ -13,10 +13,10 @@ import javafx.stage.Stage;
 
 import org.tbee.javafx.scene.layout.MigPane;
 
-import com.artclod.javafx.indirect.beans.IndirectBean;
-import com.artclod.javafx.indirect.beans.property.IndirectProperty;
-import com.artclod.javafx.indirect.collections.IndirectObservableList;
-import com.artclod.javafx.indirect.collections.IndirectObservableListDelegate;
+import com.artclod.javafx.swap.beans.BeanSwap;
+import com.artclod.javafx.swap.beans.property.PropertySwap;
+import com.artclod.javafx.swap.collections.ArrayObservableListSwap;
+import com.artclod.javafx.swap.collections.ObservableListSwap;
 
 public class BeanAndListExample extends Application {
 	public static void main(String[] args) {
@@ -38,10 +38,10 @@ public class BeanAndListExample extends Application {
 		final ListBean two = new ListBean("two a", "two b", "a", "b", "c");
 
 		// Indirects
-		final IndirectBean<ListBean> indirectBean = IndirectBean.create(one);
-		final IndirectObservableList<String> indirectList = indirectBean.getIndirect(new IndirectObservableListDelegate<String>(), ListBean.GET_LIST_PROPERTY);
-		IndirectProperty<String> indirectPropertyA = indirectBean.getIndirectProperty(ListBean.GET_A_PROPERTY);
-		IndirectProperty<String> indirectPropertyB = indirectBean.getIndirectProperty(ListBean.GET_B_PROPERTY);
+		final BeanSwap<ListBean> indirectBean = BeanSwap.create(one);
+		final ObservableListSwap<String> indirectList = indirectBean.getSwap(new ArrayObservableListSwap<String>(), ListBean.GET_LIST_PROPERTY);
+		PropertySwap<String> indirectPropertyA = indirectBean.getProperty(ListBean.GET_A_PROPERTY);
+		PropertySwap<String> indirectPropertyB = indirectBean.getProperty(ListBean.GET_B_PROPERTY);
 		
 		// Components
 		TextField aField = new TextField();

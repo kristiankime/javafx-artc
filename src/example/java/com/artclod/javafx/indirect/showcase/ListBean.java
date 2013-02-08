@@ -5,8 +5,8 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import com.artclod.javafx.indirect.beans.getter.Getter;
-import com.artclod.javafx.indirect.beans.getter.StringPropertyGetter;
+import com.artclod.javafx.swap.beans.getter.Getter;
+import com.artclod.javafx.swap.beans.getter.StringPropertyGetter;
 
 public class ListBean {
 	public static final StringPropertyGetter<ListBean> GET_A_PROPERTY = new StringPropertyGetter<ListBean>() {
