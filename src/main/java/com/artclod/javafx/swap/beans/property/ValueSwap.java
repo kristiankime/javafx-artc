@@ -23,16 +23,12 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artclod.javafx.swap.beans;
+package com.artclod.javafx.swap.beans.property;
 
-import javafx.beans.value.ObservableValue;
+import javafx.beans.property.Property;
 
-public class BeanCanSwap<B> extends BaseBeanSwap<ObservableValue<B>, B> {
-	public static <B> BeanCanSwap<B> create(ObservableValue<B> beanChannel) {
-		return new BeanCanSwap<B>(beanChannel);
-	}
+import com.artclod.javafx.swap.Swap;
+
+public interface ValueSwap<T> extends ValueRef<T>, Property<T>, Swap<T> {
 	
-	public BeanCanSwap(ObservableValue<B> beanChannel) {
-		super(beanChannel);
-	}
 }

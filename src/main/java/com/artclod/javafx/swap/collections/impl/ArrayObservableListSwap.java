@@ -27,12 +27,14 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artclod.javafx.swap.collections;
+package com.artclod.javafx.swap.collections.impl;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
+import com.artclod.javafx.swap.collections.ObservableListSwap;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
@@ -59,7 +61,7 @@ public class ArrayObservableListSwap<E> implements ObservableListSwap<E> {
 	}
 	
 	@Override
-	public ObservableList<E> getSwap() {
+	public ObservableList<E> getRefObject() {
 		return underlyingObject;
 	}
 	

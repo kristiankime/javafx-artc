@@ -23,31 +23,52 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artclod.javafx.swap.collections;
+package com.artclod.javafx.swap.beans.impl;
 
-import javafx.collections.ObservableList;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MultipleSelectionModel;
-import javafx.scene.control.SelectionMode;
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleObjectProperty;
 
-public class ArrayObservableListAndSelectionSwap<E> extends ArrayObservableListSwap<E> implements ObservableListAndSelectionSwap<E> {
-	private final MultipleSelectionModel<E> multipleSelectionModel;
+import com.artclod.javafx.Releasable;
+import com.artclod.javafx.swap.beans.BeanSwap;
+
+public class SimpleBeanSwap<B> extends BaseBeanSwap<Property<B>, B> implements BeanSwap<B>, Releasable {
 	
-	public static <T> ArrayObservableListAndSelectionSwap<T> create(ObservableList<T> underlyingList){
-		return new ArrayObservableListAndSelectionSwap<T>(underlyingList);
-	}
-	
-	public ArrayObservableListAndSelectionSwap(ObservableList<E> underlyingList){
-		this(underlyingList, SelectionMode.SINGLE);
+	public static <B> SimpleBeanSwap<B> create() {
+		return new SimpleBeanSwap<B>();
 	}
 	
-	public ArrayObservableListAndSelectionSwap(ObservableList<E> underlyingList, SelectionMode selectionMode) {
-		swap(underlyingList);
-		this.multipleSelectionModel = new ListView<E>(this).getSelectionModel();
-		this.multipleSelectionModel.setSelectionMode(selectionMode);
+	public static <B> SimpleBeanSwap<B> create(B bean) {
+		return new SimpleBeanSwap<B>(bean);
+	}
+	
+	public static <B> SimpleBeanSwap<B> create(Property<B> beanChannel) {
+		return new SimpleBeanSwap<B>(beanChannel);
+	}
+	
+	public SimpleBeanSwap() {
+		this(new SimpleObjectProperty<B>(null));
+	}
+	
+	public SimpleBeanSwap(B bean) {
+		this(new SimpleObjectProperty<B>(bean));
+	}
+	
+	public SimpleBeanSwap(Property<B> beanChannel) {
+		super(beanChannel);
+	}
+	
+	public void setBean(B bean) {
+		swap(bean);
+	}
+	
+	@Override
+	public void swap(B underlyingObject) {
+		beanChannel.setValue(underlyingObject);
+	}
+	
+	@Override
+	public void release() {
+		beanChannel.setValue(null);
 	}
 
-	public MultipleSelectionModel<E> selectionModel() {
-		return multipleSelectionModel;
-	}
 }

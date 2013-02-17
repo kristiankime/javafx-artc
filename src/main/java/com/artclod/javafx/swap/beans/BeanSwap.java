@@ -22,53 +22,14 @@
  * of the authors and should not be interpreted as representing official policies,
  * either expressed or implied, of the FreeBSD Project.
  */
-
 package com.artclod.javafx.swap.beans;
 
 import javafx.beans.property.Property;
-import javafx.beans.property.SimpleObjectProperty;
 
-import com.artclod.javafx.Releasable;
 import com.artclod.javafx.swap.Swap;
 
-public class BeanSwap<B> extends BaseBeanSwap<Property<B>, B> implements Swap<B>, Releasable {
-	
-	public static <B> BeanSwap<B> create() {
-		return new BeanSwap<B>();
-	}
-	
-	public static <B> BeanSwap<B> create(B bean) {
-		return new BeanSwap<B>(bean);
-	}
-	
-	public static <B> BeanSwap<B> create(Property<B> beanChannel) {
-		return new BeanSwap<B>(beanChannel);
-	}
-	
-	public BeanSwap() {
-		this(new SimpleObjectProperty<B>(null));
-	}
-	
-	public BeanSwap(B bean) {
-		this(new SimpleObjectProperty<B>(bean));
-	}
-	
-	public BeanSwap(Property<B> beanChannel) {
-		super(beanChannel);
-	}
-	
-	public void setBean(B bean) {
-		swap(bean);
-	}
-	
-	@Override
-	public void swap(B underlyingObject) {
-		beanChannel.setValue(underlyingObject);
-	}
-	
-	@Override
-	public void release() {
-		beanChannel.setValue(null);
-	}
+public interface BeanSwap<B> extends BeanRef<B>, Swap<B> {
 
+	public Property<B> beanChannel();
+	
 }

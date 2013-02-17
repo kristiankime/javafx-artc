@@ -1,4 +1,4 @@
-package com.artclod.javafx.indirect.showcase;
+package com.artclod.javafx.swap.showcase;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

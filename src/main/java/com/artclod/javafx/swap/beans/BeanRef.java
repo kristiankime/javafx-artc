@@ -22,13 +22,42 @@
  * of the authors and should not be interpreted as representing official policies,
  * either expressed or implied, of the FreeBSD Project.
  */
+package com.artclod.javafx.swap.beans;
 
-package com.artclod.javafx.swap.collections;
-
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.Property;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 
+import com.artclod.javafx.swap.Ref;
 import com.artclod.javafx.swap.Swap;
+import com.artclod.javafx.swap.beans.getter.Getter;
+import com.artclod.javafx.swap.beans.property.PropertyRef;
+import com.artclod.javafx.swap.beans.property.ValueRef;
+import com.artclod.javafx.swap.collections.ObservableListRef;
 
-public interface ObservableListSwap<T> extends ObservableListRef<T>, Swap<ObservableList<T>> {
+public interface BeanRef<B> extends Ref<B> {
+
+	public <T> PropertyRef<T> getProperty(Getter<? extends Property<T>, B> getter);
+
+	public <T> ValueRef<T> getValue(Getter<? extends T, B> getter);
+
+	public <T> ObservableListRef<T> getList(Getter<? extends ObservableList<T>, B> getter);
+
+	public <T> BeanRef<T> getBeanFromProperty(Getter<? extends Property<T>, B> getter);
+
+	public <T> BeanRef<T> getBeanFromValue(Getter<T, B> getter);
+
+	public <I extends Swap<T>, T> I attachSwap(I swap, Getter<T, B> getter);
+
+	public void addPropertySyncher(BeanSwapPropertySyncer<?, B> propertySyncer);
+
+	public void removePropertySyncher(BeanSwapPropertySyncer<?, B> propertySyncer);
+
+	public ObservableValue<B> beanChannel();
+
+	public BooleanProperty nonNullBeanProperty();
+
+	public B getBean();
 
 }

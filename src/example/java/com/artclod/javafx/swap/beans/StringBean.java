@@ -1,4 +1,4 @@
-package com.artclod.javafx.indirect.beans;
+package com.artclod.javafx.swap.beans;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

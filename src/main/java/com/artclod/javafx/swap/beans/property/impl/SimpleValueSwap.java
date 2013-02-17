@@ -23,12 +23,38 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artclod.javafx.swap.collections;
+package com.artclod.javafx.swap.beans.property.impl;
 
-import javafx.collections.ObservableList;
+import javafx.beans.property.SimpleObjectProperty;
 
-import com.artclod.javafx.swap.Swap;
+import com.artclod.javafx.swap.beans.property.ValueSwap;
 
-public interface ObservableListSwap<T> extends ObservableListRef<T>, Swap<ObservableList<T>> {
+public class SimpleValueSwap<T> extends SimpleObjectProperty<T> implements ValueSwap<T> {
+	
+	public static <T> SimpleValueSwap<T> create() {
+		return new SimpleValueSwap<T>();
+	}
+	
+	public static <T> SimpleValueSwap<T> create(T swap) {
+		return new SimpleValueSwap<T>(swap);
+	}
+	
+	public SimpleValueSwap() {
+		super();
+	}
 
+	public SimpleValueSwap(T swap) {
+		super(swap);
+	}
+
+	@Override
+	public void swap(T newSwap) {
+		setValue(newSwap);
+	}
+	
+	@Override
+	public T getRefObject() {
+		return getValue();
+	}
+	
 }

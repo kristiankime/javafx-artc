@@ -6,10 +6,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.MultipleSelectionModel;
 
-import com.artclod.javafx.swap.beans.BeanCanSwap;
-import com.artclod.javafx.swap.beans.property.PropertySwap;
-import com.artclod.javafx.swap.collections.ArrayObservableListAndSelectionSwap;
+import com.artclod.javafx.swap.beans.impl.SimpleBeanRef;
+import com.artclod.javafx.swap.beans.property.PropertyRef;
 import com.artclod.javafx.swap.collections.ObservableListAndSelectionSwap;
+import com.artclod.javafx.swap.collections.impl.ArrayObservableListAndSelectionSwap;
 
 import contactmanager.model.Contact;
 import contactmanager.model.ContactManager;
@@ -18,10 +18,10 @@ public class ContactManagerPresentation {
 	private final ContactManager contactManager;
 	
 	private final ObservableListAndSelectionSwap<Contact> contactSelection;
-	private final BeanCanSwap<Contact> contact;
-	private final PropertySwap<String> firstName;
-	private final PropertySwap<String> lastName;
-	private final PropertySwap<Boolean> fictional;
+	private final SimpleBeanRef<Contact> contact;
+	private final PropertyRef<String> firstName;
+	private final PropertyRef<String> lastName;
+	private final PropertyRef<Boolean> fictional;
 	
 	private final EventHandler<ActionEvent> add;
 	private final EventHandler<ActionEvent> remove;
@@ -32,7 +32,7 @@ public class ContactManagerPresentation {
 		this.contactSelection = ArrayObservableListAndSelectionSwap.<Contact> create(contactManager.getContacts());
 		this.contactSelection.selectionModel().select(0);
 		
-		this.contact = new BeanCanSwap<Contact>(contactSelection.selectionModel().selectedItemProperty());
+		this.contact = new SimpleBeanRef<Contact>(contactSelection.selectionModel().selectedItemProperty());
 		this.firstName = contact.getProperty(Contact.FIRST_NAME);
 		this.lastName = contact.getProperty(Contact.LAST_NAME);
 		this.fictional = contact.getProperty(Contact.FICTIONAL);

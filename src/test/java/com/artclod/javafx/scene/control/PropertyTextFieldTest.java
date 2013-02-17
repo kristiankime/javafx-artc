@@ -37,15 +37,14 @@ import org.junit.Test;
 
 import com.artclod.javafx.scene.control.PropertyTextField;
 
-
 public class PropertyTextFieldTest {
 
-	@Test(expected=NullPointerException.class)
+	@Test(expected = NullPointerException.class)
 	public void constructor_throws_if_property_is_null() throws Exception {
 		new PropertyTextField<>(null, new IntegerStringConverter());
 	}
 
-	@Test(expected=NullPointerException.class)
+	@Test(expected = NullPointerException.class)
 	public void constructor_throws_if_converter_is_null() throws Exception {
 		new PropertyTextField<>(new SimpleObjectProperty<Integer>(), (StringConverter<Integer>) null);
 	}
@@ -56,17 +55,17 @@ public class PropertyTextFieldTest {
 
 		assertEquals(1010, field.valueProperty().getValue().intValue());
 	}
-	
+
 	@Test
 	public void setting_text_does_not_change_value_immediately() throws Exception {
 		PropertyTextField<Integer, SimpleObjectProperty<Integer>> field = new PropertyTextField<>(new SimpleObjectProperty<Integer>(1010), new IntegerStringConverter());
 
 		field.textProperty().setValue("1111");
-				
+
 		assertEquals(1010, field.valueProperty().getValue().intValue());
 		assertEquals("1111", field.textProperty().getValue());
 	}
-	
+
 	@Test
 	public void after_an_updateValue_is_triggered_the_valueProperty_is_updated_if_the_text_can_be_parsed() throws Exception {
 		PropertyTextField<Integer, SimpleObjectProperty<Integer>> field = new PropertyTextField<>(new SimpleObjectProperty<Integer>(1010), new IntegerStringConverter());
@@ -77,7 +76,7 @@ public class PropertyTextFieldTest {
 		assertEquals(1111, field.valueProperty().getValue().intValue());
 		assertEquals("1111", field.textProperty().getValue());
 	}
-	
+
 	@Test
 	public void after_an_updateValue_is_triggered_the_textProperty_is_reverted_if_the_new_text_cant_be_parsed() throws Exception {
 		PropertyTextField<Integer, SimpleObjectProperty<Integer>> field = new PropertyTextField<>(new SimpleObjectProperty<Integer>(1010), new IntegerStringConverter());
@@ -88,7 +87,7 @@ public class PropertyTextFieldTest {
 		assertEquals(1010, field.valueProperty().getValue().intValue());
 		assertEquals("1010", field.textProperty().getValue());
 	}
-	
+
 	@Test
 	public void setting_the_valueProperty_immediately_changes_the_textProperty() throws Exception {
 		PropertyTextField<Integer, SimpleObjectProperty<Integer>> field = new PropertyTextField<>(new SimpleObjectProperty<Integer>(1010), new IntegerStringConverter());

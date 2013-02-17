@@ -23,7 +23,9 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artclod.javafx.swap.beans.property;
+package com.artclod.javafx.swap.beans.property.impl;
+
+import com.artclod.javafx.swap.beans.property.PropertySwap;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.Property;
@@ -33,37 +35,40 @@ import javafx.beans.value.ObservableValue;
 
 public class SimplePropertySwap<T> implements PropertySwap<T> {
 	private final Property<T> delegate;
-	private Property<T> underlyingObject;
+	private Property<T> swap = null;
 	private ObservableValue<? extends T> unidirectionBinding = null;
 	
 	public static <T> SimplePropertySwap<T> create() {
 		return new SimplePropertySwap<T>();
 	}
 	
-	public static <T> SimplePropertySwap<T> create(Property<T> underlyingProperty) {
-		SimplePropertySwap<T> ret = new SimplePropertySwap<T>();
-		ret.swap(underlyingProperty);
-		return ret;
+	public static <T> SimplePropertySwap<T> create(Property<T> swap) {
+		return new SimplePropertySwap<T>(swap);
 	}
 	
 	public SimplePropertySwap() {
 		this.delegate = new SimpleObjectProperty<T>();
 	}
 	
+	public SimplePropertySwap(Property<T> swap) {
+		this.delegate = new SimpleObjectProperty<T>();
+		swap(swap);
+	}
+	
 	@Override
 	public void swap(Property<T> newUnderlyingObject) {
 		// Unbind everything in preparation for the change
-		if (underlyingObject != null) {
-			delegate.unbindBidirectional(underlyingObject);
+		if (swap != null) {
+			delegate.unbindBidirectional(swap);
 		}
 		delegate.unbind();
 		
 		// Make the change
-		underlyingObject = newUnderlyingObject;
+		swap = newUnderlyingObject;
 		
-		if (underlyingObject != null) {
+		if (swap != null) {
 			// Rebind if the new objects exists
-			delegate.bindBidirectional(underlyingObject);
+			delegate.bindBidirectional(swap);
 			if (unidirectionBinding != null) {
 				delegate.bind(unidirectionBinding);
 			}
@@ -74,23 +79,23 @@ public class SimplePropertySwap<T> implements PropertySwap<T> {
 	}
 	
 	@Override
-	public Property<T> getSwap() {
-		return underlyingObject;
+	public Property<T> getRefObject() {
+		return swap;
 	}
 	
 	@Override
 	public Object getBean() {
-		return underlyingObject != null ? underlyingObject.getBean() : null;
+		return swap != null ? swap.getBean() : null;
 	}
 	
 	@Override
 	public String getName() {
-		return underlyingObject != null ? underlyingObject.getName() : null;
+		return swap != null ? swap.getName() : null;
 	}
 	
 	@Override
 	public void bind(ObservableValue<? extends T> observable) {
-		if (underlyingObject != null) {
+		if (swap != null) {
 			delegate.bind(observable);
 		}
 		unidirectionBinding = observable;
@@ -105,7 +110,7 @@ public class SimplePropertySwap<T> implements PropertySwap<T> {
 	@Override
 	public void setValue(T value) {
 		// The value is fixed at null if the underlyingObject is null
-		if (underlyingObject != null) {
+		if (swap != null) {
 			delegate.setValue(value);
 		}
 	}

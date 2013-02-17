@@ -68,7 +68,6 @@ public class PropertyTextField<T, P extends Property<T>> extends TextField {
 	}
 	
 	public PropertyTextField(P valueProperty, ValueConverter<T> valueConverter) {
-		super();
 		if(valueConverter == null)
 			throw new NullPointerException("valueConverter was null");
 		if(valueProperty == null)

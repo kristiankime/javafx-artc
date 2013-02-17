@@ -27,8 +27,8 @@ package com.artclod.javafx.swap.collections;
 
 import javafx.collections.ObservableList;
 
-import com.artclod.javafx.swap.Swap;
+import com.artclod.javafx.swap.Ref;
 
-public interface ObservableListSwap<T> extends ObservableListRef<T>, Swap<ObservableList<T>> {
+public interface ObservableListRef<T> extends ObservableList<T>, Ref<ObservableList<T>> {
 
 }

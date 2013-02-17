@@ -42,7 +42,7 @@ package com.artclod.javafx.swap;
  * fires an event the listener would receive an event. Additionally it is expected that if the 
  * underlying object was changed the listeners would receive an appropriate event.
  */
-public interface Swap<T> extends CanSwap<T> {
+public interface Swap<T> extends Ref<T> {
 	
 	public void swap(T newUnderlyingObject);
 	

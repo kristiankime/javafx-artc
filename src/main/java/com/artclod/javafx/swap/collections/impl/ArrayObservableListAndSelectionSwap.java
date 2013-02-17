@@ -23,12 +23,33 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artclod.javafx.swap.collections;
+package com.artclod.javafx.swap.collections.impl;
+
+import com.artclod.javafx.swap.collections.ObservableListAndSelectionSwap;
 
 import javafx.collections.ObservableList;
+import javafx.scene.control.ListView;
+import javafx.scene.control.MultipleSelectionModel;
+import javafx.scene.control.SelectionMode;
 
-import com.artclod.javafx.swap.Swap;
+public class ArrayObservableListAndSelectionSwap<E> extends ArrayObservableListSwap<E> implements ObservableListAndSelectionSwap<E> {
+	private final MultipleSelectionModel<E> multipleSelectionModel;
+	
+	public static <T> ArrayObservableListAndSelectionSwap<T> create(ObservableList<T> underlyingList){
+		return new ArrayObservableListAndSelectionSwap<T>(underlyingList);
+	}
+	
+	public ArrayObservableListAndSelectionSwap(ObservableList<E> underlyingList){
+		this(underlyingList, SelectionMode.SINGLE);
+	}
+	
+	public ArrayObservableListAndSelectionSwap(ObservableList<E> underlyingList, SelectionMode selectionMode) {
+		swap(underlyingList);
+		this.multipleSelectionModel = new ListView<E>(this).getSelectionModel();
+		this.multipleSelectionModel.setSelectionMode(selectionMode);
+	}
 
-public interface ObservableListSwap<T> extends ObservableListRef<T>, Swap<ObservableList<T>> {
-
+	public MultipleSelectionModel<E> selectionModel() {
+		return multipleSelectionModel;
+	}
 }

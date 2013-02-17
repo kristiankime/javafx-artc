@@ -29,23 +29,23 @@ import com.artclod.javafx.swap.Swap;
 import com.artclod.javafx.swap.beans.getter.Getter;
 
 public class BeanSwapPropertySyncer<T, B> {
-	private final Swap<T> indirectObject;
+	private final Swap<T> swap;
 	private final Getter<? extends T, B> getter;
 	
-	public static <T, B> BeanSwapPropertySyncer<T, B> create(Swap<T> indirect, Getter<? extends T, B> getter) {
-		return new BeanSwapPropertySyncer<T, B>(indirect, getter);
+	public static <T, B> BeanSwapPropertySyncer<T, B> create(Swap<T> swap, Getter<? extends T, B> getter) {
+		return new BeanSwapPropertySyncer<T, B>(swap, getter);
 	}
 	
-	public BeanSwapPropertySyncer(Swap<T> indirect, Getter<? extends T, B> getter) {
-		this.indirectObject = indirect;
+	public BeanSwapPropertySyncer(Swap<T> swap, Getter<? extends T, B> getter) {
+		this.swap = swap;
 		this.getter = getter;
 	}
 	
 	public void sync(B value) {
 		if (value == null) {
-			indirectObject.swap(null);
+			swap.swap(null);
 		} else {
-			indirectObject.swap(getter.get(value));
+			swap.swap(getter.get(value));
 		}
 	}
 }

@@ -1,4 +1,4 @@
-package com.artclod.javafx.indirect.showcase;
+package com.artclod.javafx.swap.showcase;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -13,10 +13,10 @@ import javafx.stage.Stage;
 
 import org.tbee.javafx.scene.layout.MigPane;
 
-import com.artclod.javafx.swap.beans.BeanSwap;
-import com.artclod.javafx.swap.beans.property.PropertySwap;
-import com.artclod.javafx.swap.collections.ArrayObservableListSwap;
+import com.artclod.javafx.swap.beans.impl.SimpleBeanSwap;
+import com.artclod.javafx.swap.beans.property.PropertyRef;
 import com.artclod.javafx.swap.collections.ObservableListSwap;
+import com.artclod.javafx.swap.collections.impl.ArrayObservableListSwap;
 
 public class ListSetExample extends Application {
 	public static void main(String[] args) {
@@ -37,18 +37,18 @@ public class ListSetExample extends Application {
 		final ListBean one = new ListBean("one a", "one b", "1", "2");
 		final ListBean two = new ListBean("two a", "two b", "a", "b", "c");
 
-		// Indirects
-		final BeanSwap<ListBean> indirectBean = BeanSwap.create(one);
-		final ObservableListSwap<String> indirectList = indirectBean.getSwap(new ArrayObservableListSwap<String>(), ListBean.GET_LIST_PROPERTY);
-		PropertySwap<String> indirectPropertyA = indirectBean.getProperty(ListBean.GET_A_PROPERTY);
-		PropertySwap<String> indirectPropertyB = indirectBean.getProperty(ListBean.GET_B_PROPERTY);
+		// Swaps
+		final SimpleBeanSwap<ListBean> beanSwap = SimpleBeanSwap.create(one);
+		final ObservableListSwap<String> listSwap = beanSwap.attachSwap(new ArrayObservableListSwap<String>(), ListBean.GET_LIST_PROPERTY);
+		PropertyRef<String> propertyASwap = beanSwap.getProperty(ListBean.GET_A_PROPERTY);
+		PropertyRef<String> propertyBSwap = beanSwap.getProperty(ListBean.GET_B_PROPERTY);
 		
 		// Components
 		TextField aField = new TextField();
-		aField.textProperty().bindBidirectional(indirectPropertyA);
+		aField.textProperty().bindBidirectional(propertyASwap);
 		TextField bField = new TextField();
-		bField.textProperty().bindBidirectional(indirectPropertyB);
-		ListView<String> listView = new ListView<String>(indirectList);
+		bField.textProperty().bindBidirectional(propertyBSwap);
+		ListView<String> listView = new ListView<String>(listSwap);
 		final TextField newItemField = new TextField();
 		
 		// Action buttons
@@ -56,28 +56,28 @@ public class ListSetExample extends Application {
 		useBeanOne.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				indirectBean.setBean(one);
+				beanSwap.setBean(one);
 			}
 		});
 		Button useBeanTwo = new Button("use bean two");
 		useBeanTwo.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				indirectBean.setBean(two);
+				beanSwap.setBean(two);
 			}
 		});
 		Button addNewItem = new Button("add item");
 		addNewItem.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				indirectList.add(newItemField.getText());
+				listSwap.add(newItemField.getText());
 			}
 		});
 		Button setItemTwo = new Button("set item 2");
 		setItemTwo.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				indirectList.set(1, "SET");
+				listSwap.set(1, "SET");
 			}
 		});
 		

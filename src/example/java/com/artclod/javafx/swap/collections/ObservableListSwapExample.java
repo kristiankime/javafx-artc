@@ -1,4 +1,4 @@
-package com.artclod.javafx.indirect.collections;
+package com.artclod.javafx.swap.collections;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -15,10 +15,10 @@ import javafx.stage.Stage;
 
 import org.tbee.javafx.scene.layout.MigPane;
 
-import com.artclod.javafx.swap.collections.ArrayObservableListSwap;
 import com.artclod.javafx.swap.collections.ObservableListSwap;
+import com.artclod.javafx.swap.collections.impl.ArrayObservableListSwap;
 
-public class IndirectObservableListExample extends Application {
+public class ObservableListSwapExample extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -35,15 +35,15 @@ public class IndirectObservableListExample extends Application {
 	public Parent createApplication() {
 		final ObservableList<String> oneTwo = FXCollections.observableArrayList("one", "two");
 		final ObservableList<String> abc = FXCollections.observableArrayList("a", "b", "c");
-		final ObservableListSwap<String> indirectList = ArrayObservableListSwap.create(oneTwo);
+		final ObservableListSwap<String> listSwap = ArrayObservableListSwap.create(oneTwo);
 		
-		ListView<String> listView = new ListView<String>(indirectList);
+		ListView<String> listView = new ListView<String>(listSwap);
 		
 		Button useListOne = new Button("use one");
 		useListOne.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				indirectList.swap(oneTwo);
+				listSwap.swap(oneTwo);
 			}
 		});
 		
@@ -51,7 +51,7 @@ public class IndirectObservableListExample extends Application {
 		useListTwo.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				indirectList.swap(abc);
+				listSwap.swap(abc);
 			}
 		});
 		
@@ -60,7 +60,7 @@ public class IndirectObservableListExample extends Application {
 		addNewItem.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				indirectList.add(newItemField.getText());
+				listSwap.add(newItemField.getText());
 			}
 		});
 

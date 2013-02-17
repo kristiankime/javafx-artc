@@ -23,7 +23,7 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artclod.javafx.swap.beans;
+package com.artclod.javafx.swap.beans.impl;
 
 import static junit.framework.Assert.assertEquals;
 import javafx.beans.property.IntegerProperty;
@@ -33,96 +33,98 @@ import javafx.beans.value.ObservableValue;
 
 import org.junit.Test;
 
-import com.artclod.javafx.swap.beans.BaseBeanSwap;
+import com.artclod.javafx.swap.beans.BeanRef;
 import com.artclod.javafx.swap.beans.getter.IntegerPropertyGetter;
-import com.artclod.javafx.swap.beans.property.PropertySwap;
+import com.artclod.javafx.swap.beans.impl.BaseBeanSwap;
+import com.artclod.javafx.swap.beans.property.PropertyRef;
 
 public class BaseBeanSwapTest {
+	
 	@Test(expected = NullPointerException.class)
 	public void constructor_throws_if_bean_channel_is_null() {
 		create(null);
 	}
 	
 	@Test
-	public void indirect_properties_start_with_underlying_properties_value() {
+	public void getProperty_properties_start_with_underlying_properties_value() {
 		IntBean intBean = new IntBean(1);
-		BaseBeanSwap<SimpleObjectProperty<IntBean>, IntBean> indirectBean = create(new SimpleObjectProperty<IntBean>(intBean));
-		PropertySwap<Number> indirectOneProperty = indirectBean.getProperty(IntBean.GET_ONE_PROPERTY);
+		BaseBeanSwap<SimpleObjectProperty<IntBean>, IntBean> beanSwap = create(new SimpleObjectProperty<IntBean>(intBean));
+		PropertyRef<Number> onePropertyRef = beanSwap.getProperty(IntBean.GET_ONE_PROPERTY);
 		
-		assertEquals(1, indirectOneProperty.getValue());
+		assertEquals(1, onePropertyRef.getValue());
 	}
 	
 	@Test
 	public void nonNullBean_true_if_bean_is_non_null() {
-		BaseBeanSwap<SimpleObjectProperty<IntBean>, IntBean> indirectBean = create(new SimpleObjectProperty<IntBean>(new IntBean(1)));
+		BeanRef<IntBean> beanSwap = create(new SimpleObjectProperty<IntBean>(new IntBean(1)));
 		
-		assertEquals(true, indirectBean.nonNullBeanProperty().getValue().booleanValue());
+		assertEquals(true, beanSwap.nonNullBeanProperty().getValue().booleanValue());
 	}
 	
 	@Test
 	public void nonNullBean_false_if_bean_is_null() {
-		BaseBeanSwap<SimpleObjectProperty<IntBean>, IntBean> indirectBean = create(new SimpleObjectProperty<IntBean>((IntBean) null));
+		BeanRef<IntBean> beanSwap = create(new SimpleObjectProperty<IntBean>((IntBean) null));
 		
-		assertEquals(false, indirectBean.nonNullBeanProperty().getValue().booleanValue());
+		assertEquals(false, beanSwap.nonNullBeanProperty().getValue().booleanValue());
 	}
 	
 	@Test
-	public void indirect_properties_update_when_the_underlying_property_updates() {
+	public void getProperty_properties_update_when_the_underlying_property_updates() {
 		IntBean intBean = new IntBean(1);
-		BaseBeanSwap<SimpleObjectProperty<IntBean>, IntBean> indirectBean = create(new SimpleObjectProperty<IntBean>(intBean));
-		PropertySwap<Number> indirectOneProperty = indirectBean.getProperty(IntBean.GET_ONE_PROPERTY);
+		BaseBeanSwap<SimpleObjectProperty<IntBean>, IntBean> beanSwap = create(new SimpleObjectProperty<IntBean>(intBean));
+		PropertyRef<Number> onePropertyRef = beanSwap.getProperty(IntBean.GET_ONE_PROPERTY);
 		
 		intBean.getOneProperty().setValue(5);
 		
-		assertEquals(5, indirectOneProperty.getValue());
+		assertEquals(5, onePropertyRef.getValue());
 	}
 	
 	@Test
-	public void underlying_property_updates_when_indirect_properties_updates() {
+	public void getProperty_property_updates_when_swap_properties_updates() {
 		IntBean intBean = new IntBean(1);
-		BaseBeanSwap<SimpleObjectProperty<IntBean>, IntBean> indirectBean = create(new SimpleObjectProperty<IntBean>(intBean));
-		PropertySwap<Number> indirectOneProperty = indirectBean.getProperty(IntBean.GET_ONE_PROPERTY);
+		BaseBeanSwap<SimpleObjectProperty<IntBean>, IntBean> beanSwap = create(new SimpleObjectProperty<IntBean>(intBean));
+		PropertyRef<Number> onePropertyRef = beanSwap.getProperty(IntBean.GET_ONE_PROPERTY);
 		
-		indirectOneProperty.setValue(7);
+		onePropertyRef.setValue(7);
 		
 		assertEquals(7, intBean.getOneProperty().getValue().intValue());
 	}
 	
 	@Test
-	public void switching_the_underlying_bean_switches_which_underlying_objects_the_indirect_properties_point_to() {
+	public void getProperty_switching_the_underlying_bean_switches_which_underlying_objects_the_properties_point_to() {
 		IntBean intBean1 = new IntBean(1);
 		IntBean intBean2 = new IntBean(2);
 		SimpleObjectProperty<IntBean> beanChannel = new SimpleObjectProperty<IntBean>(intBean1);
-		BaseBeanSwap<SimpleObjectProperty<IntBean>, IntBean> indirectBean = create(beanChannel);
-		PropertySwap<Number> indirectOneProperty = indirectBean.getProperty(IntBean.GET_ONE_PROPERTY);
+		BaseBeanSwap<SimpleObjectProperty<IntBean>, IntBean> beanSwap = create(beanChannel);
+		PropertyRef<Number> onePropertyRef = beanSwap.getProperty(IntBean.GET_ONE_PROPERTY);
 		
 		beanChannel.setValue(intBean2);
-		assertEquals(2, indirectOneProperty.getValue().intValue());
+		assertEquals(2, onePropertyRef.getValue().intValue());
 	}
 	
 	@Test
-	public void switching_the_underlying_bean_setting_the_value_on_the_new_property_updates_the_indirect_one() {
+	public void getProperty_switching_the_underlying_bean_setting_the_value_on_the_new_property_updates_the_indirect_one() {
 		IntBean intBean1 = new IntBean(1);
 		IntBean intBean2 = new IntBean(2);
 		SimpleObjectProperty<IntBean> beanChannel = new SimpleObjectProperty<IntBean>(intBean1);
-		BaseBeanSwap<SimpleObjectProperty<IntBean>, IntBean> indirectBean = create(beanChannel);
-		PropertySwap<Number> indirectOneProperty = indirectBean.getProperty(IntBean.GET_ONE_PROPERTY);
+		BaseBeanSwap<SimpleObjectProperty<IntBean>, IntBean> beanSwap = create(beanChannel);
+		PropertyRef<Number> onePropertyRef = beanSwap.getProperty(IntBean.GET_ONE_PROPERTY);
 		
 		beanChannel.setValue(intBean2);
-		indirectOneProperty.setValue(9);
+		onePropertyRef.setValue(9);
 		
 		assertEquals(9, intBean2.getOneProperty().getValue().intValue());
 	}
 	
 	@Test
-	public void switching_the_underlying_bean_to_null_sets_everyting_to_null() {
+	public void getProperty_switching_the_underlying_bean_to_null_sets_everyting_to_null() {
 		IntBean intBean1 = new IntBean(1);
 		SimpleObjectProperty<IntBean> beanChannel = new SimpleObjectProperty<IntBean>(intBean1);
-		BaseBeanSwap<SimpleObjectProperty<IntBean>, IntBean> indirectBean = create(beanChannel);
-		PropertySwap<Number> indirectOneProperty = indirectBean.getProperty(IntBean.GET_ONE_PROPERTY);
+		BaseBeanSwap<SimpleObjectProperty<IntBean>, IntBean> beanSwap = create(beanChannel);
+		PropertyRef<Number> onePropertyRef = beanSwap.getProperty(IntBean.GET_ONE_PROPERTY);
 		
 		beanChannel.setValue(null);
-		assertEquals(null, indirectOneProperty.getValue());
+		assertEquals(null, onePropertyRef.getValue());
 	}
 	
 	private static <BC extends ObservableValue<B>, B> BaseBeanSwap<BC, B> create(BC beanChannel) {

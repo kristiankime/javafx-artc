@@ -1,4 +1,4 @@
-package com.artclod.javafx.indirect.beans;
+package com.artclod.javafx.swap.beans;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -12,9 +12,9 @@ import javafx.stage.Stage;
 
 import org.tbee.javafx.scene.layout.MigPane;
 
-import com.artclod.javafx.swap.beans.BeanSwap;
+import com.artclod.javafx.swap.beans.impl.SimpleBeanSwap;
 
-public class IndirectBeanExample extends Application {
+public class BeanSwapExample extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -31,18 +31,18 @@ public class IndirectBeanExample extends Application {
 	public Parent createApplication() {
 		final StringBean one = new StringBean("one a", "one b");
 		final StringBean two = new StringBean("two a", "two b");
-		final BeanSwap<StringBean> indirectBean = new BeanSwap<StringBean>(one);
+		final SimpleBeanSwap<StringBean> beanSwap = new SimpleBeanSwap<StringBean>(one);
 		
 		TextField aField = new TextField();
-		aField.textProperty().bindBidirectional(indirectBean.getProperty(StringBean.GET_A_PROPERTY));
+		aField.textProperty().bindBidirectional(beanSwap.getProperty(StringBean.GET_A_PROPERTY));
 		TextField bField = new TextField();
-		bField.textProperty().bindBidirectional(indirectBean.getProperty(StringBean.GET_B_PROPERTY));
+		bField.textProperty().bindBidirectional(beanSwap.getProperty(StringBean.GET_B_PROPERTY));
 		
 		Button useBeanOne = new Button("use one");
 		useBeanOne.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				indirectBean.setBean(one);
+				beanSwap.setBean(one);
 			}
 		});
 		
@@ -50,7 +50,7 @@ public class IndirectBeanExample extends Application {
 		useBeanTwo.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				indirectBean.setBean(two);
+				beanSwap.setBean(two);
 			}
 		});
 		

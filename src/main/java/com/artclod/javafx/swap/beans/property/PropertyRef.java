@@ -23,12 +23,12 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.artclod.javafx.swap.collections;
+package com.artclod.javafx.swap.beans.property;
 
-import javafx.collections.ObservableList;
+import javafx.beans.property.Property;
 
 import com.artclod.javafx.swap.Swap;
 
-public interface ObservableListSwap<T> extends ObservableListRef<T>, Swap<ObservableList<T>> {
+public interface PropertyRef<T> extends Property<T>, Swap<Property<T>> {
 
 }

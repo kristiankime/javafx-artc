@@ -29,6 +29,6 @@ import javafx.beans.property.Property;
 
 import com.artclod.javafx.swap.Swap;
 
-public interface PropertySwap<T> extends Property<T>, Swap<Property<T>> {
-	
+public interface PropertySwap<T> extends PropertyRef<T>, Swap<Property<T>> {
+
 }
