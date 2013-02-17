@@ -26,9 +26,10 @@ package com.artclod.javafx.swap.beans;
 
 import javafx.beans.property.Property;
 
+import com.artclod.javafx.Releasable;
 import com.artclod.javafx.swap.Swap;
 
-public interface BeanSwap<B> extends BeanRef<B>, Swap<B> {
+public interface BeanSwap<B> extends BeanRef<B>, Swap<B>, Releasable {
 
 	public Property<B> beanChannel();
 	

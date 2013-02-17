@@ -1,17 +1,30 @@
+// START javafx-plugin INCLUDE
+// http://speling.shemnon.com/blog/2013/01/30/gradle-javafx-plugin-0-dot-2-0-released/
+// http://repository-javafx-gradle-plugin.forge.cloudbees.com/release/0.2.0/javafx.plugin
 buildscript {
     repositories {
         mavenLocal()
+        maven {
+            name = 'BinTray' 
+            url = 'http://dl.bintray.com/content/shemnon/javafx-gradle/'
+        }
         mavenCentral()
-        ivy {  url = 'http://repository-javafx-gradle-plugin.forge.cloudbees.com/release' }
     }
     dependencies {
         classpath 'org.bitbucket.shemnon.javafxplugin:gradle-javafx-plugin:0.2.0'
+        classpath project.files("${System.properties['java.home']}/../lib/ant-javafx.jar")
+        classpath project.files("${System.properties['java.home']}/lib/jfxrt.jar")
+        classpath 'org.jclarion:image4j:0.7'
     }
 }
 
+if (!project.plugins.findPlugin(org.bitbucket.shemnon.javafxplugin.JavaFXPlugin)) {
+    project.apply(plugin: org.bitbucket.shemnon.javafxplugin.JavaFXPlugin)
+}
+// END javafx-plugin INCLUDE
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
-apply plugin: 'javafx'
 
 group = 'com.artclod'
 version = '0.0.1'
