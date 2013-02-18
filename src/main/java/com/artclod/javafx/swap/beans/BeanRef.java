@@ -38,15 +38,15 @@ import com.artclod.javafx.swap.collections.ObservableListRef;
 
 public interface BeanRef<B> extends Ref<B> {
 
-	public <T> PropertyRef<T> getProperty(Getter<? extends Property<T>, B> getter);
+	public <T> PropertyRef<T> getPropertyRef(Getter<? extends Property<T>, B> getter);
 
-	public <T> ValueRef<T> getValue(Getter<? extends T, B> getter);
+	public <T> ValueRef<T> getValueRef(Getter<? extends T, B> getter);
 
-	public <T> ObservableListRef<T> getList(Getter<? extends ObservableList<T>, B> getter);
+	public <T> ObservableListRef<T> getObservableListRef(Getter<? extends ObservableList<T>, B> getter);
 
-	public <T> BeanRef<T> getBeanFromProperty(Getter<? extends Property<T>, B> getter);
+	public <T> BeanRef<T> getBeanRefFromProperty(Getter<? extends Property<T>, B> getter);
 
-	public <T> BeanRef<T> getBeanFromValue(Getter<T, B> getter);
+	public <T> BeanRef<T> getBeanRefFromValue(Getter<T, B> getter);
 
 	public <I extends Swap<T>, T> I attachSwap(I swap, Getter<T, B> getter);
 
@@ -57,7 +57,5 @@ public interface BeanRef<B> extends Ref<B> {
 	public ObservableValue<B> beanChannel();
 
 	public BooleanProperty nonNullBeanProperty();
-
-	public B getBean();
 
 }

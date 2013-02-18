@@ -73,35 +73,35 @@ public class BaseBeanSwap<BC extends ObservableValue<B>, B> implements Ref<B>, B
 	}
 
 	@Override
-	public <T> PropertyRef<T> getProperty(Getter<? extends Property<T>, B> getter) {
+	public <T> PropertyRef<T> getPropertyRef(Getter<? extends Property<T>, B> getter) {
 		SimplePropertySwap<T> propertySwap = new SimplePropertySwap<T>();
 		addPropertySyncher(BeanSwapPropertySyncer.create(propertySwap, getter));
 		return propertySwap;
 	}
 
 	@Override
-	public <T> ValueRef<T> getValue(Getter<? extends T, B> getter) {
+	public <T> ValueRef<T> getValueRef(Getter<? extends T, B> getter) {
 		SimpleValueSwap<T> valueSwap = new SimpleValueSwap<T>();
 		addPropertySyncher(BeanSwapPropertySyncer.create(valueSwap, getter));
 		return valueSwap;
 	}
 
 	@Override
-	public <T> ObservableListSwap<T> getList(Getter<? extends ObservableList<T>, B> getter) {
+	public <T> ObservableListSwap<T> getObservableListRef(Getter<? extends ObservableList<T>, B> getter) {
 		ArrayObservableListSwap<T> observableListSwap = new ArrayObservableListSwap<T>();
 		addPropertySyncher(BeanSwapPropertySyncer.create(observableListSwap, getter));
 		return observableListSwap;
 	}
 
 	@Override
-	public <T> BeanRef<T> getBeanFromValue(Getter<T, B> getter) {
-		ValueRef<T> beanChannel = getValue(getter);
+	public <T> BeanRef<T> getBeanRefFromValue(Getter<T, B> getter) {
+		ValueRef<T> beanChannel = getValueRef(getter);
 		return new SimpleBeanRef<T>(beanChannel);
 	}
 
 	@Override
-	public <T> BeanRef<T> getBeanFromProperty(Getter<? extends Property<T>, B> getter) {
-		PropertyRef<T> beanChannel = getProperty(getter);
+	public <T> BeanRef<T> getBeanRefFromProperty(Getter<? extends Property<T>, B> getter) {
+		PropertyRef<T> beanChannel = getPropertyRef(getter);
 		return new SimpleBeanRef<T>(beanChannel);
 	}
 
@@ -138,11 +138,6 @@ public class BaseBeanSwap<BC extends ObservableValue<B>, B> implements Ref<B>, B
 	@Override
 	public BooleanProperty nonNullBeanProperty() {
 		return nonNullBean;
-	}
-
-	@Override
-	public B getBean() {
-		return getRefObject();
 	}
 
 	@Override

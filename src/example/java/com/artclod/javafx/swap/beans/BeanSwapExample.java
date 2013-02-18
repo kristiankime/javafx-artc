@@ -34,9 +34,9 @@ public class BeanSwapExample extends Application {
 		final SimpleBeanSwap<StringBean> beanSwap = new SimpleBeanSwap<StringBean>(one);
 		
 		TextField aField = new TextField();
-		aField.textProperty().bindBidirectional(beanSwap.getProperty(StringBean.GET_A_PROPERTY));
+		aField.textProperty().bindBidirectional(beanSwap.getPropertyRef(StringBean.GET_A_PROPERTY));
 		TextField bField = new TextField();
-		bField.textProperty().bindBidirectional(beanSwap.getProperty(StringBean.GET_B_PROPERTY));
+		bField.textProperty().bindBidirectional(beanSwap.getPropertyRef(StringBean.GET_B_PROPERTY));
 		
 		Button useBeanOne = new Button("use one");
 		useBeanOne.setOnAction(new EventHandler<ActionEvent>() {
