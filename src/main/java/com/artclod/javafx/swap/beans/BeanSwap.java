@@ -31,6 +31,8 @@ import com.artclod.javafx.swap.Swap;
 
 public interface BeanSwap<B> extends BeanRef<B>, Swap<B>, Releasable {
 
+	public void setBean(B bean);
+
 	public Property<B> beanChannel();
-	
+
 }

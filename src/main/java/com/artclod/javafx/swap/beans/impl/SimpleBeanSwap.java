@@ -57,6 +57,7 @@ public class SimpleBeanSwap<B> extends BaseBeanSwap<Property<B>, B> implements B
 		super(beanChannel);
 	}
 	
+	@Override
 	public void setBean(B bean) {
 		swap(bean);
 	}

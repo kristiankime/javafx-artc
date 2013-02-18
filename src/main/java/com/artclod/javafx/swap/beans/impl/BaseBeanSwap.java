@@ -57,9 +57,10 @@ public class BaseBeanSwap<BC extends ObservableValue<B>, B> implements Ref<B>, B
 	protected final Set<BeanSwapPropertySyncer<?, B>> propertySyncers;
 
 	public BaseBeanSwap(BC beanChannel) {
-		if (beanChannel == null)
+		if (beanChannel == null) {
 			throw new NullPointerException("bean channel cannot be null");
-
+		}
+		
 		this.beanChannel = beanChannel;
 		this.nonNullBean = new SimpleBooleanProperty(beanChannel.getValue() != null);
 		this.propertySyncers = new HashSet<BeanSwapPropertySyncer<?, B>>();
@@ -73,35 +74,35 @@ public class BaseBeanSwap<BC extends ObservableValue<B>, B> implements Ref<B>, B
 	}
 
 	@Override
-	public <T> PropertyRef<T> getPropertyRef(Getter<? extends Property<T>, B> getter) {
+	public <T> PropertyRef<T> propertyFrom(Getter<? extends Property<T>, B> getter) {
 		SimplePropertySwap<T> propertySwap = new SimplePropertySwap<T>();
 		addPropertySyncher(BeanSwapPropertySyncer.create(propertySwap, getter));
 		return propertySwap;
 	}
 
 	@Override
-	public <T> ValueRef<T> getValueRef(Getter<? extends T, B> getter) {
+	public <T> ValueRef<T> valueFrom(Getter<? extends T, B> getter) {
 		SimpleValueSwap<T> valueSwap = new SimpleValueSwap<T>();
 		addPropertySyncher(BeanSwapPropertySyncer.create(valueSwap, getter));
 		return valueSwap;
 	}
 
 	@Override
-	public <T> ObservableListSwap<T> getObservableListRef(Getter<? extends ObservableList<T>, B> getter) {
+	public <T> ObservableListSwap<T> listFrom(Getter<? extends ObservableList<T>, B> getter) {
 		ArrayObservableListSwap<T> observableListSwap = new ArrayObservableListSwap<T>();
 		addPropertySyncher(BeanSwapPropertySyncer.create(observableListSwap, getter));
 		return observableListSwap;
 	}
 
 	@Override
-	public <T> BeanRef<T> getBeanRefFromValue(Getter<T, B> getter) {
-		ValueRef<T> beanChannel = getValueRef(getter);
+	public <T> BeanRef<T> beanFromValue(Getter<T, B> getter) {
+		ValueRef<T> beanChannel = valueFrom(getter);
 		return new SimpleBeanRef<T>(beanChannel);
 	}
 
 	@Override
-	public <T> BeanRef<T> getBeanRefFromProperty(Getter<? extends Property<T>, B> getter) {
-		PropertyRef<T> beanChannel = getPropertyRef(getter);
+	public <T> BeanRef<T> beanFromProperty(Getter<? extends Property<T>, B> getter) {
+		PropertyRef<T> beanChannel = propertyFrom(getter);
 		return new SimpleBeanRef<T>(beanChannel);
 	}
 
@@ -143,5 +144,10 @@ public class BaseBeanSwap<BC extends ObservableValue<B>, B> implements Ref<B>, B
 	@Override
 	public B getRefObject() {
 		return beanChannel.getValue();
+	}
+	
+	@Override
+	public B getBean() {
+		return getRefObject();
 	}
 }

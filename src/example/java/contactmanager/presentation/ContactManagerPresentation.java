@@ -33,9 +33,9 @@ public class ContactManagerPresentation {
 		this.contactSelection.selectionModel().select(0);
 		
 		this.contact = new SimpleBeanRef<Contact>(contactSelection.selectionModel().selectedItemProperty());
-		this.firstName = contact.getPropertyRef(Contact.FIRST_NAME);
-		this.lastName = contact.getPropertyRef(Contact.LAST_NAME);
-		this.fictional = contact.getPropertyRef(Contact.FICTIONAL);
+		this.firstName = contact.propertyFrom(Contact.FIRST_NAME);
+		this.lastName = contact.propertyFrom(Contact.LAST_NAME);
+		this.fictional = contact.propertyFrom(Contact.FICTIONAL);
 		
 		this.add = new EventHandler<ActionEvent>() {
 			@Override

@@ -40,8 +40,8 @@ public class ListSetExample extends Application {
 		// Swaps
 		final SimpleBeanSwap<ListBean> beanSwap = SimpleBeanSwap.create(one);
 		final ObservableListSwap<String> listSwap = beanSwap.attachSwap(new ArrayObservableListSwap<String>(), ListBean.GET_LIST_PROPERTY);
-		PropertyRef<String> propertyASwap = beanSwap.getPropertyRef(ListBean.GET_A_PROPERTY);
-		PropertyRef<String> propertyBSwap = beanSwap.getPropertyRef(ListBean.GET_B_PROPERTY);
+		PropertyRef<String> propertyASwap = beanSwap.propertyFrom(ListBean.GET_A_PROPERTY);
+		PropertyRef<String> propertyBSwap = beanSwap.propertyFrom(ListBean.GET_B_PROPERTY);
 		
 		// Components
 		TextField aField = new TextField();
