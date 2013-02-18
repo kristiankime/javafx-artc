@@ -27,8 +27,8 @@ package com.artclod.javafx.swap.beans.property;
 
 import javafx.beans.property.Property;
 
-import com.artclod.javafx.swap.Swap;
+import com.artclod.javafx.swap.Ref;
 
-public interface PropertyRef<T> extends Property<T>, Swap<Property<T>> {
+public interface PropertyRef<T> extends Property<T>, Ref<Property<T>> {
 
 }
