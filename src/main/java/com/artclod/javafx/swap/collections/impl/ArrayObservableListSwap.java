@@ -52,7 +52,7 @@ public class ArrayObservableListSwap<E> implements ObservableListSwap<E> {
 	
 	public static <T> ArrayObservableListSwap<T> create(ObservableList<T> list) {
 		ArrayObservableListSwap<T> ret = new ArrayObservableListSwap<T>();
-		ret.swap(list);
+		ret.swapRefObject(list);
 		return ret;
 	}
 	
@@ -66,7 +66,7 @@ public class ArrayObservableListSwap<E> implements ObservableListSwap<E> {
 	}
 	
 	@Override
-	public void swap(ObservableList<E> newUnderlyingObject) {
+	public void swapRefObject(ObservableList<E> newUnderlyingObject) {
 		if (underlyingObject != null) {
 			Bindings.unbindContentBidirectional(delegate, underlyingObject);
 		}

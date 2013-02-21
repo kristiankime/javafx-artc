@@ -59,11 +59,11 @@ public class SimpleBeanSwap<B> extends BaseBeanSwap<Property<B>, B> implements B
 	
 	@Override
 	public void setBean(B bean) {
-		swap(bean);
+		swapRefObject(bean);
 	}
 	
 	@Override
-	public void swap(B underlyingObject) {
+	public void swapRefObject(B underlyingObject) {
 		beanChannel.setValue(underlyingObject);
 	}
 	

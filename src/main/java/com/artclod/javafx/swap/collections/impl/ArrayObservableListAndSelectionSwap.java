@@ -44,7 +44,7 @@ public class ArrayObservableListAndSelectionSwap<E> extends ArrayObservableListS
 	}
 	
 	public ArrayObservableListAndSelectionSwap(ObservableList<E> underlyingList, SelectionMode selectionMode) {
-		swap(underlyingList);
+		swapRefObject(underlyingList);
 		this.multipleSelectionModel = new ListView<E>(this).getSelectionModel();
 		this.multipleSelectionModel.setSelectionMode(selectionMode);
 	}

@@ -74,40 +74,40 @@ public class BaseBeanSwap<BC extends ObservableValue<B>, B> implements Ref<B>, B
 	}
 
 	@Override
-	public <T> PropertyRef<T> propertyFrom(Getter<? extends Property<T>, B> getter) {
+	public <T> PropertyRef<T> createPropertyRef(Getter<? extends Property<T>, B> getter) {
 		SimplePropertySwap<T> propertySwap = new SimplePropertySwap<T>();
 		addPropertySyncher(BeanSwapPropertySyncer.create(propertySwap, getter));
 		return propertySwap;
 	}
 
 	@Override
-	public <T> ValueRef<T> valueFrom(Getter<? extends T, B> getter) {
+	public <T> ValueRef<T> createValueRef(Getter<? extends T, B> getter) {
 		SimpleValueSwap<T> valueSwap = new SimpleValueSwap<T>();
 		addPropertySyncher(BeanSwapPropertySyncer.create(valueSwap, getter));
 		return valueSwap;
 	}
 
 	@Override
-	public <T> ObservableListSwap<T> listFrom(Getter<? extends ObservableList<T>, B> getter) {
+	public <T> ObservableListSwap<T> createListRef(Getter<? extends ObservableList<T>, B> getter) {
 		ArrayObservableListSwap<T> observableListSwap = new ArrayObservableListSwap<T>();
 		addPropertySyncher(BeanSwapPropertySyncer.create(observableListSwap, getter));
 		return observableListSwap;
 	}
 
 	@Override
-	public <T> BeanRef<T> beanFromValue(Getter<T, B> getter) {
-		ValueRef<T> beanChannel = valueFrom(getter);
+	public <T> BeanRef<T> createBeanRefFromValue(Getter<T, B> getter) {
+		ValueRef<T> beanChannel = createValueRef(getter);
 		return new SimpleBeanRef<T>(beanChannel);
 	}
 
 	@Override
-	public <T> BeanRef<T> beanFromProperty(Getter<? extends Property<T>, B> getter) {
-		PropertyRef<T> beanChannel = propertyFrom(getter);
+	public <T> BeanRef<T> createBeanRefFromProperty(Getter<? extends Property<T>, B> getter) {
+		PropertyRef<T> beanChannel = createPropertyRef(getter);
 		return new SimpleBeanRef<T>(beanChannel);
 	}
 
 	@Override
-	public <I extends Swap<T>, T> I attachSwap(I swap, Getter<T, B> getter) {
+	public <I extends Swap<T>, T> I addSwap(I swap, Getter<T, B> getter) {
 		addPropertySyncher(BeanSwapPropertySyncer.create(swap, getter));
 		return swap;
 	}

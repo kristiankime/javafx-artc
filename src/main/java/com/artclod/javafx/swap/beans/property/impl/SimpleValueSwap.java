@@ -48,7 +48,7 @@ public class SimpleValueSwap<T> extends SimpleObjectProperty<T> implements Value
 	}
 
 	@Override
-	public void swap(T newSwap) {
+	public void swapRefObject(T newSwap) {
 		setValue(newSwap);
 	}
 	

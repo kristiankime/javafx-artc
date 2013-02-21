@@ -52,11 +52,11 @@ public class SimplePropertySwap<T> implements PropertySwap<T> {
 	
 	public SimplePropertySwap(Property<T> swap) {
 		this.delegate = new SimpleObjectProperty<T>();
-		swap(swap);
+		swapRefObject(swap);
 	}
 	
 	@Override
-	public void swap(Property<T> newUnderlyingObject) {
+	public void swapRefObject(Property<T> newUnderlyingObject) {
 		// Unbind everything in preparation for the change
 		if (swap != null) {
 			delegate.unbindBidirectional(swap);

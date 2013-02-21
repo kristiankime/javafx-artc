@@ -48,66 +48,66 @@ public class SimplePropertySwapTest {
 	}
 
 	@Test
-	public void swap_starting_with_nothing_switches_which_object_is_bound_unidirectionally() {
-		SimpleObjectProperty<String> underlyingProperty = new SimpleObjectProperty<String>("b");
-		SimplePropertySwap<String> propertySwap = SimplePropertySwap.create(null);
-
-		SimpleObjectProperty<String> bindProperty = new SimpleObjectProperty<String>("c");
-		propertySwap.bind(bindProperty);
-		assertEquals("b", underlyingProperty.get());
-
-		propertySwap.swap(underlyingProperty);
-		bindProperty.set("d");
-		assertEquals("d", underlyingProperty.get());
-	}
-
-	@Test
-	public void swap_starting_with_nothing_switches_which_object_is_bound_bidirectionally() {
-		SimpleObjectProperty<String> underlyingProperty = new SimpleObjectProperty<String>("b");
-		SimplePropertySwap<String> propertySwap = SimplePropertySwap.create(null);
-
-		SimpleObjectProperty<String> bindProperty = new SimpleObjectProperty<String>("c");
-		propertySwap.bindBidirectional(bindProperty);
-		assertEquals("b", underlyingProperty.get());
-
-		propertySwap.swap(underlyingProperty);
-		bindProperty.set("d");
-		assertEquals("d", underlyingProperty.get());
-	}
+		public void swapRefObject_starting_with_nothing_switches_which_object_is_bound_unidirectionally() {
+			SimpleObjectProperty<String> underlyingProperty = new SimpleObjectProperty<String>("b");
+			SimplePropertySwap<String> propertySwap = SimplePropertySwap.create(null);
+	
+			SimpleObjectProperty<String> bindProperty = new SimpleObjectProperty<String>("c");
+			propertySwap.bind(bindProperty);
+			assertEquals("b", underlyingProperty.get());
+	
+			propertySwap.swapRefObject(underlyingProperty);
+			bindProperty.set("d");
+			assertEquals("d", underlyingProperty.get());
+		}
 
 	@Test
-	public void swap_switches_which_object_is_bound_unidirectionally() {
-		SimpleObjectProperty<String> underlyingProperty = new SimpleObjectProperty<String>("a");
-		SimpleObjectProperty<String> underlyingProperty2 = new SimpleObjectProperty<String>("b");
-		SimplePropertySwap<String> propertySwap = SimplePropertySwap.create(underlyingProperty);
-
-		SimpleObjectProperty<String> bindProperty = new SimpleObjectProperty<String>("c");
-		propertySwap.bind(bindProperty);
-		assertEquals("c", underlyingProperty.get());
-		assertEquals("b", underlyingProperty2.get());
-
-		propertySwap.swap(underlyingProperty2);
-		bindProperty.set("d");
-		assertEquals("c", underlyingProperty.get());
-		assertEquals("d", underlyingProperty2.get());
-	}
+		public void swapRefObject_starting_with_nothing_switches_which_object_is_bound_bidirectionally() {
+			SimpleObjectProperty<String> underlyingProperty = new SimpleObjectProperty<String>("b");
+			SimplePropertySwap<String> propertySwap = SimplePropertySwap.create(null);
+	
+			SimpleObjectProperty<String> bindProperty = new SimpleObjectProperty<String>("c");
+			propertySwap.bindBidirectional(bindProperty);
+			assertEquals("b", underlyingProperty.get());
+	
+			propertySwap.swapRefObject(underlyingProperty);
+			bindProperty.set("d");
+			assertEquals("d", underlyingProperty.get());
+		}
 
 	@Test
-	public void swap_switches_which_object_is_bound_bidirectionally() {
-		SimpleObjectProperty<String> underlyingProperty = new SimpleObjectProperty<String>("a");
-		SimpleObjectProperty<String> underlyingProperty2 = new SimpleObjectProperty<String>("b");
-		SimplePropertySwap<String> propertySwap = SimplePropertySwap.create(underlyingProperty);
+		public void swapRefObject_switches_which_object_is_bound_unidirectionally() {
+			SimpleObjectProperty<String> underlyingProperty = new SimpleObjectProperty<String>("a");
+			SimpleObjectProperty<String> underlyingProperty2 = new SimpleObjectProperty<String>("b");
+			SimplePropertySwap<String> propertySwap = SimplePropertySwap.create(underlyingProperty);
+	
+			SimpleObjectProperty<String> bindProperty = new SimpleObjectProperty<String>("c");
+			propertySwap.bind(bindProperty);
+			assertEquals("c", underlyingProperty.get());
+			assertEquals("b", underlyingProperty2.get());
+	
+			propertySwap.swapRefObject(underlyingProperty2);
+			bindProperty.set("d");
+			assertEquals("c", underlyingProperty.get());
+			assertEquals("d", underlyingProperty2.get());
+		}
 
-		SimpleObjectProperty<String> bindProperty = new SimpleObjectProperty<String>("c");
-		propertySwap.bindBidirectional(bindProperty);
-		assertEquals("c", underlyingProperty.get());
-		assertEquals("b", underlyingProperty2.get());
-
-		propertySwap.swap(underlyingProperty2);
-		bindProperty.set("d");
-		assertEquals("c", underlyingProperty.get());
-		assertEquals("d", underlyingProperty2.get());
-	}
+	@Test
+		public void swapRefObject_switches_which_object_is_bound_bidirectionally() {
+			SimpleObjectProperty<String> underlyingProperty = new SimpleObjectProperty<String>("a");
+			SimpleObjectProperty<String> underlyingProperty2 = new SimpleObjectProperty<String>("b");
+			SimplePropertySwap<String> propertySwap = SimplePropertySwap.create(underlyingProperty);
+	
+			SimpleObjectProperty<String> bindProperty = new SimpleObjectProperty<String>("c");
+			propertySwap.bindBidirectional(bindProperty);
+			assertEquals("c", underlyingProperty.get());
+			assertEquals("b", underlyingProperty2.get());
+	
+			propertySwap.swapRefObject(underlyingProperty2);
+			bindProperty.set("d");
+			assertEquals("c", underlyingProperty.get());
+			assertEquals("d", underlyingProperty2.get());
+		}
 
 	@Test
 	public void unbind_works() {
@@ -146,57 +146,57 @@ public class SimplePropertySwapTest {
 	}
 
 	@Test
-	public void swap_starting_with_null_switches_which_object_binds() {
-		SimpleObjectProperty<String> underlyingProperty2 = new SimpleObjectProperty<String>();
-		PropertySwap<String> propertySwap = SimplePropertySwap.create(null);
-
-		SimpleObjectProperty<String> bindProperty = new SimpleObjectProperty<String>("c");
-		bindProperty.bind(propertySwap);
-		propertySwap.setValue("a");
-		assertNull(bindProperty.get());
-
-		propertySwap.swap(underlyingProperty2);
-		propertySwap.setValue("b");
-		assertEquals("b", bindProperty.get());
-	}
-
-	@Test
-	public void swap_switches_which_object_binds() {
-		SimpleObjectProperty<String> underlyingProperty = new SimpleObjectProperty<String>();
-		SimpleObjectProperty<String> underlyingProperty2 = new SimpleObjectProperty<String>();
-		SimplePropertySwap<String> propertySwap = SimplePropertySwap.create(underlyingProperty);
-
-		SimpleObjectProperty<String> bindProperty = new SimpleObjectProperty<String>("c");
-		bindProperty.bind(propertySwap);
-		propertySwap.setValue("a");
-		assertEquals("a", bindProperty.get());
-
-		propertySwap.swap(underlyingProperty2);
-		propertySwap.setValue("b");
-		assertEquals("b", bindProperty.get());
-	}
+		public void swapRefObject_starting_with_null_switches_which_object_binds() {
+			SimpleObjectProperty<String> underlyingProperty2 = new SimpleObjectProperty<String>();
+			PropertySwap<String> propertySwap = SimplePropertySwap.create(null);
+	
+			SimpleObjectProperty<String> bindProperty = new SimpleObjectProperty<String>("c");
+			bindProperty.bind(propertySwap);
+			propertySwap.setValue("a");
+			assertNull(bindProperty.get());
+	
+			propertySwap.swapRefObject(underlyingProperty2);
+			propertySwap.setValue("b");
+			assertEquals("b", bindProperty.get());
+		}
 
 	@Test
-	public void swap_switches_which_object_is_bidirectionallyBound() {
-		SimpleObjectProperty<String> underlyingProperty = new SimpleObjectProperty<String>("a");
-		SimpleObjectProperty<String> underlyingProperty2 = new SimpleObjectProperty<String>("b");
-		SimplePropertySwap<String> propertySwap = SimplePropertySwap.create(underlyingProperty);
+		public void swapRefObject_switches_which_object_binds() {
+			SimpleObjectProperty<String> underlyingProperty = new SimpleObjectProperty<String>();
+			SimpleObjectProperty<String> underlyingProperty2 = new SimpleObjectProperty<String>();
+			SimplePropertySwap<String> propertySwap = SimplePropertySwap.create(underlyingProperty);
+	
+			SimpleObjectProperty<String> bindProperty = new SimpleObjectProperty<String>("c");
+			bindProperty.bind(propertySwap);
+			propertySwap.setValue("a");
+			assertEquals("a", bindProperty.get());
+	
+			propertySwap.swapRefObject(underlyingProperty2);
+			propertySwap.setValue("b");
+			assertEquals("b", bindProperty.get());
+		}
 
-		SimpleObjectProperty<String> bindProperty = new SimpleObjectProperty<String>("c");
-		propertySwap.bindBidirectional(bindProperty);
-		assertEquals("c", underlyingProperty.get());
-		assertEquals("b", underlyingProperty2.get());
-
-		propertySwap.swap(underlyingProperty2);
-		bindProperty.set("d");
-		assertEquals("c", underlyingProperty.get());
-		assertEquals("d", underlyingProperty2.get());
-
-		propertySwap.setValue("e");
-		assertEquals("e", bindProperty.get());
-		assertEquals("c", underlyingProperty.get());
-		assertEquals("e", underlyingProperty2.get());
-	}
+	@Test
+		public void swapRefObject_switches_which_object_is_bidirectionallyBound() {
+			SimpleObjectProperty<String> underlyingProperty = new SimpleObjectProperty<String>("a");
+			SimpleObjectProperty<String> underlyingProperty2 = new SimpleObjectProperty<String>("b");
+			SimplePropertySwap<String> propertySwap = SimplePropertySwap.create(underlyingProperty);
+	
+			SimpleObjectProperty<String> bindProperty = new SimpleObjectProperty<String>("c");
+			propertySwap.bindBidirectional(bindProperty);
+			assertEquals("c", underlyingProperty.get());
+			assertEquals("b", underlyingProperty2.get());
+	
+			propertySwap.swapRefObject(underlyingProperty2);
+			bindProperty.set("d");
+			assertEquals("c", underlyingProperty.get());
+			assertEquals("d", underlyingProperty2.get());
+	
+			propertySwap.setValue("e");
+			assertEquals("e", bindProperty.get());
+			assertEquals("c", underlyingProperty.get());
+			assertEquals("e", underlyingProperty2.get());
+		}
 
 	@Test
 	public void getName_with_null_returns_null() {

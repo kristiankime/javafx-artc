@@ -59,12 +59,12 @@ public class ArrayObservableListSwapTest {
 	}
 
 	@Test
-	public void swap_with_null_list_becomes_empty_list() {
-		ArrayObservableListSwap<String> listSwap = ArrayObservableListSwap.create(FXCollections.observableArrayList("a", "b"));
-		listSwap.swap(null);
-
-		assertTrue(listSwap.isEmpty());
-	}
+		public void swapRefObject_with_null_list_becomes_empty_list() {
+			ArrayObservableListSwap<String> listSwap = ArrayObservableListSwap.create(FXCollections.observableArrayList("a", "b"));
+			listSwap.swapRefObject(null);
+	
+			assertTrue(listSwap.isEmpty());
+		}
 
 	@Test
 	public void changes_to_underlying_list_change_indirect_list() {
@@ -105,75 +105,75 @@ public class ArrayObservableListSwapTest {
 	}
 
 	@Test
-	public void swap_changes_which_underlying_list_is_effected() {
-		ObservableList<String> startingUnderlyingList = FXCollections.observableArrayList("a", "b");
-		ArrayObservableListSwap<String> listSwap = ArrayObservableListSwap.create(startingUnderlyingList);
-
-		listSwap.add("c");
-		ObservableList<String> endingUnderlyingList = FXCollections.observableArrayList("d", "e");
-		listSwap.swap(endingUnderlyingList);
-		listSwap.add("f");
-
-		assertEquals(startingUnderlyingList.get(0), "a");
-		assertEquals(startingUnderlyingList.get(1), "b");
-		assertEquals(startingUnderlyingList.get(2), "c");
-
-		assertEquals(endingUnderlyingList.get(0), "d");
-		assertEquals(endingUnderlyingList.get(1), "e");
-		assertEquals(endingUnderlyingList.get(2), "f");
-	}
+		public void swapRefObject_changes_which_underlying_list_is_effected() {
+			ObservableList<String> startingUnderlyingList = FXCollections.observableArrayList("a", "b");
+			ArrayObservableListSwap<String> listSwap = ArrayObservableListSwap.create(startingUnderlyingList);
+	
+			listSwap.add("c");
+			ObservableList<String> endingUnderlyingList = FXCollections.observableArrayList("d", "e");
+			listSwap.swapRefObject(endingUnderlyingList);
+			listSwap.add("f");
+	
+			assertEquals(startingUnderlyingList.get(0), "a");
+			assertEquals(startingUnderlyingList.get(1), "b");
+			assertEquals(startingUnderlyingList.get(2), "c");
+	
+			assertEquals(endingUnderlyingList.get(0), "d");
+			assertEquals(endingUnderlyingList.get(1), "e");
+			assertEquals(endingUnderlyingList.get(2), "f");
+		}
 
 	@Test
-	public void swap_new_underlying_list_effects_indirect_list() {
-		ArrayObservableListSwap<String> listSwap = ArrayObservableListSwap.create(FXCollections.observableArrayList("a", "b"));
-
-		ObservableList<String> endingUnderlyingList = FXCollections.observableArrayList("d", "e");
-		listSwap.swap(endingUnderlyingList);
-		endingUnderlyingList.add("f");
-
-		assertEquals(listSwap.get(0), "d");
-		assertEquals(listSwap.get(1), "e");
-		assertEquals(listSwap.get(2), "f");
-	}
+		public void swapRefObject_new_underlying_list_effects_indirect_list() {
+			ArrayObservableListSwap<String> listSwap = ArrayObservableListSwap.create(FXCollections.observableArrayList("a", "b"));
+	
+			ObservableList<String> endingUnderlyingList = FXCollections.observableArrayList("d", "e");
+			listSwap.swapRefObject(endingUnderlyingList);
+			endingUnderlyingList.add("f");
+	
+			assertEquals(listSwap.get(0), "d");
+			assertEquals(listSwap.get(1), "e");
+			assertEquals(listSwap.get(2), "f");
+		}
 
 	@SuppressWarnings("unchecked")
-	@Test
-	public void swap_changes_to_new_underlying_list_fire_events_from_the_indirect_list() {
-		ArrayObservableListSwap<String> listSwap = ArrayObservableListSwap.create(FXCollections.observableArrayList("a", "b"));
-		ObservableList<String> endingUnderlyingList = FXCollections.observableArrayList("d", "e");
-		ListChangeListener<String> mock = mock(ListChangeListener.class);
-
-		listSwap.swap(endingUnderlyingList);
-		listSwap.addListener(mock);
-		endingUnderlyingList.add("f");
-
-		verify(mock).onChanged(wasCalledWithArgThat(matchesTheseAdded("f")));
-	}
-
-	@SuppressWarnings("unchecked")
-	@Test
-	public void swap_changes_to_old_underlying_list_do_not_fire_events_from_the_indirect_list() {
-		ObservableList<String> startingUnderlyingList = FXCollections.observableArrayList("a", "b");
-		ArrayObservableListSwap<String> listSwap = ArrayObservableListSwap.create(startingUnderlyingList);
-		ObservableList<String> endingUnderlyingList = FXCollections.observableArrayList("d", "e");
-		ListChangeListener<String> mock = mock(ListChangeListener.class);
-
-		listSwap.swap(endingUnderlyingList);
-		listSwap.addListener(mock);
-		startingUnderlyingList.add("f");
-
-		verifyZeroInteractions(mock);
-	}
+		@Test
+		public void swapRefObject_changes_to_new_underlying_list_fire_events_from_the_indirect_list() {
+			ArrayObservableListSwap<String> listSwap = ArrayObservableListSwap.create(FXCollections.observableArrayList("a", "b"));
+			ObservableList<String> endingUnderlyingList = FXCollections.observableArrayList("d", "e");
+			ListChangeListener<String> mock = mock(ListChangeListener.class);
+	
+			listSwap.swapRefObject(endingUnderlyingList);
+			listSwap.addListener(mock);
+			endingUnderlyingList.add("f");
+	
+			verify(mock).onChanged(wasCalledWithArgThat(matchesTheseAdded("f")));
+		}
 
 	@SuppressWarnings("unchecked")
-	@Test
-	public void swap_fires_events_that_indicate_the_entire_list_has_changed() {
-		ArrayObservableListSwap<String> listSwap = ArrayObservableListSwap.create(FXCollections.observableArrayList("a", "b"));
-		final ListChangeListener<String> listener = mock(ListChangeListener.class);
-		listSwap.addListener(listener);
+		@Test
+		public void swapRefObject_changes_to_old_underlying_list_do_not_fire_events_from_the_indirect_list() {
+			ObservableList<String> startingUnderlyingList = FXCollections.observableArrayList("a", "b");
+			ArrayObservableListSwap<String> listSwap = ArrayObservableListSwap.create(startingUnderlyingList);
+			ObservableList<String> endingUnderlyingList = FXCollections.observableArrayList("d", "e");
+			ListChangeListener<String> mock = mock(ListChangeListener.class);
+	
+			listSwap.swapRefObject(endingUnderlyingList);
+			listSwap.addListener(mock);
+			startingUnderlyingList.add("f");
+	
+			verifyZeroInteractions(mock);
+		}
 
-		listSwap.swap(FXCollections.observableArrayList("c", "d", "e"));
-
-		verify(listener).onChanged(wasCalledWithArgThat(matchesTheseChanges(removed("a", "b"), added("c", "d", "e"))));
-	}
+	@SuppressWarnings("unchecked")
+		@Test
+		public void swapRefObject_fires_events_that_indicate_the_entire_list_has_changed() {
+			ArrayObservableListSwap<String> listSwap = ArrayObservableListSwap.create(FXCollections.observableArrayList("a", "b"));
+			final ListChangeListener<String> listener = mock(ListChangeListener.class);
+			listSwap.addListener(listener);
+	
+			listSwap.swapRefObject(FXCollections.observableArrayList("c", "d", "e"));
+	
+			verify(listener).onChanged(wasCalledWithArgThat(matchesTheseChanges(removed("a", "b"), added("c", "d", "e"))));
+		}
 }

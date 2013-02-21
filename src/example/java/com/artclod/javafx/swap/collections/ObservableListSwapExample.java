@@ -43,7 +43,7 @@ public class ObservableListSwapExample extends Application {
 		useListOne.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				listSwap.swap(oneTwo);
+				listSwap.swapRefObject(oneTwo);
 			}
 		});
 		
@@ -51,7 +51,7 @@ public class ObservableListSwapExample extends Application {
 		useListTwo.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				listSwap.swap(abc);
+				listSwap.swapRefObject(abc);
 			}
 		});
 		

@@ -43,9 +43,9 @@ public class BeanSwapPropertySyncer<T, B> {
 	
 	public void sync(B value) {
 		if (value == null) {
-			swap.swap(null);
+			swap.swapRefObject(null);
 		} else {
-			swap.swap(getter.get(value));
+			swap.swapRefObject(getter.get(value));
 		}
 	}
 }
