@@ -44,6 +44,6 @@ package com.artclod.javafx.swap;
  */
 public interface Swap<T> extends Ref<T> {
 	
-	public void swapRefObject(T newUnderlyingObject);
+	public void swapRefObject(T refObject);
 	
 }

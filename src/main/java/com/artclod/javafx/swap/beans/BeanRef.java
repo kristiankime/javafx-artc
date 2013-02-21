@@ -54,6 +54,11 @@ public interface BeanRef<B> extends Ref<B> {
 
 	public void removePropertySyncher(BeanSwapPropertySyncer<?, B> propertySyncer);
 
+	/**
+	 * This is an alternative to {@link #getRefObject()} method with a more specific name
+	 * 
+	 * @return the Bean which this object is a {@link Ref} for
+	 */
 	public B getBean();
 	
 	public ObservableValue<B> beanChannel();
