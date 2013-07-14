@@ -75,7 +75,7 @@ public class ObservableListMirror<M, O> implements ObservableList<M> {
 		}
 	}
 	
-	// ====== Require Factory ======
+	// ====== Required Factory ======
 	public static interface MirrorFactory<M, O> {
 
 		public M create(O original);

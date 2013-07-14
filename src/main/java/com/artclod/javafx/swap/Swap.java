@@ -32,7 +32,7 @@ package com.artclod.javafx.swap;
 /**
  * Indicates this object is a proxy for an underlying object which can be changed.
  * 
- * Usually the swap object will implement the same interface as the proxied object (ie an 
+ * Usually the swap object will implement the same interface as the proxied object (ie a 
  * Swap<List<E>> would implement List<E> and, in all likelihood, delegate most calls to an 
  * underlying list.
  * 
